@@ -19,8 +19,8 @@ class StudentsSubjects extends Migration
         $table->bigInteger('student_code')->unsigned();
         $table->bigInteger('subject_code')->unsigned();
         $table->float('score');
-        $table->foreign('subject_code')->references('id')->on('subjects')->onDelete('cascade');
-        $table->foreign('student_code')->references('id')->on('students')->onDelete('cascade');;
+        $table->foreign('subject_code')->references('id')->on('subjects');
+        $table->foreign('student_code')->references('id')->on('students');
     });
     }
 

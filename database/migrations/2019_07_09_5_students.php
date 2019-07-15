@@ -22,7 +22,7 @@ class Students extends Migration
             $table->date('birthday');
             $table->string('image',190);
             $table->string('address',190);
-            $table->foreign('class_code')->references('id')->on('classes')->onDelete('cascade');
+            $table->foreign('class_code')->references('id')->on('classes');
         });
     }
 
