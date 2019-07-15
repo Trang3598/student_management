@@ -18,7 +18,7 @@ class Classes extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('faculty_id')->unsigned();
             $table->string('name', 50);
-            $table->foreign('faculty_id')->references('id')->on('faculties');
+            $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('set null');
         });
     }
 
