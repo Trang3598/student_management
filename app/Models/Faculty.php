@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Faculty extends Model
+{
+    //
+    //protected $table = "faculty";
+    protected $fillable = ['name'];
+//    public $timestamps =
+
+    public function classes()
+    {
+        return $this->hasMany(ClassModel::class);
+    }
+    public function classname()
+    {
+        return $this->hasManyThrough(ClassModel::class);
+    }
+}
