@@ -38,7 +38,6 @@
                                 @else
                                 {{'Other'}}
                                 @endif
-
                             </td>
                         <td>{{$st->birthday}}</td>
                         <td><img src="images/{{$st->image}}" alt="" style="height: 100px;width: 150px"/></td>

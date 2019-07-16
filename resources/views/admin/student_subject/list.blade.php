@@ -10,6 +10,11 @@
                     </h1>
                 </div>
                 <!-- /.col-lg-12 -->
+                @if(session('message'))
+                    <div class="alert alert-success">
+                        {{session('message')}}
+                    </div>
+                @endif
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
@@ -25,11 +30,11 @@
                     @foreach($studentsubject as $sb)
                         <tr class="odd gradeX" align="center">
                             <td>{{$sb->id}}</td>
-                            <td>{{$sb->student_code}}</td>
-                            <td>{{$sb->subject_code}}</td>
+                            <td>{{$sb->student->name}}</td>
+                            <td>{{$sb->subject->name}}</td>
                             <td>{{$sb->score}}</td>
-                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="studentsubject/"> Delete</a></td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="">Edit</a></td>
+                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="{{route('studentsubject.delete',['studentSubject' => $sb])}}"> Delete</a></td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('studentsubject.edit',['studentSubject' => $sb])}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>

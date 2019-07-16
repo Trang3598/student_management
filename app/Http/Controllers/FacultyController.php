@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FacultyModel;
+use App\Http\Requests\FacultyRequest;
 use App\StudentModel;
 use Illuminate\Http\Request;
 
@@ -13,10 +14,8 @@ class FacultyController extends Controller
     {
         return view('admin.Faculty.create');
     }
-    public function postFormFaculty(Request $request){
-       $faculty =  new FacultyModel();
-       $faculty->name = $request->name;
-       $faculty->save();
+    public function postFormFaculty(FacultyRequest $request,FacultyModel $faculty){
+       $faculty->create($request->all());
        return redirect('admin/faculty/list')->with('message',"Add successfully");
     }
     public function list()

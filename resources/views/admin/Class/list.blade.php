@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
 
-                    @foreach($class as $cl)
+                    @foreach($classes as $cl)
                         <tr class="odd gradeX" align="center">
                             <td>{{$cl->id}}</td>
                             <td>{{$cl->faculty_id}}</td>
