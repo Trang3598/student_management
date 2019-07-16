@@ -7,16 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Faculty extends Model
 {
     //
-    //protected $table = "faculty";
+    protected $table = "faculties";
     protected $fillable = ['name'];
-//    public $timestamps =
+    public $timestamps =false;
 
     public function classes()
     {
         return $this->hasMany(ClassModel::class);
-    }
-    public function classname()
-    {
-        return $this->hasManyThrough(ClassModel::class);
     }
 }

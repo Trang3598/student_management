@@ -13,7 +13,7 @@ class FacultyRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class FacultyRequest extends FormRequest
     public function rules()
     {
         return [
-            'txtFacultyName'=>'required|min:3|max:100'
+            'name'=>'required|unique:faculties,name|min:3|max:100'
         ];
     }
 
@@ -36,9 +36,10 @@ class FacultyRequest extends FormRequest
     public function messages()
     {
         return [
-            'txtFacultyName.required'=>'NoName',
-            'txtFacultyName.min'=>'Min 3',
-            'txtFacultyName.max'=>'Max 100',
+            'name.required'=>'NoName',
+            'name.min'=>'Min 3',
+            'name.max'=>'Max 100',
+            'name.unique'=>'Error: Same Name'
         ];
     }
 }

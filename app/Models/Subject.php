@@ -8,7 +8,7 @@ class SubjectModel extends Model
 {
     //
     protected $fillable = ['name','number'];
-    public function student(){
-        return $this->hasManyThrough(Student::class);
+    public function subjects(){
+        return $this->belongstoMany(Student::class);
     }
 }

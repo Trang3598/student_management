@@ -19,7 +19,7 @@
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Faculties<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{'faculties'}}">Show Faculties</a>
+                        <a href="{{'/faculties'}}">Show Faculties</a>
                     </li>
                     <li>
                         <a href="{{'/faculties/create'}}">Add Faculties</a>

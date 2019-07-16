@@ -9,8 +9,10 @@ class ClassModel extends Model
     //
     protected $fillable = ['name','faculty_id'];
 
-    public function faculties(){
-        return $this->hasManyThrough(Student::class);
+    public function classes(){
+        return $this->hasMany(Faculty::class,'faculty_id','id');
     }
-
+    public function students(){
+        return $this->hasMany(Student::class);
+    }
 }

@@ -15,8 +15,8 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.faculties.store');
+        $faculty = Faculty::all();
+        return view('admin.faculties.store',['faculty'=>$faculty]);
     }
 
     /**
@@ -37,11 +37,12 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
+
         $faculty = new Faculty();
 
-        $faculty->save($request->all());
+        $faculty->create($request->all());
 
-        return redirect(route('faculties.index'))->with('success', 'Add curves');
+        return redirect(route('faculties.index'))->with('success','CREATE-SUCCESS');
     }
 
     /**
@@ -52,7 +53,10 @@ class FacultyController extends Controller
      */
     public function show()
     {
-        return view('admin.faculties.store');
+        {
+            $faculty = Faculty::all();
+            return view('admin.faculties.store',compact('faculty'));
+        }
     }
 
     /**
@@ -61,10 +65,9 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Faculty $faculty)
     {
-        //
-        return view('admin.faculties.editFaculty');
+        return view('admin.faculties.edit',['fy'=>$faculty]);
     }
 
     /**
@@ -74,9 +77,11 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FacultyRequest $request, Faculty $faculty)
     {
-        //
+        $faculty -> name = $request -> name;
+        $faculty ->save();
+        return redirect(route('faculties.create'))->with('success','EDIT-SUCCESS');
     }
 
     /**
@@ -85,8 +90,9 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Faculty $faculty)
     {
-        //
+        $faculty->delete();
+        return redirect(route('faculties.create'))->with('delete','DELETE-SUCCESS');
     }
 }

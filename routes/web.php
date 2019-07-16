@@ -26,12 +26,7 @@ Route::resource('faculties', 'FacultyController');
 /**
  * Route Student
  */
-Route::get('/students/create','StudentController@create');
-Route::get('/student/store','StudentController@store');
-Route::get('/student/edit','StudentController@edit');
-Route::get('/student/update','StudentController@update');
-Route::get('/student/show','StudentController@show');
-Route::get('/student/delete','StudentController@delete');
+Route::resource('students', 'StudentController');
 /**
  * Route Subject
  */
