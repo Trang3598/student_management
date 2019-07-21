@@ -8,8 +8,14 @@
                     <h1 class="page-header">Student
                         <small>List</small>
                     </h1>
+                    @if(session('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
+
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
@@ -25,26 +31,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($student as $st)
-                    <tr class="odd gradeX" align="center" enctype="multipart/form-data">
-                        <td>{{$st->id}}</td>
-                        <td>{{$st->class_code}}</td>
-                        <td>{{$st->name}}</td>
-                        <td>
-                            @if($st->gender == 1)
-                                {{'Male'}}
-                                @elseif($st->gender == 2)
-                                {{'Female'}}
+                    @foreach($students as $student)
+                        <tr class="odd gradeX" align="center" enctype="multipart/form-data">
+                            <td>{{$student->id}}</td>
+                            <td>{{(isset($student->classM->name)) ?$student->classM->name:''}}</td>
+                            <td>{{$student->name}}</td>
+                            <td>
+                                @if($student->gender == 1)
+                                    {{'Male'}}
+                                @elseif($student->gender == 2)
+                                    {{'Female'}}
                                 @else
-                                {{'Other'}}
+                                    {{'Other'}}
                                 @endif
                             </td>
-                        <td>{{$st->birthday}}</td>
-                        <td><img src="images/{{$st->image}}" alt="" style="height: 100px;width: 150px"/></td>
-                        <td>{{$st->address}}</td>
-                        <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/student/delete/{{$st->id}}"> Delete</a></td>
-                        <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/student/edit/{{$st->id}}">Edit</a></td>
-                    </tr>
+                            <td>{{$student->birthday}}</td>
+                            <td><img src="images/{{$student->image}}" alt="" style="height: 100px;width: 150px"/></td>
+                            <td>{!! $student->address !!}</td>
+
+                            <td>
+                                {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
+                                {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                {!! Form::close() !!}
+                                {{--<button class="btn btn-instagram" type="submit" onclick="return confirm('Do you want to delete this field?')"><a> Delete</a></button>--}}
+                            </td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
+                                        href="{{route('student.edit',$student->id)}}">Edit</a></td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>

@@ -14,19 +14,26 @@
                         <div class="alert alert-success">
                             {{session('message')}}
                         </div>
-
                     @endif
-
-                    <form  action="{{route('faculty.update', ['faculty' => $faculty])}}" method="POST">
-
-                        <div class="form-group">
-                            <label>Faculty Name</label>
-                            <input class="form-control" name="name" placeholder="" value="{{$faculty->name}}" />
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <button type="submit" class="btn btn-default">Faculty Edit</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        {{ csrf_field() }}
-                        <form>
+                    @endif
+                    {!! Form::open(['method' => 'PUT', 'route' => ['faculty.update', $faculty->id]]) !!}
+                    <div class="form-group">
+                        {!!  Form::label('name', 'Faculty Name:') !!}
+                        {!!  Form::text('name', $faculty->name, ['class' => 'form-control']) !!}
+                    </div>
+                    {!! Form::submit('Faculty Edit', ['class' => 'btn btn-default']) !!}
+                    {!! Form::button('Reset', ['class' => 'btn btn-default']) !!}
+                    {!! Form::close() !!}
+
+
                 </div>
             </div>
             <!-- /.row -->
@@ -36,4 +43,5 @@
     <!-- /#page-wrapper -->
 
     </div>
+
 @endsection

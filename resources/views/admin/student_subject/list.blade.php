@@ -8,13 +8,13 @@
                     <h1 class="page-header">Results of Students
                         <small>List</small>
                     </h1>
+                    @if(session('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                @if(session('message'))
-                    <div class="alert alert-success">
-                        {{session('message')}}
-                    </div>
-                @endif
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
@@ -27,14 +27,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($studentsubject as $sb)
+                    @foreach($studentsubjects as $studentsubject)
                         <tr class="odd gradeX" align="center">
-                            <td>{{$sb->id}}</td>
-                            <td>{{$sb->student->name}}</td>
-                            <td>{{$sb->subject->name}}</td>
-                            <td>{{$sb->score}}</td>
-                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="{{route('studentsubject.delete',['studentSubject' => $sb])}}"> Delete</a></td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('studentsubject.edit',['studentSubject' => $sb])}}">Edit</a></td>
+                            <td>{{$studentsubject->id}}</td>
+                            <td>{{(isset($studentsubject->student->name)) ?$studentsubject->student->name:''}}</td>
+                            <td> {{(isset($studentsubject->subject->name)) ?$studentsubject->subject->name:''}}</td>
+                            <td>{{$studentsubject->score}}</td>
+                            <td>  {!! Form::open(['method'=> 'DELETE','route' => ['studentsubject.destroy', $studentsubject->id]]) !!}
+                            {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                            {!! Form::close() !!}</td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
+                                        href="{{route('studentsubject.edit',$studentsubject->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>

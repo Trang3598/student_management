@@ -8,13 +8,14 @@
                     <h1 class="page-header">Subject
                         <small>List</small>
                     </h1>
+                    @if(session('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                @if(session('message'))
-                    <div class="alert alert-success">
-                        {{session('message')}}
-                    </div>
-                @endif
+
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
@@ -26,13 +27,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($subject as $sb)
+                    @foreach($subjects as $subject)
                         <tr class="odd gradeX" align="center">
-                            <td>{{$sb->id}}</td>
-                            <td>{{$sb->name}}</td>
-                            <td>{{$sb->number}}</td>
-                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/subject/delete/{{$sb->id}}">Delete</a></td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/subject/edit/{{$sb->id}}">Edit</a></td>
+                            <td>{{$subject->id}}</td>
+                            <td>{{$subject->name}}</td>
+                            <td>{{$subject->number}}</td>
+                            <td>
+                            {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->id]]) !!}
+                            {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                            {!! Form::close() !!}
+                            </td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('subject.edit',$subject->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>

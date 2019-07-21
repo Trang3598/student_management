@@ -15,26 +15,25 @@
                         <div class="alert alert-success">
                             {{session('message')}}
                         </div>
-                        @endif
-                        @if(count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    <form action="admin/faculty/postFormFaculty" method="POST">
-                        <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input class="form-control" name="name" placeholder="Please Enter Faculty Name" />
+                    @endif
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <button type="submit" class="btn btn-default">Faculty Add</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        {{ csrf_field() }}
-                        <form>
+                    @endif
+
+                    {!! Form::open(['method'=>'POST','route'=>'faculty.store']) !!}
+                    <div class="form-group">
+                        {!! Form::label('name','Name') !!}
+                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'Please Enter Name Of Faculty']) !!}
+                    </div>
+                        {!! Form::submit('Faculty Add',['class'=>'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->

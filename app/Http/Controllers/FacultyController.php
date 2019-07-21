@@ -28,7 +28,7 @@ class FacultyController extends Controller
       $faculty = FacultyModel::find($id);
         return view('admin.Faculty.edit',['faculty' => $faculty]);
     }
-    public function postEditFormFaculty(Request $request, FacultyModel $faculty)
+    public function postEditFormFaculty(FacultyRequest $request, FacultyModel $faculty)
     {
         $faculty->name = $request->name;
         $faculty->save();

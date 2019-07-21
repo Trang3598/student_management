@@ -30,17 +30,17 @@ class ClassController extends Controller
 
     public function edit($id)
     {
-        $faculty = FacultyModel::all();
+        $faculties = FacultyModel::all();
         $class = ClassModel::find($id);
-        return view('admin.Class.edit', ['class' => $class], ['faculty' => $faculty]);
+        return view('admin.Class.edit', compact('faculties','class'));
     }
 
-    public function postEditFormClass(Request $request, ClassModel $class)
+    public function postEditFormClass(ClassRequest $request, ClassModel $class)
     {
         $class->faculty_id = $request->Faculty;
         $class->name = $request->name;
         $class->save();
-        return redirect('admin/class/list')->with('message', 'Edit successfully');
+        return redirect(route('class.list'))->with('message', 'Edit successfully');
     }
 
     public function delete($id)

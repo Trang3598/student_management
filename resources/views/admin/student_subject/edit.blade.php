@@ -7,7 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Result of Student
-                        <small>Add</small>
+                        <small>Edit
+                        </small>
                     </h1>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -26,31 +27,31 @@
                     </div>
                 @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    <form action="" method="POST">
+                        {!! Form::open(['route'=>['studentsubject.update',$studentsubject->id],'method' => 'PUT']) !!}
                         <div class="form-group">
-                            <label>Student</label>
+                      {!! Form::label('Student') !!}
                             <select class="form-control"  name="student_code">
-                                {{--@foreach($students as $student)--}}
-                                    {{--<option value="{{$student->id}}">{{$student->name}}</option>--}}
-                                {{--@endforeach--}}
+                                @foreach($students as $student)
+                                    <option value="{{$student->id}}" {{$student->id == $studentsubject->student_code ? 'selected': ''}}> {{$student->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Subject</label>
+                            {!!  Form::label('Subject') !!}
                             <select class="form-control" name="subject_code">
-                                {{--@foreach($subjects as $subject)--}}
-                                    {{--<option value="{{$subject->id}}">{{$subject->name}}</option>--}}
-                                {{--@endforeach--}}
+                                @foreach($subjects as $subject)
+                                    <option value="{{$subject->id}}" {{$subject->id == $studentsubject->subject_code ?'selected' : ''}}>{{$subject->name}}</option>
+                                @endforeach
+
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Score</label>
-                            <input class="form-control" name="score" placeholder="Please Enter Score" value="{{$studentSubject->score}}"/>
+                            {!!  Form::label('Score') !!}
+                            {!! Form::text('score',$studentsubject->score,['class'=> 'form-control','placeholder'=>'Please Enter Score']) !!}
                         </div>
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-default"> Result Add</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        <form>
+                        {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->

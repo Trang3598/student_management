@@ -26,17 +26,18 @@
                     </div>
                 @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    <form action="{{route('subject.postFormResult')}}" method="POST">
+                    {!! Form::open(['route'=>'studentsubject.store', 'method'=>'POST']) !!}
+                    {{--<form action="{{route('subject.postFormResult')}}" method="POST">--}}
                         <div class="form-group">
-                            <label>Student</label>
-                            <select class="form-control"  name="student_code">
+                            {!! Form::label('Student') !!}
+                            <select class="form-control"  name="student_code" >
                                 @foreach($students as $student)
                                     <option value="{{$student->id}}">{{$student->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Subject</label>
+                            {!! Form::label('Subject') !!}
                             <select class="form-control" name="subject_code">
                                 @foreach($subjects as $subject)
                                     <option value="{{$subject->id}}">{{$subject->name}}</option>
@@ -44,13 +45,12 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Score</label>
-                            <input class="form-control" name="score" placeholder="Please Enter Score" />
+                            {!! Form::label('Score') !!}
+                            {!! Form::text('score',old('score'),['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
                         </div>
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-default"> Result Add</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        <form>
+                    {!! Form::submit('Result Add',['class' => 'btn btn-default']) !!}
+                    {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->

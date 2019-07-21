@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ClassModel;
 use App\Http\Requests\ClassRequest;
+use App\Http\Requests\StudentRequest;
 use App\StudentModel;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class StudentController extends Controller
         $class = ClassModel::all();
         return view('admin.Student.create',['class' => $class]);
     }
-    public function postFormStudent(Request $request){
+    public function postFormStudent(StudentRequest $request){
         $student = new StudentModel();
         $student->class_code = $request->Student;
         $student->name = $request->name;
@@ -28,10 +29,6 @@ class StudentController extends Controller
                return redirect('admin/student/create')->with('error',"Please choose file as a image");
            }
            $image =$file->getClientOriginalName();
-
-//           while (file_exists('admin_asset/upload'.$image)){
-//               $image = "_";
-//           }
             $file->move('images',$image);
             $student->image = $image;
 
@@ -55,12 +52,20 @@ class StudentController extends Controller
     }
     public function postEditFormStudent(Request $request, StudentModel $student)
     {
-        $student->class_code = $request->name;
+
+        $student->class_code = $request->class_code;
         $student->name = $request->name;
         $student->gender = $request->gender;
         $student->birthday = $request->birthday;
-
+        if($request->hasFile('image')){
+        $file = $request->image;
+        $image =$file->getClientOriginalName();
+        $file->move('images',$image);
+        $student->image = $image;
+    }
+        $student->address = $request->address;
         $student->save();
+
         return redirect('admin/student/list')->with('message','Edit successfully');
     }
 

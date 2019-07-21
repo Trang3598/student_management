@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
+use App\Http\Requests\SubjectRequest;
 use App\SubjectModel;
 use Illuminate\Http\Request;
 
@@ -12,13 +14,10 @@ class SubjectController extends Controller
     {
         return view('admin.Subject.create');
     }
-    public function postFormSubject(Request $request)
+    public function postFormSubject(SubjectRequest $request,SubjectModel $subject)
     {
-        $subject = new SubjectModel();
-        $subject->name = $request->name;
-        $subject->number = $request->number;
-        $subject->save();
-        return redirect('admin/subject/list')->with('message',"Add successfully");
+        $subject->create($request->all());
+        return redirect(route('subject.list'))->with('message',"Add successfully");
     }
     public function list()
     {
@@ -30,7 +29,7 @@ class SubjectController extends Controller
         $subject = SubjectModel::find($id);
         return view('admin.Subject.edit',['subject' => $subject]);
     }
-    public function postEditFormSubject(Request $request, SubjectModel $subject)
+    public function postEditFormSubject(SubjectRequest $request, SubjectModel $subject)
     {
         $subject->name = $request->name;
         $subject->number = $request->number;

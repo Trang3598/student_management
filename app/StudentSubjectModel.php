@@ -16,10 +16,4 @@ class StudentSubjectModel extends Model
     public function student(){
         return $this->belongsTo('App\StudentModel', 'student_code', 'id');
     }
-//    public function student(){
-//        return $this->belongsTo(StudentModel::class);
-//    }
-//    public function subject(){
-//        return $this->belongsTo(SubjectModel::class);
-//    }
 }

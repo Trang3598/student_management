@@ -2,19 +2,22 @@
 @section('content')
     <!-- Page Content -->
     <div id="page-wrapper">
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Faculty
                         <small>List</small>
                     </h1>
+                        @if(session('message'))
+                            <div class="alert alert-success">
+                                {{session('message')}}
+                            </div>
+                        @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                @if(session('message'))
-                    <div class="alert alert-success">
-                        {{session('message')}}
-                    </div>
-                @endif
+
+
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
@@ -25,12 +28,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($faculty as $fl)
+
+                    @foreach($faculties as $faculty)
                         <tr class="odd gradeX" align="center">
-                            <td>{{$fl->id}}</td>
-                            <td>{{$fl->name}}</td>
-                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/faculty/delete/{{$fl->id}}"> Delete</a></td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/faculty/edit/{{$fl->id}}">Edit</a></td>
+                            <td>{{$faculty->id}}</td>
+                            <td>{{$faculty->name}}</td>
+                            <td>
+                                {!! Form::open(['method'=> 'DELETE','route' => ['faculty.destroy', $faculty->id]]) !!}
+                                    {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                {!! Form::close() !!}
+                                {{--<button class="btn btn-instagram" type="submit" onclick="return confirm('Do you want to delete this field?')"><a> Delete</a></button>--}}
+                            </td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('faculty.edit',$faculty->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>

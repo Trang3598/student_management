@@ -10,23 +10,22 @@
                 </div>
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    <form action="{{route('class.update',['class' =>$class])}}" method="POST">
-                        <div class="form-group">
-                            <label>Category Parent</label>
-                            <select class="form-control" name="Faculty">
-                                @foreach($faculty as $fl)
-                                    <option value="{{$fl->id}}">{{$fl->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Class Name</label>
-                            <input class="form-control" name="name" placeholder="Please Enter Class Name" value="{{$class->name}}" />
-                        </div>
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-default">Class Edit</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        <form>
+                    {!! Form::open(['method'=>'PUT','route'=> ['class.update','class'=>$class]]) !!}
+                    <div class="form-group">
+                        {!! Form::label('Faculty') !!}
+                        <select class="form-control" name="Faculty">
+                            @foreach($faculties as $faculty)
+                                <option value="{{$faculty->id}}" {{ isset($class->$faculty->id) && $faculty->id == $class->faculty->id ? 'selected' : ''}}>{{$faculty->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('Class Name') !!}
+                        {!! Form::text('name',$class->name,['class' =>'form-control']) !!}
+                    </div>
+                        {!! Form::submit('Class Edit',['class'=> 'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class'=>'btn btn-default']) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->

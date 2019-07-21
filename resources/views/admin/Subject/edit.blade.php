@@ -14,23 +14,28 @@
                         <div class="alert alert-success">
                             {{session('message')}}
                         </div>
-
                     @endif
-
-                    <form action="{{route('subject.update', ['subject' => $subject])}}" method="POST">
-
+                        @if(count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    {!! Form::open(['route'=>['subject.update','subject'=>$subject],'method'=>'PUT']) !!}
                         <div class="form-group">
-                            <label>Subject Name</label>
-                            <input class="form-control" name="name" placeholder="" value="{{$subject->name}}" />
+                            {!!  Form::label('Subject Name') !!}
+                            {!! Form::text('name',$subject->name,['class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            <label>Numbers of This Subject</label>
-                            <input class="form-control" name="number" placeholder="" value="{{$subject->number}}" />
+                            {!!  Form::label('Numbers of This Subject') !!}
+                            {!! Form::text('number',$subject->number,['class'=>'form-control']) !!}
                         </div>
-                        <button type="submit" class="btn btn-default">Subject Edit</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        {{ csrf_field() }}
-                        <form>
+                        {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                        {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->
