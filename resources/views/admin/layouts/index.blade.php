@@ -11,20 +11,24 @@
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('admin_asset/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
 
-{{--    <!-- MetisMenu CSS -->--}}
+    {{--    <!-- MetisMenu CSS -->--}}
     <link href="{{asset('admin_asset/bower_components/metisMenu/dist/metisMenu.min.css')}}" rel="stylesheet">
 
-{{--    <!-- Custom CSS -->--}}
+    {{--    <!-- Custom CSS -->--}}
     <link href="{{asset('admin_asset/dist/css/sb-admin-2.css')}}" rel="stylesheet">
 
-{{--    <!-- Custom Fonts -->--}}
-    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    {{--    <!-- Custom Fonts -->--}}
+    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"
+          type="text/css">
 
-{{--    <!-- DataTables CSS -->--}}
-    <link href="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+    {{--    <!-- DataTables CSS -->--}}
+    <link
+        href="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}"
+        rel="stylesheet">
 
-{{--    <!-- DataTables Responsive CSS -->--}}
-    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.')}}" rel="stylesheet">
+    {{--    <!-- DataTables Responsive CSS -->--}}
+    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.')}}"
+          rel="stylesheet">
 </head>
 
 <body>
@@ -33,8 +37,32 @@
 
     @include('admin.layouts.header')
 
-    @yield('content')
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <br>
+            @if(count($errors))
+                @if(count($errors) > 0)
+                    <div class="alert alert-danger">
+                        @foreach($errors->all() as $err)
+                            {{$err}}<br>
+                        @endforeach
+                    </div>
+                @endif
+            @endif
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{session('success')}}
+                </div>
+            @endif
 
+            @if(session('delete'))
+                <div class="alert alert-success">
+                    {{session('delete')}}
+                </div>
+            @endif
+            @yield('content')
+        </div>
+    </div>
 </div>
 {{--<!-- /#wrapper -->--}}
 
@@ -52,11 +80,12 @@
 
 {{--<!-- DataTables JavaScript -->--}}
 <script src="{{asset('admin_asset/bower_components/datatables/media/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js')}}"></script>
+<script
+    src="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js')}}"></script>
 
 {{--<!-- Page-Level Demo Scripts - Tables - Use for reference -->--}}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#dataTables-example').DataTable({
             responsive: true
         });

@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubjectRequest;
+use App\Models\Subject;
+
 use Illuminate\Http\Request;
+
+
 
 class SubjectController extends Controller
 {
@@ -13,7 +18,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $subject = Subject::all();
+        return view('admin.subjects.index',['subject'=>$subject]);
     }
 
     /**
@@ -24,7 +30,7 @@ class SubjectController extends Controller
     public function create()
     {
         //
-        return view('admin.subjects.addSubject');
+        return view('admin.subjects.create');
     }
 
     /**
@@ -33,9 +39,13 @@ class SubjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SubjectRequest $request)
     {
-        //
+        $subject = new Subject();
+
+        $subject ->create($request->all());
+
+        return redirect(route('subjects.index'))->with('success','CREATE-SUCCESS');
     }
 
     /**
@@ -46,7 +56,7 @@ class SubjectController extends Controller
      */
     public function show()
     {
-        return view('admin.subjects.listSubject');
+        return view('admin.subjects.show');
     }
 
     /**
@@ -55,10 +65,10 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Subject $subject)
     {
         //
-        return view('admin.subjects.editSubject');
+        return view('admin.subjects.edit',['sub'=>$subject]);
     }
 
     /**
@@ -68,9 +78,12 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SubjectRequest $request,Subject $subject)
     {
-        //
+        $subject -> name = $request -> name;
+        $subject -> number = $request -> number;
+        $subject ->save();
+        return redirect(route('subjects.index'))->with('success','EDIT-SUCCESS');
     }
 
     /**
@@ -79,8 +92,9 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Subject $subject)
     {
-        //
+        $subject->delete();
+        return redirect(route('subjects.index'))->with('delete','DELETE-SUCCESS');
     }
 }

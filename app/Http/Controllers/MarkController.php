@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MarkRequest;
+use App\Models\ClassModel;
+use App\Models\Mark;
+use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class MarkController extends Controller
@@ -13,7 +18,8 @@ class MarkController extends Controller
      */
     public function index()
     {
-        //
+        $student = Student::all();
+        return view('admin.marks.index',['students'=>$student]);
     }
 
     /**
@@ -23,8 +29,9 @@ class MarkController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.marks.addMark');
+        $student = Student::all();
+        $subject = Subject::all();
+        return view('admin.marks.create',['students'=>$student,'subjects'=>$subject]);
     }
 
     /**
@@ -33,9 +40,13 @@ class MarkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MarkRequest $request)
     {
-        //
+        $mark = new Mark();
+
+        $mark->create($request->all());
+
+        return redirect(route('marks.index'))->with('success', 'CREATE-SUCCESS');
     }
 
     /**
@@ -46,7 +57,8 @@ class MarkController extends Controller
      */
     public function show()
     {
-        return view('admin.marks.listMark');
+        $mark = Mark::all();
+        return view('admin.marks.show',['marks'=>$mark]);
     }
 
     /**
@@ -55,10 +67,9 @@ class MarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Mark $mark)
     {
-        //
-        return view('admin.marks.editMark');
+        return view('admin.marks.edit',['mark'=>$mark]);
     }
 
     /**
@@ -68,9 +79,10 @@ class MarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MarkRequest $request,Mark $mark)
     {
-        //
+        $mark->update($request->all());
+        return redirect(route('marks.index'))->with('success', 'EDIT-SUCCESS');
     }
 
     /**
@@ -79,8 +91,9 @@ class MarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Mark $mark)
     {
-        //
+        $mark->delete();
+        return redirect(route('marks.index'))->with('delete','DELETE-SUCCESS');
     }
 }

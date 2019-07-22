@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    //
+    protected $table = 'students';
+
     protected $fillable = ['name','class_code','gender','birthday','image','address'];
 
     public function subjects(){
@@ -14,6 +15,9 @@ class Student extends Model
     }
 
     public function students(){
-        return $this->hasMany(Faculty::class,'class_code','id');
+        return $this->belongsTo(ClassModel::class,'class_code','id');
+    }
+    public function getListStudent() {
+        return $this->with('students')->get();
     }
 }

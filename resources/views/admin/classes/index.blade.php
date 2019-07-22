@@ -2,8 +2,6 @@
 
 @section('content')
     <!-- Page Content -->
-    <div id="page-wrapper">
-        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Class
@@ -17,26 +15,30 @@
                         <th>ID</th>
                         <th>Class</th>
                         <th>Faculty</th>
-                        <th>Status</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @foreach($classes as $class)
                     <tr class="odd gradeX" align="center">
-                        <td>1</td>
-                        <td>IT 1</td>
-                        <td>IT</td>
-                        <td>ACTIVE</td>
-                        <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="#"> Delete</a></td>
-                        <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{'/faculty/edit'}}">Edit</a></td>
+
+                        <td>{{$class->id}}</td>
+                        <td>{{$class->name}}</td>
+                        <td>{{$class->classes->name}}</td>
+                        <td class="center">
+                            <form action="{{route('classes.destroy',$class->id)}}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-trash-o  fa-fw"></i></button>
+                                @csrf
+                            </form>
+                        </td>
+                        <td class="center"><i class="fa fa-pencil fa-fw"></i><a href="{{route('classes.edit',['ClassModel'=>$class])}}">Edit</a></td>
                     </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
             <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
 
 @endsection

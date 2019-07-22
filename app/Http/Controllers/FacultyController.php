@@ -16,7 +16,7 @@ class FacultyController extends Controller
     public function index()
     {
         $faculty = Faculty::all();
-        return view('admin.faculties.store',['faculty'=>$faculty]);
+        return view('admin.faculties.index',['faculties'=>$faculty]);
     }
 
     /**
@@ -51,13 +51,13 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+/*    public function show()
     {
         {
             $faculty = Faculty::all();
             return view('admin.faculties.store',compact('faculty'));
         }
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -67,7 +67,7 @@ class FacultyController extends Controller
      */
     public function edit(Faculty $faculty)
     {
-        return view('admin.faculties.edit',['fy'=>$faculty]);
+        return view('admin.faculties.edit',['faculties'=>$faculty]);
     }
 
     /**
@@ -77,11 +77,11 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FacultyRequest $request, Faculty $faculty)
+    public function update(FacultyRequest $request,Faculty $faculty)
     {
         $faculty -> name = $request -> name;
         $faculty ->save();
-        return redirect(route('faculties.create'))->with('success','EDIT-SUCCESS');
+        return redirect(route('faculties.index'))->with('success','EDIT-SUCCESS');
     }
 
     /**
@@ -93,6 +93,6 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty)
     {
         $faculty->delete();
-        return redirect(route('faculties.create'))->with('delete','DELETE-SUCCESS');
+        return redirect(route('faculties.index'))->with('delete','DELETE-SUCCESS');
     }
 }

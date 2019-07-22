@@ -1,21 +1,6 @@
 @extends('admin.layouts.index')
 
 @section('content')
-    @if(count($errors) > 0)
-        <div class="alert alert-danger">
-            @foreach($errors->all() as $err)
-                {{$err}}<br>
-            @endforeach
-        </div>
-    @endif
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{session('success')}}
-        </div>
-    @endif
-
-    <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">

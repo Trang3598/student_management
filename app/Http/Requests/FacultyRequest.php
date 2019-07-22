@@ -24,7 +24,7 @@ class FacultyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:faculties,name|min:3|max:100'
+            'name'=>'required|unique:faculties,name|min:3|max:100',
         ];
     }
 
@@ -39,7 +39,7 @@ class FacultyRequest extends FormRequest
             'name.required'=>'NoName',
             'name.min'=>'Min 3',
             'name.max'=>'Max 100',
-            'name.unique'=>'Error: Same Name'
+            'name.unique'=>'Error: Same Name',
         ];
     }
 }

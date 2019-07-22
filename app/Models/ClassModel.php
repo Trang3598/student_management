@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassModel extends Model
 {
-    //
+    protected $table = "classes";
     protected $fillable = ['name','faculty_id'];
 
+
     public function classes(){
-        return $this->hasMany(Faculty::class,'faculty_id','id');
+        return $this->belongsTo(Faculty::class,'faculty_id','id');
     }
     public function students(){
         return $this->hasMany(Student::class);
+    }
+
+    public function getListClass() {
+        return $this->with('classes')->get();
     }
 }

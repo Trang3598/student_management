@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
+use App\Models\ClassModel;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -13,7 +16,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $student = new Student();
+        $students = $student->getListStudent();
+        return view('admin.students.index', compact('students'));
     }
 
     /**
@@ -23,8 +28,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.students.addStudent');
+        $class = ClassModel::all();
+        return view('admin.students.create',['class' => $class]);
     }
 
     /**
@@ -33,9 +38,20 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request,Student $student)
     {
-        //
+        $data = $request->all();
+        if($request->hasFile('image')){
+
+            $file = $request->image;
+            $image = time() . $file->getClientOriginalName();
+            $file->move('img',$image);
+            $data['image'] = $image;
+        }
+
+        $student->create($data);
+
+        return redirect(route('students.index'))->with('success','CREATE-SUCCESS');
     }
 
     /**
@@ -46,7 +62,7 @@ class StudentController extends Controller
      */
     public function show()
     {
-        return view('admin.students.listStudent');
+        return view('admin.students.show');
     }
 
     /**
@@ -55,11 +71,13 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Student $student,ClassModel $class)
+
     {
-        //
-        return view('admin.students.editStudent');
+        $class = ClassModel::all();
+        return view('admin.students.edit',['st'=>$student,'class'=>$class]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -68,9 +86,20 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Student $student)
     {
-        //
+        $data = $request->all();
+        if($request->hasFile('image')) {
+
+            $file = $request->image;
+            $image = time() . $file->getClientOriginalName();
+            $file->move('img', $image);
+            $data['image'] = $image;
+        }
+
+        $student->update($data);
+
+        return redirect(route('students.index'))->with('success','EDIT-SUCCESS');
     }
 
     /**
@@ -79,8 +108,9 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        //
+        $student->delete();
+        return redirect(route('students.index'))->with('delete','DELETE-SUCCESS');
     }
 }

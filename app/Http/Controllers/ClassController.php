@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassRequest;
+use App\Models\ClassModel;
+use App\Models\Faculty;
 use Illuminate\Http\Request;
+
 
 class ClassController extends Controller
 {
@@ -13,7 +17,11 @@ class ClassController extends Controller
      */
     public function index()
     {
-        //
+        {
+            $class = new ClassModel();
+            $classes = $class->getListClass();
+            return view('admin.classes.index', compact('classes'));
+        }
     }
 
     /**
@@ -23,64 +31,69 @@ class ClassController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.classes.addClass');
+        $faculty = Faculty::all();
+        return view('admin.classes.create', ['faculty' => $faculty]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClassRequest $request)
     {
-        //
+        $class = new ClassModel();
+
+        $class->create($request->all());
+
+        return redirect(route('classes.index'))->with('success', 'CREATE-SUCCESS');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
-        return view('admin.classes.listClass');
+        return view('admin.classes.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(ClassModel $class)
     {
-        //
-        return view('admin.classes.editClass');
+        return view('admin.classes.edit', ['cs' => $class]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param ClassModel $class
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClassRequest $request, ClassModel $class)
     {
-        //
+        $class->update($request->all());
+        return redirect(route('classes.index'))->with('success', 'EDIT-SUCCESS');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ClassModel $class)
     {
-        //
+        $class->delete();
+        return redirect(route('classes.index'))->with('delete', 'DELETE-SUCCESS');
     }
 }
