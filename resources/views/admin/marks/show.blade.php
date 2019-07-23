@@ -24,8 +24,8 @@
             @foreach($marks as $mark)
                 <tr class="odd gradeX" align="center">
                     <td>{{$mark->id}}</td>
-                    <td>{{$mark->student_code}}</td>
-                    <td>{{$mark->subject_code}}</td>
+                    <td>{{$mark->students->name}}</td>
+                    <td>{{$mark->subjects->name}}</td>
                     <td>{{$mark->score}}</td>
                     <td class="center">
                         <form action="{{route('marks.destroy',$mark->id)}}" method="POST" >

@@ -3,97 +3,99 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassRequest;
-use App\Models\ClassModel;
-use App\Models\Faculty;
-use Illuminate\Http\Request;
-
+use App\Repositories\Faculty\FacultyRepository;
+use App\Repositories\ClassRepository\ClassRepository;
 
 class ClassController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var ClassRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $classRepository;
+    protected $facultyRepository;
+
+    public function __construct(ClassRepository $classRepository, FacultyRepository $facultyRepository)
+    {
+        $this->classRepository = $classRepository;
+        $this->facultyRepository = $facultyRepository;
+    }
+
+    /**
+     * Show all post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        {
-            $class = new ClassModel();
-            $classes = $class->getListClass();
-            return view('admin.classes.index', compact('classes'));
-        }
+        $classes = $this->classRepository->getList();
+        return view('admin.classes.index', compact('classes'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create single post
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $faculty = Faculty::all();
-        return view('admin.classes.create', ['faculties' => $faculty]);
+        $faculties = $this->facultyRepository->getFaculties();
+        return view('admin.classes.create', compact('faculties'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show single post
      *
-     * @param \Illuminate\Http\Request $request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
+    /*    public function show($id)
+        {
+            $faculties = $this->facultyRepository->find($id);
+
+            return view('admin.faculties.show', compact('faculties'));
+        }*/
+
+    /**
+     * Create single post
+     *
+     * @param $request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+
     public function store(ClassRequest $request)
     {
-        $class = new ClassModel();
+        $this->classRepository->store($request->all());
+        return redirect(route('classes.index'))->with(['success' => 'create success']);
+    }
 
-        $class->create($request->all());
+    public function edit($id)
+    {
+        $classes = $this->classRepository->getListById($id);
 
-        return redirect(route('classes.index'))->with('success', 'CREATE-SUCCESS');
+        return view('admin.classes.edit', compact('classes'));
     }
 
     /**
-     * Display the specified resource.
+     * Update single post
      *
-     * @param int $id
+     * @param $request \Illuminate\Http\Request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function update($id, ClassRequest $request)
     {
-        return view('admin.classes.index');
+        $this->classRepository->update($id, $request->all());
+        return redirect(route('classes.index'))->with(['success' => 'updated']);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete single post
      *
-     * @param int $id
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClassModel $class)
+    public function destroy($id)
     {
-        return view('admin.classes.edit', ['cs' => $class]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param ClassModel $class
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ClassRequest $request, ClassModel $class)
-    {
-        $class->update($request->all());
-        return redirect(route('classes.index'))->with('success', 'EDIT-SUCCESS');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ClassModel $class)
-    {
-        $class->delete();
-        return redirect(route('classes.index'))->with('delete', 'DELETE-SUCCESS');
+        $this->classRepository->destroy($id);
+        return back()->with('success', 'Delete-success !');
     }
 }

@@ -3,114 +3,111 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
-use App\Models\ClassModel;
 use App\Models\Student;
-use Illuminate\Http\Request;
+use App\Repositories\Student\StudentRepository;
+use App\Repositories\ClassRepository\ClassRepository;
 
 class StudentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var StudentRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $classRepository;
+    protected $studentRepository;
+
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository)
+    {
+        $this->classRepository = $classRepository;
+        $this->studentRepository = $studentRepository;
+    }
+
+    /**
+     * Show all post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $student = new Student();
-        $students = $student->getListStudent();
+        $students = $this->studentRepository->getList();
         return view('admin.students.index', compact('students'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create single post
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $class = ClassModel::all();
-        return view('admin.students.create',['class' => $class]);
+        $classes = $this->classRepository->getClasses();
+        return view('admin.students.create', compact('classes'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show single post
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function store(StudentRequest $request,Student $student)
+    /*    public function show($id)
+        {
+            $faculties = $this->facultyRepository->find($id);
+
+            return view('admin.faculties.show', compact('faculties'));
+        }*/
+
+    /**
+     * Create single post
+     *
+     * @param $request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function store(StudentRequest $request)
     {
+
         $data = $request->all();
-        if($request->hasFile('image')){
-
-            $file = $request->image;
-            $image = time() . $file->getClientOriginalName();
-            $file->move('img',$image);
-            $data['image'] = $image;
-        }
-
-        $student->create($data);
-
-        return redirect(route('students.index'))->with('success','CREATE-SUCCESS');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        return view('admin.students.show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Student $student,ClassModel $class)
-
-    {
-        $class = ClassModel::all();
-        return view('admin.students.edit',['st'=>$student,'class'=>$class]);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,Student $student)
-    {
-        $data = $request->all();
-        if($request->hasFile('image')) {
-
+        if ($request->hasFile('image')) {
             $file = $request->image;
             $image = time() . $file->getClientOriginalName();
             $file->move('img', $image);
             $data['image'] = $image;
         }
+        $this->studentRepository->store($data);
+        return redirect(route('students.index'))->with(['success' => 'create success']);
+    }
 
-        $student->update($data);
+    public function edit($id)
+    {
+        $students = $this->studentRepository->getListById($id);
 
-        return redirect(route('students.index'))->with('success','EDIT-SUCCESS');
+        $classes = $this->studentRepository->getClasses();
+
+        return view('admin.students.edit', compact('students','classes'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update single post
      *
-     * @param  int  $id
+     * @param $request \Illuminate\Http\Request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function update($id, StudentRequest $request)
     {
-        $student->delete();
-        return redirect(route('students.index'))->with('delete','DELETE-SUCCESS');
+        $this->studentRepository->update($id, $request->all());
+        return redirect(route('students.index'))->with(['success' => 'updated']);
+    }
+
+    /**
+     * Delete single post
+     *
+     * @param $id int Post ID
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->studentRepository->destroy($id);
+        return back()->with('success', 'Delete-success !');
     }
 }
+

@@ -3,26 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
-use App\Models\Faculty;
 use Illuminate\Http\Request;
+use App\Repositories\Faculty\FacultyRepository;
 
 class FacultyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var FacultyRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $facultyRepository;
+
+    public function __construct(FacultyRepository $facultyRepository)
+    {
+        $this->facultyRepository = $facultyRepository;
+    }
+
+    /**
+     * Show all post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $faculty = Faculty::all();
-        return view('admin.faculties.index',['faculties'=>$faculty]);
+        $faculties = $this->facultyRepository->getList();
+        return view('admin.faculties.index', compact('faculties'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create single post
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -30,69 +39,63 @@ class FacultyController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show single post
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
+    /*    public function show($id)
+        {
+            $faculties = $this->facultyRepository->find($id);
+
+            return view('admin.faculties.show', compact('faculties'));
+        }*/
+
+    /**
+     * Create single post
+     *
+     * @param $request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+
     public function store(FacultyRequest $request)
     {
+        $this->facultyRepository->store($request->all());
 
-        $faculty = new Faculty();
+        return redirect(route('faculties.index'))->with(['success' => 'create success']);
+    }
 
-        $faculty->create($request->all());
+    public function edit($id)
+    {
+        $faculties = $this->facultyRepository->getListById($id);
 
-        return redirect(route('faculties.index'))->with('success','CREATE-SUCCESS');
+        return view('admin.faculties.edit', compact('faculties'));
     }
 
     /**
-     * Display the specified resource.
+     * Update single post
      *
-     * @param  int  $id
+     * @param $request \Illuminate\Http\Request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-/*    public function show()
+    public function update($id, FacultyRequest $request)
     {
-        {
-            $faculty = Faculty::all();
-            return view('admin.faculties.store',compact('faculty'));
-        }
-    }*/
+        $this->facultyRepository->update($id, $request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Faculty $faculty)
-    {
-        return view('admin.faculties.edit',['faculties'=>$faculty]);
+        return redirect(route('faculties.index'))->with(['success' => 'updated']);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete single post
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update(FacultyRequest $request,Faculty $faculty)
+    public function destroy($id)
     {
-        $faculty -> name = $request -> name;
-        $faculty ->save();
-        return redirect(route('faculties.index'))->with('success','EDIT-SUCCESS');
-    }
+        $this->facultyRepository->destroy($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Faculty $faculty)
-    {
-        $faculty->delete();
-        return redirect(route('faculties.index'))->with('delete','DELETE-SUCCESS');
+        return redirect(route('faculties.index'))->with('success', 'Delete-success!');
     }
 }

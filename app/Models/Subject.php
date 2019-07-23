@@ -14,8 +14,5 @@ class Subject extends Model
     {
         return $this->belongstoMany(Student::class);
     }
-    public function getListClass() {
-        return $this->with('classes')->get();
-    }
 }
 

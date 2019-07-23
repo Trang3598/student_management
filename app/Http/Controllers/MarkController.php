@@ -3,97 +3,106 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MarkRequest;
-use App\Models\ClassModel;
-use App\Models\Mark;
-use App\Models\Student;
-use App\Models\Subject;
-use Illuminate\Http\Request;
+use App\Repositories\Mark\MarkRepository;
+use App\Repositories\Student\StudentRepository;
+use App\Repositories\Subject\SubjectRepository;
 
 class MarkController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var MarkRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $markRepository;
+    protected $studentRepository;
+    protected $subjectRepository;
+
+    public function __construct(MarkRepository $markRepository, StudentRepository $studentRepository, SubjectRepository $subjectRepository)
+    {
+        $this->markRepository = $markRepository;
+        $this->studentRepository = $studentRepository;
+        $this->subjectRepository = $subjectRepository;
+    }
+
+    /**
+     * Show all post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $student = Student::all();
-        return view('admin.marks.index',['students'=>$student]);
+        $students = $this->studentRepository->getList();
+        return view('admin.marks.index', compact('students'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create single post
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $student = Student::all();
-        $subject = Subject::all();
-        return view('admin.marks.create',['students'=>$student,'subjects'=>$subject]);
+        $students = $this->studentRepository->getList();
+        $subjects = $this->subjectRepository->getList();
+        return view('admin.marks.create', compact('students', 'subjects'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show single post
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
+    public function show($id)
+    {
+        $marks = $this->markRepository->getMarks($id)->get();
+
+        $students = $this->studentRepository->getStudents($marks);
+
+        return view('admin.marks.show', compact('marks'),compact('students'));
+    }
+
+    /**
+     * Create single post
+     *
+     * @param $request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+
     public function store(MarkRequest $request)
     {
-        $mark = new Mark();
+        $this->markRepository->store($request->all());
+        return redirect(route('marks.index'))->with(['success' => 'create success']);
+    }
 
-        $mark->create($request->all());
+    public function edit($id)
+    {
+        $marks = $this->markRepository->getListById($id);
 
-        return redirect(route('marks.index'))->with('success', 'CREATE-SUCCESS');
+        return view('admin.marks.edit', compact('marks'));
     }
 
     /**
-     * Display the specified resource.
+     * Update single post
      *
-     * @param  int  $id
+     * @param $request \Illuminate\Http\Request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function update($id, MarkRequest $request)
     {
-        $mark = Mark::all();
-        return view('admin.marks.show',['marks'=>$mark]);
+        $this->markRepository->update($id, $request->all());
+        return redirect(route('marks.show'))->with(['success' => 'updated']);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete single post
      *
-     * @param  int  $id
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mark $mark)
+    public function destroy($id)
     {
-        return view('admin.marks.edit',['mark'=>$mark]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(MarkRequest $request,Mark $mark)
-    {
-        $mark->update($request->all());
-        return redirect(route('marks.index'))->with('success', 'EDIT-SUCCESS');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Mark $mark)
-    {
-        $mark->delete();
-        return redirect(route('marks.index'))->with('delete','DELETE-SUCCESS');
+        $this->markRepository->destroy($id);
+        
+        return back()->with('success', 'Delete-success !');
     }
 }

@@ -19,7 +19,7 @@ class MarkRepository extends BaseRepository implements MarkRepositoryInterface
         $this->student = $student;
     }
 
-    public function getAllList()
+    public function getList()
     {
         return $this->model->orderBy('student_id')->paginate();
     }
@@ -36,9 +36,12 @@ class MarkRepository extends BaseRepository implements MarkRepositoryInterface
 
     public function checkStudentAndSubject($request)
     {
-        return $this->model->where('student_id', $request->student_id)
-            ->where('subject_id', $request->subject_id)->first();
+        return $this->model->where('student_code', $request->student_code)
+            ->where('subject_id', $request->subject_code)->first();
     }
-
+    public function getMarks($id)
+    {
+        return $this->model->where('student_code', $id);
+    }
 }
 

@@ -3,98 +3,99 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
-use App\Models\Subject;
-
 use Illuminate\Http\Request;
-
-
+use App\Repositories\Subject\SubjectRepository;
 
 class SubjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var SubjectRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $subjectRepository;
+
+    public function __construct(SubjectRepository $subjectRepository)
+    {
+        $this->subjectRepository = $subjectRepository;
+    }
+
+    /**
+     * Show all post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $subject = Subject::all();
-        return view('admin.subjects.index',['subject'=>$subject]);
+        $subjects = $this->subjectRepository->getList();
+        return view('admin.subjects.index', compact('subjects'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create single post
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
         return view('admin.subjects.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show single post
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
+    /*    public function show($id)
+        {
+            $faculties = $this->facultyRepository->find($id);
+
+            return view('admin.faculties.show', compact('faculties'));
+        }*/
+
+    /**
+     * Create single post
+     *
+     * @param $request \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+
     public function store(SubjectRequest $request)
     {
-        $subject = new Subject();
+        $this->subjectRepository->store($request->all());
 
-        $subject ->create($request->all());
+        return redirect(route('subjects.index'))->with(['success' => 'create success']);
+    }
 
-        return redirect(route('subjects.index'))->with('success','CREATE-SUCCESS');
+    public function edit($id)
+    {
+        $subjects = $this->subjectRepository->getListById($id);
+
+        return view('admin.subjects.edit', compact('subjects'));
     }
 
     /**
-     * Display the specified resource.
+     * Update single post
      *
-     * @param  int  $id
+     * @param $request \Illuminate\Http\Request
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function update($id, SubjectRequest $request)
     {
-        return view('admin.subjects.show');
+        $this->subjectRepository->update($id, $request->all());
+
+        return redirect(route('subjects.index'))->with(['success' => 'updated']);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete single post
      *
-     * @param  int  $id
+     * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subject $subject)
+    public function destroy($id)
     {
-        //
-        return view('admin.subjects.edit',['sub'=>$subject]);
-    }
+        $this->subjectRepository->destroy($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(SubjectRequest $request,Subject $subject)
-    {
-        $subject -> name = $request -> name;
-        $subject -> number = $request -> number;
-        $subject ->save();
-        return redirect(route('subjects.index'))->with('success','EDIT-SUCCESS');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Subject $subject)
-    {
-        $subject->delete();
-        return redirect(route('subjects.index'))->with('delete','DELETE-SUCCESS');
+        return redirect(route('subjects.index'))->with('success', 'Delete-success!');
     }
 }

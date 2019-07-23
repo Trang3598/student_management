@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label>Image</label>
-                <input class="form-control" name="image" type="file" value="{{$students->image}}">
+                <input class="form-control" name="image" type="file">
             </div>
             <div class="form-group">
                 <label>Address</label>

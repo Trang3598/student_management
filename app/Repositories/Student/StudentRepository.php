@@ -33,12 +33,9 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         return $this->class->all()->pluck('name', 'id');
     }
 
-    public function showMarks($id)
-    {
-        return $this->mark->where('student_id', $id)->paginate(5);
-    }
 
-    public function showSubjects($classId)
+
+/*    public function showSubjects($classId)
     {
         $class = $this->class->where('id', $classId)->first();
         $subject = $this->subject->where('faculty_id', $class->faculty_id)
@@ -46,14 +43,14 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
                 $query->where('name', 'Khoa cơ bản');
             });
         return $subject->get()->pluck('name', 'id');
-    }
+    }*/
 
-    public function checkAvatar($avatar)
+    public function checkAvatar($image)
     {
-        return $this->model->where('avatar', $avatar);
+        return $this->model->where('image', $image);
     }
 
-    public function searchStudent($data)
+/*    public function searchStudent($data)
     {
         if (isset($data['min_age']) && isset($data['max_age'])) {
             $min = Carbon::now()->subYears($data['min_age']);
@@ -83,10 +80,10 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             });
         }
         return $students->paginate(5);
-    }
+    }*/
 
-    public function showStudents($id)
+    public function getStudents($id)
     {
-        return $this->student->where('class_id', $id)->all();
+        return $this->model->where('class_code', $id)->get();
     }
 }

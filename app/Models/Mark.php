@@ -10,6 +10,9 @@ class Mark extends Model
     protected $fillable = ['student_code','subject_code','score'];
     public $timestamps = false;
     public function subjects(){
-        return $this->belongsToMany('Subject','students_subjects','student_code','subject_code');
+        return $this->belongsTo('App\Models\Subject','subject_code','id');
+    }
+    public function students(){
+        return $this->belongsTo('App\Models\Student','student_code','id');
     }
 }
