@@ -11,7 +11,7 @@
                 <div class="col-lg-7" style="padding-bottom:120px">
                     {!! Form::open(['method' => 'POST','route' => ['marks.store'] , 'enctype' => "multipart/form-data"]) !!}
                     <div class="form-group">
-                        <label>Name</label>
+                        {!! Form::label('name', 'Name:') !!}
                         <select class="form-control" name="student_code">
                             <option>Name</option>
                             @foreach($students as $student)
@@ -20,7 +20,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Subjects</label>
+                        {!! Form::label('name', 'Subject:') !!}
                         <select class="form-control" name="subject_code">
                             <option>Subjects</option>
                             @foreach($subjects as $subject)
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Mark</label>
+                        {!! Form::label('name', 'Mark:') !!}
                         {!! Form::number('score', old('score'), ['class' =>"form-control",'step'=>"0.1",'min'=>0,'max'=>10, 'placeholder' => "Please Enter Score"]) !!}
                     </div>
                     {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}

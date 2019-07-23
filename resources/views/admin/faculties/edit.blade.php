@@ -12,8 +12,8 @@
             <div class="col-lg-7" style="padding-bottom:120px">
                 {!! Form::open(['method' => 'PUT', 'route' => ['faculties.update',$faculties->id]]) !!}
                     <div class="form-group">
-                        <label>Faculty Name</label>
-                        <input class="form-control" name="name" placeholder="New Name" value="{{$faculties->name}}"/>
+                        {!! Form::label('name', 'Faculty:') !!}
+                        {!! Form::text('name', $faculties->name,['class'=>'form-control', 'placeholder'=>'New Name']) !!}
                     </div>
                 {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
                 {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}

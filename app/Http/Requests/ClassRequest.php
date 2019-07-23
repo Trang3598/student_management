@@ -23,15 +23,8 @@ class ClassRequest extends FormRequest
      */
     public function rules()
     {
-        if (!empty($this->id)) {
-            $nameRule = sprintf('required|unique:classes,name,%s|min:3|max:100', $this->id);
-        } else {
-            $nameRule = 'required|unique:classes,name|min:3|max:100';
-        }
-
-        return [
-            'name' => $nameRule,
-            'faculty_id' => 'required'
+        return[
+            'name'=>'required|unique:faculties,name|min:3|max:100',
         ];
     }
 

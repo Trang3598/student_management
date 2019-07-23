@@ -11,10 +11,10 @@
         <div class="col-lg-7" style="padding-bottom:120px">
             {!! Form::open(['method' => 'POST', 'route' => ['classes.store']]) !!}
             <div class="form-group">
-                <label>Faculty</label>
+                {!! Form::label('faculty_id', 'Faculty:') !!}
                 <select class="form-control" name="faculty_id">
-                    @foreach($faculty as $fy)
-                        <option value="{{$fy->id}}">{{$fy->name}}</option>
+                    @foreach($faculties as $id => $faculty)
+                        <option value="{{ $id }}">{{ $faculty }}</option>
                     @endforeach
                 </select>
             </div>

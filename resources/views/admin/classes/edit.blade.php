@@ -10,10 +10,10 @@
                 </div>
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    {!! Form::open(['method' => 'PUT', 'route' => ['classes.update',$cs->id]]) !!}
+                    {!! Form::open(['method' => 'PUT', 'route' => ['classes.update',$classes->id]]) !!}
                         <div class="form-group">
                             <label>Class Name</label>
-                            <input class="form-control" name="name" value="{{$cs->name}}"/>
+                            <input class="form-control" name="name" value="{{$classes->name}}"/>
                         </div>
                         {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
                         {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}

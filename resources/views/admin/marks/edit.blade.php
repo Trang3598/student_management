@@ -10,7 +10,7 @@
                 </div>
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    {!! Form::open(['method' => 'PUT', 'route' => ['marks.update',$mark->id]]) !!}
+                    {!! Form::open(['method' => 'PUT', 'route' => ['marks.update',$marks->id]]) !!}
                         <div class="form-group">
                             <label>Score</label>
                             <input class="form-control" name="score"/>

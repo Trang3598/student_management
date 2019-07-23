@@ -32,7 +32,7 @@ class ClassController extends Controller
     public function create()
     {
         $faculty = Faculty::all();
-        return view('admin.classes.create', ['faculty' => $faculty]);
+        return view('admin.classes.create', ['faculties' => $faculty]);
     }
 
     /**

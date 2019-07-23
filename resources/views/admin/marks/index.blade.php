@@ -29,5 +29,4 @@
                 </table>
             </div>
             <!-- /.row -->
-
 @endsection

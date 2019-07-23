@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FacultyRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\ClassRequest;
 use App\Repositories\Faculty\FacultyRepository;
+use App\Repositories\ClassRepository\ClassRepository;
 
-class FacultyController1 extends Controller
+class ClassController1 extends Controller
 {
     /**
-     * @var FacultyRepositoryInterface|\App\Repositories\Repository
+     * @var ClassRepositoryInterface|\App\Repositories\Repository
      */
+    protected $classRepository;
     protected $facultyRepository;
 
-    public function __construct(FacultyRepository $facultyRepository)
+    public function __construct(ClassRepository $classRepository, FacultyRepository $facultyRepository)
     {
+        $this->classRepository = $classRepository;
         $this->facultyRepository = $facultyRepository;
     }
 
@@ -25,8 +27,8 @@ class FacultyController1 extends Controller
      */
     public function index()
     {
-        $faculties = $this->facultyRepository->getList();
-        return view('admin.faculties.index', compact('faculties'));
+        $classes = $this->classRepository->getList();
+        return view('admin.classes.index', compact('classes'));
     }
 
     /**
@@ -35,7 +37,8 @@ class FacultyController1 extends Controller
      */
     public function create()
     {
-        return view('admin.faculties.create');
+        $faculties = $this->facultyRepository->getFaculties();
+        return view('admin.classes.create', compact('faculties'));
     }
 
     /**
@@ -58,18 +61,17 @@ class FacultyController1 extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(FacultyRequest $request)
+    public function store(ClassRequest $request)
     {
-        $this->facultyRepository->store($request->all());
-
-        return redirect(route('faculties.index'))->with(['success' => 'create success']);
+        $this->classRepository->store($request->all());
+        return redirect(route('classes.index'))->with(['success' => 'create success']);
     }
 
     public function edit($id)
     {
-        $faculties = $this->facultyRepository->getListById($id);
+        $classes = $this->classRepository->getListById($id);
 
-        return view('admin.faculties.edit', compact('faculties'));
+        return view('admin.classes.edit', compact('classes'));
     }
 
     /**
@@ -79,11 +81,10 @@ class FacultyController1 extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, FacultyRequest $request)
+    public function update($id, ClassRequest $request)
     {
-        $this->facultyRepository->update($id, $request->all());
-
-        return redirect(route('faculties.index'))->with(['success' => 'updated']);
+        $this->classRepository->update($id, $request->all());
+        return redirect(route('classes.index'))->with(['success' => 'updated']);
     }
 
     /**
@@ -94,8 +95,7 @@ class FacultyController1 extends Controller
      */
     public function destroy($id)
     {
-        $this->facultyRepository->destroy($id);
-
-        return redirect(route('faculties.index'))->with('success', 'Delete-success!');
+        $this->classRepository->destroy($id);
+        return back()->with('success', 'Delete-success !');
     }
 }

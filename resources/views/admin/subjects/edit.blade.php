@@ -2,13 +2,6 @@
 
 @section('content')
     <!-- Page Content -->
-            @if(count($errors) > 0)
-                <div class="alert alert-danger">
-                    @foreach($errors->all() as $err)
-                        {{$err}}<br>
-                    @endforeach
-                </div>
-            @endif
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Subject
@@ -17,14 +10,14 @@
                 </div>
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-7" style="padding-bottom:120px">
-                    {!! Form::open(['method' => 'PUT', 'route' => ['subjects.update',$sub->id]]) !!}
+                    {!! Form::open(['method' => 'PUT', 'route' => ['subjects.update',$subjects->id]]) !!}
                         <div class="form-group">
                             <label>Subject Name</label>
-                            <input class="form-control" name="name" value="{{$sub->name}}"/>
+                            <input class="form-control" name="name" value="{{$subjects->name}}"/>
                         </div>
                         <div class="form-group">
                             <label>Subject Name</label>
-                            <input type="number" max="3" min="2" class="form-control" name="number" value="{{$sub->number}}"/>
+                            <input type="number" max="3" min="2" class="form-control" name="number" value="{{$subjects->number}}"/>
                         </div>
 
                     {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}

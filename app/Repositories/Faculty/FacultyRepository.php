@@ -1,17 +1,23 @@
 <?php
+
 namespace App\Repositories\Faculty;
 
-use App\Repositories\EloquentRepository;
+use App\Models\ClassModel;
+use App\Models\Faculty;
+use App\Repositories\Base\BaseRepository;
 
-class FacultyRepository extends EloquentRepository
+class FacultyRepository extends BaseRepository
 {
+    protected $classModel;
 
-    /**
-     * get model
-     * @return string
-     */
-    public function getModel()
+    public function __construct(Faculty $faculty, ClassModel $classModel)
     {
-        return \App\Models\Faculty::class;
+        parent::__construct($faculty);
+        $this->classModel = $classModel;
+    }
+
+    public function getFaculties()
+    {
+        return $this->model::all()->pluck('name', 'id');
     }
 }

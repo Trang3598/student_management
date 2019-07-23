@@ -21,23 +21,23 @@ Route::get('/dashboard',function (){
 /**
  * Route Faculty
  */
-Route::resource('faculties', 'FacultyController');
+Route::resource('faculties', 'FacultyController1');
 
 /**
  * Route Student
  */
-Route::resource('students', 'StudentController');
+Route::resource('students', 'StudentController1');
 /**
  * Route Subject
  */
-Route::resource('subjects', 'SubjectController');
+Route::resource('subjects', 'SubjectController1');
 /**
  * Route Class
  */
-Route::resource('classes', 'ClassController');
+Route::resource('classes', 'ClassController1');
 /**
  * Route Mark
  */
-Route::resource('marks', 'MarkController');
+Route::resource('marks', 'MarkController1');
 
 

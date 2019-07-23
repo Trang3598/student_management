@@ -10,40 +10,40 @@
         </div>
         <!-- /.col-lg-12 -->
         <div class="col-lg-7" style="padding-bottom:120px">
-            {!! Form::open(['method' => 'PUT', 'route' => ['students.update',$st->id]]) !!}
+            {!! Form::open(['method' => 'PUT', 'route' => ['students.update',$students->id]]) !!}
             <div class="form-group">
                 <label>Student Name</label>
-                <input class="form-control" name="name" value="{{$st->name}}"/>m
+                <input class="form-control" name="name" value="{{$students->name}}"/>
             </div>
             <div class="form-group">
                 <label>Class</label>
                 <select class="form-control" name="class_code">
-                    @foreach($class as $cs)
-                        <option value="{{$cs->id}}"
-                                @if($cs->id == $st->class_code) selected @endif>{{$cs->name}}</option>
+                    @foreach($classes as $id => $class)
+                        <option value="{{$id}}"
+                        @if($id == $students->class_code) selected @endif>{{$class}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label>Gender</label>
                 <label class="radio-inline">
-                    <input name="gender" value="1" type="radio" @if($st->gender == 1) checked @endif>Male
+                    <input name="gender" value="1" type="radio" @if($students->gender == 1) checked @endif>Male
                 </label>
                 <label class="radio-inline">
-                    <input name="gender" value="2" type="radio" @if($st->gender == 2) checked @endif>Female
+                    <input name="gender" value="2" type="radio" @if($students->gender == 2) checked @endif>Female
                 </label>
             </div>
             <div class="form-group">
                 <label>Birthday </label>
-                <input class="form-control" name="birthday" type="date" value="{{$st->birthday}}">
+                <input class="form-control" name="birthday" type="date" value="{{$students->birthday}}">
             </div>
             <div class="form-group">
                 <label>Image</label>
-                <input class="form-control" name="image" type="file">
+                <input class="form-control" name="image" type="file" value="{{$students->image}}">
             </div>
             <div class="form-group">
                 <label>Address</label>
-                <input class="form-control" name="address" value="{{$st->address}}"
+                <input class="form-control" name="address" value="{{$students->address}}"
                        placeholder="Please Enter Your Address"/>
             </div>
             {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
