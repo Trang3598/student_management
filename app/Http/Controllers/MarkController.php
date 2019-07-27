@@ -90,7 +90,8 @@ class MarkController extends Controller
     public function update($id, MarkRequest $request)
     {
         $this->markRepository->update($id, $request->all());
-        return redirect(route('marks.show'))->with(['success' => 'updated']);
+
+        return redirect(route('marks.index'))->with(['success' => 'updated']);
     }
 
     /**

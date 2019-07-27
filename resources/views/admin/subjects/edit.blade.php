@@ -19,7 +19,6 @@
                             <label>Subject Name</label>
                             <input type="number" max="3" min="2" class="form-control" name="number" value="{{$subjects->number}}"/>
                         </div>
-
                     {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
                     {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}
                     {!! Form::close() !!}

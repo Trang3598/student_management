@@ -10,7 +10,7 @@
         </div>
         <!-- /.col-lg-12 -->
         <div class="col-lg-7" style="padding-bottom:120px">
-            {!! Form::open(['method' => 'PUT', 'route' => ['students.update',$students->id]]) !!}
+            {!! Form::open(['method' => 'PUT', 'route' => ['students.update',$students->id], 'enctype' => "multipart/form-data"]) !!}
             <div class="form-group">
                 <label>Student Name</label>
                 <input class="form-control" name="name" value="{{$students->name}}"/>
@@ -39,7 +39,13 @@
             </div>
             <div class="form-group">
                 <label>Image</label>
-                <input class="form-control" name="image" type="file">
+                <input class="form-control" name="image" type="file"><br>
+                <img src="{{ asset("img/{$students ->image}") }}" style="width: 50px;height: 50px">
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input class="form-control" name="phone" value="{{$students->phone}}"
+                       placeholder="Please Enter Your Phone"/>
             </div>
             <div class="form-group">
                 <label>Address</label>

@@ -24,7 +24,17 @@ class MarkRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'student_code'=>'required',
+            'subject_code'=>'required',
+            'score'=>'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'student_code.required'=>'No Student',
+            'subject_code.required'=>'No Subject',
+            'score'=>'No Mark',
         ];
     }
 }

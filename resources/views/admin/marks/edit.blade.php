@@ -13,7 +13,7 @@
                     {!! Form::open(['method' => 'PUT', 'route' => ['marks.update',$marks->id]]) !!}
                         <div class="form-group">
                             <label>Score</label>
-                            <input class="form-control" name="score"/>
+                            <input class="form-control" name="score" value="{{$marks->score}}"/>
                         </div>
                     {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
                     {!! Form::close() !!}

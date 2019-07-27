@@ -13,7 +13,6 @@
                     <div class="form-group">
                         {!! Form::label('name', 'Name:') !!}
                         <select class="form-control" name="student_code">
-                            <option>Name</option>
                             @foreach($students as $student)
                                 <option value="{{$student->id}}">{{$student->name}}</option>
                             @endforeach
@@ -22,7 +21,6 @@
                     <div class="form-group">
                         {!! Form::label('name', 'Subject:') !!}
                         <select class="form-control" name="subject_code">
-                            <option>Subjects</option>
                             @foreach($subjects as $subject)
                                 <option value="{{$subject->id}}">{{$subject->name}}</option>
                             @endforeach

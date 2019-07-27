@@ -16,8 +16,4 @@ class ClassModel extends Model
     public function students(){
         return $this->hasMany(Student::class);
     }
-
-    public function getListClass() {
-        return $this->with('classes')->get();
-    }
 }

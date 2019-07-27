@@ -39,5 +39,12 @@ Route::resource('classes', 'ClassController');
  * Route Mark
  */
 Route::resource('marks', 'MarkController');
+/*
+ * Route Search
+ */
+Route::get('search', 'StudentController@search');
+
+
+
 
 

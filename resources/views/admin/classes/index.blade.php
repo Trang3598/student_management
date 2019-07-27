@@ -15,8 +15,8 @@
                         <th>ID</th>
                         <th>Class</th>
                         <th>Faculty</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -26,6 +26,7 @@
                         <td>{{$class->id}}</td>
                         <td>{{$class->name}}</td>
                         <td>{{$class->classes->name}}</td>
+                        <td class="center"><i class="fa fa-pencil fa-fw"></i><a href="{{route('classes.edit',['ClassModel'=>$class])}}">Edit</a></td>
                         <td class="center">
                             <form action="{{route('classes.destroy',$class->id)}}" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -33,7 +34,6 @@
                                 @csrf
                             </form>
                         </td>
-                        <td class="center"><i class="fa fa-pencil fa-fw"></i><a href="{{route('classes.edit',['ClassModel'=>$class])}}">Edit</a></td>
                     </tr>
                     @endforeach
                     </tbody>

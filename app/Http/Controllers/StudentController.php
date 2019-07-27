@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
-use App\Models\Student;
+use App\Http\Requests\StudentRequestEdit;
+use App\Models\Students;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\ClassRepository\ClassRepository;
+use App\Repositories\Mark\MarkRepository;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -14,11 +17,13 @@ class StudentController extends Controller
      */
     protected $classRepository;
     protected $studentRepository;
+    protected $markRepository;
 
-    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository)
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository)
     {
         $this->classRepository = $classRepository;
         $this->studentRepository = $studentRepository;
+        $this->markRepository = $markRepository;
     }
 
     /**
@@ -28,7 +33,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = $this->studentRepository->getList();
+//        $students = $this->studentRepository->getList();
+
+        $students = $this->studentRepository->searchStudent(request()->all());
+
         return view('admin.students.index', compact('students'));
     }
 
@@ -48,12 +56,14 @@ class StudentController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    /*    public function show($id)
-        {
-            $faculties = $this->facultyRepository->find($id);
+    public function show($id)
+    {
+        $students = $this->studentRepository->getStudents($id);
 
-            return view('admin.faculties.show', compact('faculties'));
-        }*/
+        $marks = $this->markRepository->getMarks($id)->get();
+
+        return view('admin.marks.show', compact('marks'), compact('students'));
+    }
 
     /**
      * Create single post
@@ -80,9 +90,9 @@ class StudentController extends Controller
     {
         $students = $this->studentRepository->getListById($id);
 
-        $classes = $this->studentRepository->getClasses();
+        $classes = $this->classRepository->getClasses();
 
-        return view('admin.students.edit', compact('students','classes'));
+        return view('admin.students.edit', compact('students', 'classes'));
     }
 
     /**
@@ -92,9 +102,18 @@ class StudentController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, StudentRequest $request)
+    public function update($id, StudentRequestEdit $request)
     {
-        $this->studentRepository->update($id, $request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $image = time() . $file->getClientOriginalName();
+            $file->move('img', $image);
+            $data['image'] = $image;
+        }
+
+        $this->studentRepository->update($id, $data);
         return redirect(route('students.index'))->with(['success' => 'updated']);
     }
 
@@ -109,5 +128,14 @@ class StudentController extends Controller
         $this->studentRepository->destroy($id);
         return back()->with('success', 'Delete-success !');
     }
+    /**
+     * Fillter post
+     *
+     */
+    public function search(Request $request) {
+        $students = $this->studentRepository->searchStudent($request->all());
+        return view('admin.students.index',compact('students'));
+    }
+
 }
 

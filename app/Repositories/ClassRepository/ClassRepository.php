@@ -7,7 +7,6 @@ use App\Repositories\Base\BaseRepository;
 
 class ClassRepository extends BaseRepository
 {
-    protected $student;
 
     public function __construct(ClassModel $classModel)
     {

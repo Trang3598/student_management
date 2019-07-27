@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\FacultyRequestEdit;
+use Illuminate\Http\Requests;
 use App\Repositories\Faculty\FacultyRepository;
 
 class FacultyController extends Controller
@@ -79,7 +80,7 @@ class FacultyController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, FacultyRequest $request)
+    public function update($id, FacultyRequestEdit $request)
     {
         $this->facultyRepository->update($id, $request->all());
 

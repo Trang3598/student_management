@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassRequest;
+use App\Http\Requests\ClassRequestEdit;
 use App\Repositories\Faculty\FacultyRepository;
 use App\Repositories\ClassRepository\ClassRepository;
 
@@ -81,7 +82,7 @@ class ClassController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, ClassRequest $request)
+    public function update($id, ClassRequestEdit $request)
     {
         $this->classRepository->update($id, $request->all());
         return redirect(route('classes.index'))->with(['success' => 'updated']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
+use App\Http\Requests\SubjectRequestEdit;
 use Illuminate\Http\Request;
 use App\Repositories\Subject\SubjectRepository;
 
@@ -79,7 +80,7 @@ class SubjectController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, SubjectRequest $request)
+    public function update($id, SubjectRequestEdit $request)
     {
         $this->subjectRepository->update($id, $request->all());
 

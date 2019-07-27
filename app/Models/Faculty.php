@@ -14,4 +14,5 @@ class Faculty extends Model
     {
         return $this->hasMany(ClassModel::class);
     }
+
 }

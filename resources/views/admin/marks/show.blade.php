@@ -4,9 +4,17 @@
     <!-- Page Content -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Mark
-                <small>List</small>
-            </h1>
+            <div class="col-lg-10">
+                <h1 class="page-header">Mark
+                    <small>List</small>
+                </h1>
+            </div>
+            <div class="col-lg-2">
+                <form action="" method="GET" >
+                    <button type="submit" class="btn btn-success"><i class="fa fa-android fa-fw"></i> ADD MORE</button>
+                    @csrf
+                </form>
+            </div>
         </div>
         <!-- /.col-lg-12 -->
         <table class="table table-striped table-bordered table-hover" id="dataTables-example">

@@ -40,6 +40,10 @@
                 <input type="file" class="form-control" name="image"/>
             </div>
             <div class="form-group">
+                <label>Phone</label>
+                <input class="form-control" name="phone" placeholder="Please Enter Your Phone"/>
+            </div>
+            <div class="form-group">
                 <label>Address</label>
                 <input class="form-control" name="address" placeholder="Please Enter Your Address"/>
             </div>

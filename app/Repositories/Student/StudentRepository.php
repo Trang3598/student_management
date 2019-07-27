@@ -28,62 +28,58 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         return $this->model->all();
     }
 
-    public function getClasses()
-    {
-        return $this->class->all()->pluck('name', 'id');
-    }
-
-
-
-/*    public function showSubjects($classId)
-    {
-        $class = $this->class->where('id', $classId)->first();
-        $subject = $this->subject->where('faculty_id', $class->faculty_id)
-            ->orWhereHas('faculty', function ($query) {
-                $query->where('name', 'Khoa cơ bản');
-            });
-        return $subject->get()->pluck('name', 'id');
-    }*/
+    /*    public function showSubjects($classId)
+        {
+            $class = $this->class->where('id', $classId)->first();
+            $subject = $this->subject->where('faculty_id', $class->faculty_id)
+                ->orWhereHas('faculty', function ($query) {
+                    $query->where('name', 'Khoa cơ bản');
+                });
+            return $subject->get()->pluck('name', 'id');
+        }*/
 
     public function checkAvatar($image)
     {
         return $this->model->where('image', $image);
     }
 
-/*    public function searchStudent($data)
+    public function searchStudent($data)
     {
-        if (isset($data['min_age']) && isset($data['max_age'])) {
-            $min = Carbon::now()->subYears($data['min_age']);
-            $max = Carbon::now()->subYears($data['max_age']);
-            $students = $this->model->whereBetween('birthday', [$max, $min]);
-            if (!empty($data['phones'])) {
-                $students->where(function ($query) use ($data) {
-                    foreach ($data['phones'] as $key => $phone) {
-                        $query->orWhere('phone_number', 'regexp', $phone);
-                    }
-                });
-            }
-        } else {
-            $students = $this->model->query();
-            if (!empty($data['phones'])) {
-                $students->where(function ($query) use ($data) {
-                    foreach ($data['phones'] as $key => $phone) {
-                        $query->orWhere('phone_number', 'regexp', $phone);
-                    }
-                });
-            }
+        $students = $this->model->newQuery();
+        if (isset($data['min_age'])) {
+            $minAge = Carbon::now()->subYears($data['min_age']);
+            $students->where('birthday', '<', $minAge);
         }
-        if (isset($data['min_mark']) && isset($data['max_mark']) && isset($data['subject_id'])) {
-            $students->whereHas('mark', function ($query) use ($data) {
-                $query->where('subject_id', $data['subject_id'])
-                    ->whereBetween('mark', [$data['min_mark'], $data['max_mark']]);
+
+        if (isset($data['max_age'])) {
+            $maxAge = Carbon::now()->subYears($data['max_age']);
+            $students->where('birthday', '>', $maxAge);
+        }
+
+        if (isset($data['min_mark'])) {
+            $students->whereHas('marks', function ($query) use ($data) {
+                $query->where('score', '>', $data['min_mark']);
             });
         }
-        return $students->paginate(5);
-    }*/
 
-    public function getStudents($id)
-    {
-        return $this->model->where('class_code', $id)->get();
-    }
+        if (isset($data['max_mark'])) {
+            $students->whereHas('marks', function ($query) use ($data) {
+                $query->where('score', '<', $data['max_mark']);
+            });
+        }
+
+/*        if (isset($data['phones'][0])) {
+            $phone = substr($data['phones'][0], 0, -6);
+            $students->where(function ($query) use ($data) {
+                $query->where('phone', 'Like', $phone;
+            });
+        }*/
+return $students->get();
+}
+
+public
+function getStudents($id)
+{
+    return $this->model->where('class_code', $id)->get();
+}
 }
