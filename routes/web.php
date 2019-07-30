@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard',function (){
+Route::get('dashboard',function (){
     return view('admin.layouts.index');
 });
 /**
@@ -43,6 +43,10 @@ Route::resource('marks', 'MarkController');
  * Route Search
  */
 Route::get('search', 'StudentController@search');
+/*
+ * Route Add more
+ */
+Route::get('students/{student}/more','StudentController@more')->name('students.more');
 
 
 

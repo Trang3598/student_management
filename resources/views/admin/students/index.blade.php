@@ -39,15 +39,15 @@
             TELECOMS
         </Small>
         <label class="radio-inline">
-            <input name="phones[]" value="0" type="checkbox" class="checkbox">
+            {{ Form::checkbox(sprintf('phones[%s]', \App\Models\Student::VINA),\App\Models\Student::VINA, isset(\Request::get('phones')[0]) && \Request::get('phones')[\App\Models\Student::VINA] == \App\Models\Student::VINA) }}
             <small>Vinaphone</small>
         </label>
         <label class="radio-inline">
-            <input name="phones[]" value="1" type="checkbox" class="checkbox">
+            {{ Form::checkbox(sprintf('phones[%s]', \App\Models\Student::MOBI),1, !empty(\Request::get('phones')[1]) && \Request::get('phones')[1] == 1) }}
             <small>Mobiphone</small>
         </label>
         <label class="radio-inline">
-            <input name="phones[]" value="2" type="checkbox" class="checkbox">
+            {{ Form::checkbox(sprintf('phones[%s]', \App\Models\Student::VIETTEL),2,!empty(\Request::get('phones')[2]) && \Request::get('phones')[2] == 2) }}
             <small>Viettel</small>
         </label>
         <br>
@@ -69,6 +69,7 @@
             <th>Delete</th>
             <th>Edit</th>
             <th>Point</th>
+            <th>ADD MORE</th>
         </tr>
         </thead>
         <tbody>
@@ -81,19 +82,23 @@
                 <td>{{$student->birthday}}</td>
                 <td><img src="{{ asset('img/' . $student->image) }}" style="width: 50px;height: 50px"></td>
                 <td>{{$student->address}}</td>
-                <td>0{{$student->phone}}</td>
+                <td>{{$student->phone}}</td>
                 <td class="center">
-                    <form action="{{route('students.destroy',$student->id)}}" method="POST">
+                    {!! Form::open(['method'=>"Post",'route'=>['students.destroy',$student->id]]) !!}
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" onclick="return confirm('Are you sure to delete?')"><i
                                 class="fa fa-trash-o  fa-fw"></i></button>
-                        @csrf
-                    </form>
+                    {!! Form::close() !!}
                 </td>
                 <td class="center"><a href="{{route('students.edit',['Student'=>$student])}}"><i
                             class="fa fa-edit fa-fw"></i></a></td>
                 <td class="center"><a href="{{route('students.show',['Student'=>$student])}}"><i
                             class="fa fa-search fa-fw"></i></a></td>
+                <td>
+                    {!! Form::open(['method' => 'GET','route' => ['students.more',$student->id]]) !!}
+                    {!! Form::submit('Add',['class'=>"btn btn-success",]) !!}
+                    {!! Form::close() !!}
+                </td>
             </tr>
         @endforeach
         </tbody>

@@ -11,12 +11,14 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
 {
     protected $mark;
     protected $faculty;
+    protected $subject;
 
     public function __construct(Subject $subject, Mark $mark, Faculty $faculty)
     {
         parent::__construct($subject);
         $this->mark = $mark;
         $this->faculty = $faculty;
+        $this->subject = $subject;
     }
 
     public function showMarks($id)
@@ -27,5 +29,9 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
     public function showFaculties()
     {
         return $this->faculty::all()->pluck('name', 'id');
+    }
+    public function getSubject()
+    {
+        return $this->subject::all();
     }
 }

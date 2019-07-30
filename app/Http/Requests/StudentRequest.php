@@ -29,6 +29,7 @@ class StudentRequest extends FormRequest
             'gender'=>'required',
             'birthday' => 'required|date|date_format:Y-m-d|after:1-1-1990|before:31-12-2001',
             'image' => 'required',
+            'phone' => 'required|numeric|unique:students,phone',
         ];
     }
     /**
@@ -50,6 +51,9 @@ class StudentRequest extends FormRequest
             'birthday.after'=>'Error after 1-1-1990',
             'birthday.before'=>'Error before 31-12-2001',
             'image'=>'No Image',
+            'phone.required'=>'No Number',
+            'phone.numeric'=>'Not Number',
+            'phone.unique'=>'Same Number',
         ];
     }
 }

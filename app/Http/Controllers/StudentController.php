@@ -8,6 +8,7 @@ use App\Models\Students;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\ClassRepository\ClassRepository;
 use App\Repositories\Mark\MarkRepository;
+use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -18,12 +19,14 @@ class StudentController extends Controller
     protected $classRepository;
     protected $studentRepository;
     protected $markRepository;
+    protected $subjectRepository;
 
-    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository)
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository,SubjectRepository $subjectRepository)
     {
         $this->classRepository = $classRepository;
         $this->studentRepository = $studentRepository;
         $this->markRepository = $markRepository;
+        $this->subjectRepository = $subjectRepository;
     }
 
     /**
@@ -33,8 +36,6 @@ class StudentController extends Controller
      */
     public function index()
     {
-//        $students = $this->studentRepository->getList();
-
         $students = $this->studentRepository->searchStudent(request()->all());
 
         return view('admin.students.index', compact('students'));
@@ -135,6 +136,18 @@ class StudentController extends Controller
     public function search(Request $request) {
         $students = $this->studentRepository->searchStudent($request->all());
         return view('admin.students.index',compact('students'));
+    }
+    public function more($id){
+
+        $marks = $this->markRepository->getMarks($id)->get();
+
+        $subjects =$this->subjectRepository->getSubject();
+
+        return View('admin.marks.more')
+
+            ->with(compact('marks'))
+
+            ->with(compact('subjects'));
     }
 
 }

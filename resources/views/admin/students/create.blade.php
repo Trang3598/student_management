@@ -11,11 +11,11 @@
         <div class="col-lg-7" style="padding-bottom:120px">
             {!! Form::open(['method' => 'POST', 'route' => ['students.store'] ,'enctype' => "multipart/form-data"]) !!}
             <div class="form-group">
-                <label>Name</label>
+                {{Form::label('name', 'Name')}}
                 {!! Form::text('name', old('name'), ['class' =>"form-control", 'placeholder' => "Please Enter Student Name"]) !!}
             </div>
             <div class="form-group">
-                <label>Class</label>
+                {{Form::label('class', 'Class')}}
                 <select class="form-control" name="class_code">
                     @foreach($classes as $id => $class)
                         <option value="{{ $id }}">{{ $class }}</option>
@@ -23,29 +23,29 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Gender</label>
+                {!! Form::label('gender', 'Gender') !!}
                 <label class="radio-inline">
-                    <input name="gender" value="1" checked="" type="radio">Male
+                    {!! Form::radio('gender', '1',['checked'=>"checked"]) !!}Male
                 </label>
                 <label class="radio-inline">
-                    <input name="gender" value="2" type="radio">Female
+                    {!! Form::radio('gender', '2') !!}Female
                 </label>
             </div>
             <div class="form-group">
-                <label>Birthday</label>
-                <input class="form-control" name="birthday" type="date">
+                {!! Form::label('birthday', 'Birthday') !!}
+                {!! Form::date('birthday',old('birthday'),['class'=>"form-control"]) !!}
             </div>
             <div class="form-group">
-                <label>Image</label>
+                {!! Form::label('image', 'Image') !!}
                 <input type="file" class="form-control" name="image"/>
             </div>
             <div class="form-group">
-                <label>Phone</label>
-                <input class="form-control" name="phone" placeholder="Please Enter Your Phone"/>
+                {!! Form::label('phone', 'Phone') !!}
+                {!! Form::number('phone',old('phone'),['class'=>"form-control",'placeholder'=>"Please Enter Your Phone"]) !!}
             </div>
             <div class="form-group">
-                <label>Address</label>
-                <input class="form-control" name="address" placeholder="Please Enter Your Address"/>
+                {!! Form::label('address', 'Address') !!}
+                {!! Form::text('address',old('address'),['class'=>"form-control",'placeholder'=>"Please Enter Your Address"]) !!}
             </div>
             {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
             {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}

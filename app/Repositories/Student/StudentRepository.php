@@ -28,16 +28,6 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         return $this->model->all();
     }
 
-    /*    public function showSubjects($classId)
-        {
-            $class = $this->class->where('id', $classId)->first();
-            $subject = $this->subject->where('faculty_id', $class->faculty_id)
-                ->orWhereHas('faculty', function ($query) {
-                    $query->where('name', 'Khoa cơ bản');
-                });
-            return $subject->get()->pluck('name', 'id');
-        }*/
-
     public function checkAvatar($image)
     {
         return $this->model->where('image', $image);
@@ -68,18 +58,21 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
             });
         }
 
-/*        if (isset($data['phones'][0])) {
-            $phone = substr($data['phones'][0], 0, -6);
+        if (isset($data['phones'])) {
             $students->where(function ($query) use ($data) {
-                $query->where('phone', 'Like', $phone;
+                foreach ($data['phones'] as $phone) {
+                    foreach (Student::PHONES[$phone] as $sur_phone) {
+                        $query->orWhere('phone', 'Like', sprintf('%s%s', $sur_phone, '%'));
+                    }
+                }
             });
-        }*/
-return $students->get();
-}
+        }
 
-public
-function getStudents($id)
-{
-    return $this->model->where('class_code', $id)->get();
-}
+        return $students->get();
+    }
+
+    public function getStudents($id)
+    {
+        return $this->model->where('class_code', $id)->get();
+    }
 }

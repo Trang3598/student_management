@@ -8,6 +8,16 @@ class Student extends Model
 {
     protected $table = 'students';
 
+    const VINA = 0;
+    const MOBI = 1;
+    const VIETTEL = 2;
+    const PHONES = [
+        self::VINA => ['091', '0123'],
+        self::MOBI => ['090', '0124'],
+        self::VIETTEL => ['097', '098'],
+
+    ];
+
     protected $fillable = ['name','class_code','gender','birthday','image','phone','address'];
 
     public function subjects(){

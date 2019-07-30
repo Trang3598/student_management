@@ -41,7 +41,9 @@ class MarkController extends Controller
     public function create()
     {
         $students = $this->studentRepository->getList();
+
         $subjects = $this->subjectRepository->getList();
+
         return view('admin.marks.create', compact('students', 'subjects'));
     }
 
@@ -53,11 +55,11 @@ class MarkController extends Controller
      */
     public function show($id)
     {
+        $students = $this->studentRepository->getStudents($id);
+
         $marks = $this->markRepository->getMarks($id)->get();
 
-        $students = $this->studentRepository->getStudents($marks);
-
-        return view('admin.marks.show', compact('marks'),compact('students'));
+        return view('admin.marks.show', compact('marks'), compact('students'));
     }
 
     /**
@@ -103,7 +105,7 @@ class MarkController extends Controller
     public function destroy($id)
     {
         $this->markRepository->destroy($id);
-        
+
         return back()->with('success', 'Delete-success !');
     }
 }

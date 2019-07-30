@@ -12,11 +12,11 @@
         <div class="col-lg-7" style="padding-bottom:120px">
             {!! Form::open(['method' => 'PUT', 'route' => ['students.update',$students->id], 'enctype' => "multipart/form-data"]) !!}
             <div class="form-group">
-                <label>Student Name</label>
+                {!! Form::label('student','Student') !!}
                 <input class="form-control" name="name" value="{{$students->name}}"/>
             </div>
             <div class="form-group">
-                <label>Class</label>
+                {!! Form::label('class','Class') !!}
                 <select class="form-control" name="class_code">
                     @foreach($classes as $id => $class)
                         <option value="{{$id}}"
@@ -25,7 +25,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Gender</label>
+                {!! Form::label('gender','Gender') !!}
                 <label class="radio-inline">
                     <input name="gender" value="1" type="radio" @if($students->gender == 1) checked @endif>Male
                 </label>
@@ -34,23 +34,22 @@
                 </label>
             </div>
             <div class="form-group">
-                <label>Birthday </label>
+                {!! Form::label('birthday','Birthday') !!}
                 <input class="form-control" name="birthday" type="date" value="{{$students->birthday}}">
             </div>
             <div class="form-group">
-                <label>Image</label>
+                {!! Form::label('image','Image') !!}
                 <input class="form-control" name="image" type="file"><br>
                 <img src="{{ asset("img/{$students ->image}") }}" style="width: 50px;height: 50px">
             </div>
             <div class="form-group">
-                <label>Phone</label>
+                {!! Form::label('phone','Phone') !!}
                 <input class="form-control" name="phone" value="{{$students->phone}}"
                        placeholder="Please Enter Your Phone"/>
             </div>
             <div class="form-group">
-                <label>Address</label>
-                <input class="form-control" name="address" value="{{$students->address}}"
-                       placeholder="Please Enter Your Address"/>
+                {!! Form::label('address','Address') !!}
+                {!! Form::text('address',$students->address,['class'=>"form-control", 'placeholder'=>"Please Enter Your Address"]) !!}
             </div>
             {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
             {!! Form::close() !!}
