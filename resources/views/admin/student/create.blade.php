@@ -9,31 +9,21 @@
                     <h1 class="page-header">Student
                         <small>Add</small>
                     </h1>
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                @if(count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                @if(session('message'))
-                    <div class="alert alert-success">
-                        {{session('message')}}
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{session('error')}}
-                    </div>
-                @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
                     {!! Form::open(['route'=>'student.store','method'=>'POST','enctype'=>'multipart/form-data']) !!}
                     <div class="form-group">
-                        {!! Form::label('Class Code') !!}
+                        {!! Form::label('class') !!}
                         <select class="form-control" name="class_code" id="class_code">
                             @foreach($classes as $class)
                                 <option value="{{$class->id}}">{{$class->name}}</option>
@@ -47,6 +37,10 @@
                     <div class="form-group">
                         {!! Form::label('Birthday') !!}
                         {!! Form::date('birthday',old('birthday'),['class'=> 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('Number Phone')!!}
+                        {!! Form::text('phone',old('phone'),['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::file('image') !!}

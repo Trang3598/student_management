@@ -23,11 +23,20 @@ class StudentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $arr_validate = [
             //
-            'name' => 'required|max:50|min:3|unique:students',
-            'birthday' =>'required|date|after:1-1-1995|before:now',
-            'image' => 'required'
+            'name' => 'required|min:5',
+            'birthday' => 'required|date|before:now',
+            'image' => 'mimes:jpeg,bmp,png|required',
+            'phone' => 'required|numeric',
+            'gender' => 'required'
         ];
+        if (!$this->get('id')) {
+            $arr_validate['name'] = 'required|max:50|min:5';
+            $arr_validate['birthday'] = 'required|date|before:now';
+            $arr_validate['image'] = 'mimes:jpeg,bmp,png|required';
+           $arr_validate['phone'] = 'required|numeric|';
+        }
+        return $arr_validate;
     }
 }

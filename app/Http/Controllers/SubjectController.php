@@ -2,44 +2,103 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StudentRequest;
+use App\Repositories\SubjectEloquentRepository;
+use Illuminate\Http\Request;
 use App\Http\Requests\SubjectRequest;
 use App\SubjectModel;
-use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    //
+    protected $subjectRepository;
+    public function __construct(SubjectEloquentRepository $subjectRepository)
+    {
+        $this->subjectRepository = $subjectRepository;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+        $subjects = $this->subjectRepository->getAll();
+        return view('admin.subject.list',compact('subjects'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        return view('admin.Subject.create');
+        //
+        return view('admin.subject.create');
     }
-    public function postFormSubject(SubjectRequest $request,SubjectModel $subject)
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(SubjectRequest $request,SubjectModel $subject)
     {
-        $subject->create($request->all());
-        return redirect(route('subject.list'))->with('message',"Add successfully");
+        //
+        $subjects = $this->subjectRepository->create($request->all());
+        return redirect(route('subject.index'))->with('message',"Add successfully");
     }
-    public function list()
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $subject = SubjectModel::all();
-        return view('admin.Subject.list',['subject' =>$subject]);
+        //
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $subject = SubjectModel::find($id);
-        return view('admin.Subject.edit',['subject' => $subject]);
+        //
+        $subject = $this->subjectRepository->find($id);
+        return view('admin.subject.edit',['subject' => $subject]);
     }
-    public function postEditFormSubject(SubjectRequest $request, SubjectModel $subject)
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(SubjectRequest $request, $id)
     {
-        $subject->name = $request->name;
-        $subject->number = $request->number;
-        $subject->save();
-        return redirect('admin/subject/list')->with('message','Edit successfully');
+        //
+        $this->subjectRepository->update($id,  $request->all());
+        return redirect(route('subject.index'))->with('message','Edit successfully');
+
     }
-    public function delete($id)
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        $subject = SubjectModel::find($id);
-        $subject->delete();
-        return redirect('admin/subject/list')->with('message','Delete successfully');
+        //
+        $this->subjectRepository->delete($id);
+        return redirect(route('subject.index'))->with('message','Delete successfully');
     }
 }

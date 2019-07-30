@@ -26,33 +26,32 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{route('user.store')}}" method="POST">
+                        {!! Form::open(['method'=> 'POST','route'=>'user.store']) !!}
                         <div class="form-group">
-                            <label>Username</label>
-                            <input class="form-control" name="name" placeholder="Please Enter UserName" />
+                            {!! Form::label('Username') !!}
+                            {!! Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Please Enter UserName']) !!}
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control" name="email" placeholder="Please Enter Email" />
+                            {!! Form::label('Email') !!}
+                            {!! Form::text('email',old('email'),['class'=>'form-control','placeholder'=>'Please Enter Email']) !!}
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input class="form-control" name="password" type="password" placeholder="Please Enter Password" />
+                            {!! Form::label('Password') !!}
+                            {!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password']) !!}
                         </div>
                         <div class="form-group">
-                            <label>Level</label>
+                            {!! Form::label('Level') !!}
                                 <label class="radio-inline">
-                                    <input name="level" value="1"  type="radio">Admin
+                                    {!! Form::radio('level','1') !!}{{'Admin'}}
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="level" value="2" type="radio">Guest
+                                    {!! Form::radio('level','1') !!}{{'Guest'}}
                                 </label>
 
                         </div>
-                        <button type="submit" class="btn btn-default">User Add</button>
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        {{ csrf_field()}}
-                        <form>
+                        {!! Form::submit('User Add',['class' => 'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                        {!! Form::close() !!}
                 </div>
             </div>
             <!-- /.row -->

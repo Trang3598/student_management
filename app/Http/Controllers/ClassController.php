@@ -5,49 +5,105 @@ namespace App\Http\Controllers;
 use App\ClassModel;
 use App\FacultyModel;
 use App\Http\Requests\ClassRequest;
+use App\Repositories\ClassEloquentRepository;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
-    //
+    protected $classRepository;
+    public function __construct(ClassEloquentRepository $classRepository)
+    {
+        $this->classRepository = $classRepository;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+        $classes = $this->classRepository->getAll();
+        return view('admin.class.list',compact('classes'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
+        //
         $faculties = FacultyModel::all();
-        return view('admin.Class.create', compact('faculties'));
+        return view('admin.class.create', compact('faculties'));
     }
 
-    public function postFormClass(ClassRequest $request, ClassModel $class)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ClassRequest $request, ClassModel $classes)
     {
-        $class->create($request->all());
-        return redirect(route('class.list'))->with('message', "Add successfully");
+        //
+        $classes = $this->classRepository->create($request->all());
+        return redirect(route('class.index'))->with('message', "Add successfully");
     }
 
-    public function list()
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $classes = ClassModel::all();
-        return view('admin.Class.list',compact('classes'));
+        //
+        $students = $this->classRepository->showStudents($id);
+        return view('admin.student.list',compact('students'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
+        //
         $faculties = FacultyModel::all();
-        $class = ClassModel::find($id);
-        return view('admin.Class.edit', compact('faculties','class'));
+        $class = $this->classRepository->find($id);
+        return view('admin.class.edit', compact('faculties','class'));
+
     }
 
-    public function postEditFormClass(ClassRequest $request, ClassModel $class)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ClassRequest $request, $id)
     {
-        $class->faculty_id = $request->Faculty;
-        $class->name = $request->name;
-        $class->save();
-        return redirect(route('class.list'))->with('message', 'Edit successfully');
+        //
+        $this->classRepository->update($id,  $request->all());
+        return redirect(route('class.index'))->with('message', 'Edit successfully');
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        $class = ClassModel::find($id);
-        $class->delete();
-
-        return redirect('admin/class/list')->with('message', 'Delete successfully');
+        //
+        $this->classRepository->delete($id);
+        return redirect()->route('class.index')->with('message','Delete successfully');
     }
 }

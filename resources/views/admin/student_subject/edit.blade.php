@@ -27,30 +27,30 @@
                     </div>
                 @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
-                        {!! Form::open(['route'=>['studentsubject.update',$studentsubject->id],'method' => 'PUT']) !!}
-                        <div class="form-group">
-                      {!! Form::label('Student') !!}
-                            <select class="form-control"  name="student_code">
-                                @foreach($students as $student)
-                                    <option value="{{$student->id}}" {{$student->id == $studentsubject->student_code ? 'selected': ''}}> {{$student->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            {!!  Form::label('Subject') !!}
-                            <select class="form-control" name="subject_code">
-                                @foreach($subjects as $subject)
-                                    <option value="{{$subject->id}}" {{$subject->id == $studentsubject->subject_code ?'selected' : ''}}>{{$subject->name}}</option>
-                                @endforeach
+                    {!! Form::open(['route'=>['studentsubject.update',$studentsubject->id],'method' => 'PUT']) !!}
+                    <div class="form-group">
+                        {!! Form::label('Student') !!}
+                        <select class="form-control" name="student_code">
+                            @foreach($students as $student)
+                                <option value="{{$student->id}}" {{$student->id == $studentsubject->student_code ? 'selected': ''}}> {{$student->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        {!!  Form::label('subject') !!}
+                        <select class="form-control" name="subject_code">
+                            @foreach($subjects as $subject)
+                                <option value="{{$subject->id}}" {{$subject->id == $studentsubject->subject_code ?'selected' : ''}}>{{$subject->name}}</option>
+                            @endforeach
 
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            {!!  Form::label('Score') !!}
-                            {!! Form::text('score',$studentsubject->score,['class'=> 'form-control','placeholder'=>'Please Enter Score']) !!}
-                        </div>
-                        {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}
-                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        {!!  Form::label('Score') !!}
+                        {!! Form::text('score',$studentsubject->score,['class'=> 'form-control','placeholder'=>'Please Enter Score']) !!}
+                    </div>
+                    {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}
+                    {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

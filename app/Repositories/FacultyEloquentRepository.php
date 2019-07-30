@@ -9,18 +9,23 @@
 namespace App\Repositories;
 
 
+use App\ClassModel;
 use App\FacultyModel;
 
 class FacultyEloquentRepository extends EloquentRepository
 {
-    public function __construct(FacultyModel $facultyModel) {
+    protected $classModel;
+    public function __construct(FacultyModel $facultyModel,ClassModel $classModel) {
         parent::__construct($facultyModel);
+        $this->classModel = $classModel;
     }
     public function getModel()
     {
         return App\FacultyModel::class;
 
     }
-
+    public function showClasses($id) {
+        return $this->classModel->where('faculty_id','=', $id)->get();
+    }
 
 }

@@ -1,14 +1,15 @@
 @extends('admin.layout.index')
 @section('content')
+
+    <!-- Page Content -->
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Faculty
-                        <small>Edit</small>
+                        <small>Add</small>
                     </h1>
                 </div>
-                <!-- /.col-lg-12 -->
                 <div class="col-lg-7" style="padding-bottom:120px">
                     @if(session('message'))
                         <div class="alert alert-success">
@@ -24,16 +25,15 @@
                             </ul>
                         </div>
                     @endif
-                    {!! Form::open(['method' => 'PUT', 'route' => ['faculty.update', $faculty->id]]) !!}
+
+                    {!! Form::open(['method'=>'POST','route'=>'faculty.store']) !!}
                     <div class="form-group">
-                        {!!  Form::label('name', 'Faculty Name:') !!}
-                        {!!  Form::text('name', $faculty->name, ['class' => 'form-control']) !!}
+                        {!! Form::label('name','Name') !!}
+                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'faculty']) !!}
                     </div>
-                    {!! Form::submit('Faculty Edit', ['class' => 'btn btn-default']) !!}
-                    {!! Form::button('Reset', ['class' => 'btn btn-default']) !!}
+                        {!! Form::submit('Faculty Add',['class'=>'btn btn-default']) !!}
+                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
-
-
                 </div>
             </div>
             <!-- /.row -->
@@ -43,5 +43,5 @@
     <!-- /#page-wrapper -->
 
     </div>
-
+    <!-- /#wrapper -->
 @endsection

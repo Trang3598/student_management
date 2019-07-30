@@ -19,33 +19,46 @@
                     <thead>
                     <tr align="center">
                         <th>ID</th>
-                        <th>Student code</th>
-                        <th>Subject code</th>
+                        <th>Student</th>
+                        <th>Subject</th>
                         <th>Score</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($studentsubjects as $studentsubject)
-                        <tr class="odd gradeX" align="center">
-                            <td>{{$studentsubject->id}}</td>
-                            <td>{{(isset($studentsubject->student->name)) ?$studentsubject->student->name:''}}</td>
-                            <td> {{(isset($studentsubject->subject->name)) ?$studentsubject->subject->name:''}}</td>
-                            <td>{{$studentsubject->score}}</td>
-                            <td>  {!! Form::open(['method'=> 'DELETE','route' => ['studentsubject.destroy', $studentsubject->id]]) !!}
-                            {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
-                            {!! Form::close() !!}</td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
-                                        href="{{route('studentsubject.edit',$studentsubject->id)}}">Edit</a></td>
-                        </tr>
-                    @endforeach
+                    @if(sizeof($studentsubjects) > 0 )
+                        @foreach($studentsubjects as $studentsubject)
+                            <tr class="odd gradeX" align="center">
+                                <td>{{isset($studentsubject->id)? $studentsubject->id:''}}</td>
+                                <td>{{(isset($studentsubject->student)) ?$studentsubject->student->name:''}}</td>
+                                <td> {{(isset($studentsubject->subject)) ?$studentsubject->subject->name:''}}</td>
+                                <td>{{$studentsubject->score}}</td>
+                                <td> {!! Form::open(['method'=> 'DELETE','route' => ['studentsubject.destroy', $studentsubject->id]]) !!}
+                                    {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                    {!! Form::close() !!}</td>
+                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
+                                            href="{{route('studentsubject.edit',$studentsubject->id)}}">Edit</a></td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
-            <!-- /.row -->
+            <div style="">
+                <td class="center">
+
+                        <button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>
+                            <a href="{{route('studentsubject.addmore',$studentsubject->student_code)}}">
+                                Add More</a>
+                        </button>
+                </td>
+            </div>
+        @endif
+        <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
     </div>
+
     <!-- /#page-wrapper -->
 @endsection

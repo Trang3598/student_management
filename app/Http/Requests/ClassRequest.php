@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\ClassModel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ClassRequest extends FormRequest
@@ -23,9 +24,14 @@ class ClassRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
+        $arr_validate = [
+            //
+            'name' =>'required|max:50|min:3|unique:classes'
         ];
+        if(!$this->get('id')) {
+            $arr_validate['name'] = 'required|max:50|min:3';
+        }
+        return $arr_validate;
     }
 
     /**
@@ -33,10 +39,4 @@ class ClassRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
-        return [
-            'name.required' => 'The name field cannot be empty'
-        ];
-    }
 }

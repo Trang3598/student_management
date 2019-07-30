@@ -24,9 +24,9 @@ class StudentSubjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'score' => 'required|numeric|between:0,10',
-            'student_code' => 'required',
-            'subject_code' => 'required'
+            'score.*' => 'required|numeric|between:0,10',
+            'student_code.*' => 'required',
+            'subject_code.*' => 'required'
         ];
     }
     public function messages()

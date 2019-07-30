@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Repositories\UserEloquentRepository;
 use App\UserModel;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    protected $userRepository;
+    public function __construct(UserEloquentRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +22,8 @@ class UserController extends Controller
     public function index()
     {
         //
-        $user = UserModel::all();
-        return view('admin.user.list',['user' => $user]);
+        $users = $this->userRepository->getAll();
+        return view('admin.user.list',compact('users'));
     }
 
     /**
@@ -40,7 +46,7 @@ class UserController extends Controller
     public function store(UserRequest $request,UserModel $user)
     {
         //
-        $user->create($request->only(['name','email','password', 'level']));
+        $users = $this->userRepository->create($request->all());
         return redirect(route('user.index'))->with('message','Add successfully');
     }
 
@@ -64,6 +70,8 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $user = $this->userRepository->find($id);
+        return view('admin.user.edit',compact('user'));
     }
 
     /**
@@ -76,6 +84,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->userRepository->update($id,  $request->all());
+        return redirect(route('user.index'))->with('message', 'Edit successfully');
     }
 
     /**
@@ -84,9 +94,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserModel $user)
+    public function destroy($id)
     {
-        $user->delete();
-        return redirect('admin/user/list')->with('message','Delete successfully');
+        $this->userRepository->delete($id);
+
+        return redirect(route('user.index'))->with('message','Delete successfully');
     }
 }

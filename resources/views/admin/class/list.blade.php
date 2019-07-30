@@ -22,6 +22,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Name Of Faculty</th>
+                        <th>List Students</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
@@ -35,6 +36,7 @@
                             <td>
                                    {{(isset($class->faculty->name)) ?$class->faculty->name:''}}
                             </td>
+                            <td class="center"><i class="glyphicon glyphicon-eye-open "></i> <a href="{{route('class.show',$class->id)}}">Show</a></td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['class.destroy', $class->id]]) !!}
                                 {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}

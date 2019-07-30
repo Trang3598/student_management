@@ -82,7 +82,7 @@
                         <a href="{{route('user.index')}}">List Of Users</a>
                     </li>
                     <li>
-                        <a href="admin/user/create">Add Users</a>
+                        <a href="{{route('user.create')}}">Add Users</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

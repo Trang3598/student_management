@@ -1,4 +1,4 @@
 define(function() {
-	// [[Class]] -> type pairs
+	// [[class]] -> type pairs
 	return {};
 });

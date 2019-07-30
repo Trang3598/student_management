@@ -18,7 +18,6 @@ abstract class EloquentRepository
     {
         return $this->model->all();
     }
-
     public function find($id)
     {
         $result = $this->model->find($id);
@@ -45,5 +44,9 @@ abstract class EloquentRepository
         }
 
         return false;
+    }
+    public function store($data)
+    {
+        return $this->model->create($data);
     }
 }

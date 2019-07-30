@@ -8,18 +8,18 @@
                     <h1 class="page-header">User
                         <small>List</small>
                     </h1>
+                    @if(session('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                @if(session('message'))
-                    <div class="alert alert-success">
-                        {{session('message')}}
-                    </div>
-                @endif
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr align="center">
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>UserName</th>
                         <th>Email</th>
                         <th>Password</th>
                         <th>Level</th>
@@ -28,7 +28,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($user as $user)
+                    @foreach($users as $user)
                         <tr class="odd gradeX" align="center">
                             <td>{{$user->id}}</td>
                             <td>{{$user->name}}</td>
@@ -42,13 +42,13 @@
                                     @endif
                             </td>
                             <td>
-                            <form action="{{route('user.destroy', ['user'=>$user])}}" method="post">
+                            <form action="{{route('user.destroy', $user->id)}}" method="post">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-adn "><a>Delete</a></button>
                             </form>
                             </td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/user/edit/{{$user->id}}">Edit</a></td>
+                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('user.edit',$user->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -10,10 +10,17 @@ namespace App\Repositories;
 
 
 use App\ClassModel;
+use App\StudentModel;
 
 class ClassEloquentRepository  extends EloquentRepository
 {
-    public function __construct(ClassModel $classModel) {
+    protected $studentModel;
+    public function __construct(ClassModel $classModel,StudentModel $studentModel) {
         parent::__construct($classModel);
+        $this->studentModel = $studentModel;
+    }
+    public function showStudents($id)
+    {
+        return $this->studentModel->where('class_code','=',$id)->get();
     }
 }

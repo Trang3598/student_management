@@ -27,9 +27,8 @@
                 @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
                     {!! Form::open(['route'=>'studentsubject.store', 'method'=>'POST']) !!}
-                    {{--<form action="{{route('subject.postFormResult')}}" method="POST">--}}
                         <div class="form-group">
-                            {!! Form::label('Student') !!}
+                            {!! Form::label('student') !!}
                             <select class="form-control"  name="student_code" >
                                 @foreach($students as $student)
                                     <option value="{{$student->id}}">{{$student->name}}</option>
@@ -37,7 +36,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Subject') !!}
+                            {!! Form::label('subject') !!}
                             <select class="form-control" name="subject_code">
                                 @foreach($subjects as $subject)
                                     <option value="{{$subject->id}}">{{$subject->name}}</option>

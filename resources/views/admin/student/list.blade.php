@@ -13,6 +13,39 @@
                             {{session('message')}}
                         </div>
                     @endif
+                    <form method="GET" action="{{route('student.index')}}">
+                        <table class="table table-hover" style="width:600px">
+                            <tr>
+                                <td>Age</td>
+                                <td>{{Form::number('min_age',\Request::get('min_age'),['class' => 'form-control'])}}</td>
+                                <td align="center">TO</td>
+                                <td>{{Form::number('max_age',\Request::get('max_age'),['class' => 'form-control'])}}</td>
+                            </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>{{Form::number('min_score',\Request::get('min_score'),['class' => 'form-control'])}}</td>
+                                <td align="center">TO</td>
+                                <td>{{Form::number('max_score',\Request::get('max_score'),['class' => 'form-control'])}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td colspan="3">
+                                    {{Form::checkbox('phone[1]','1',!empty(\Request::get('phone')[1]) == 1)}}Viettel
+                                    {{Form::checkbox('phone[2]','2',!empty(\Request::get('phone')[2]) == 2)}}Mobiphone
+                                    {{Form::checkbox('phone[3]','3',!empty(\Request::get('phone')[3]) == 3)}}Vinaphone
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </form>
+
+                    <br>
                 </div>
                 <!-- /.col-lg-12 -->
 
@@ -26,11 +59,14 @@
                         <th>Birthday</th>
                         <th>Image</th>
                         <th>Address</th>
+                        <th>Phone</th>
+                        <th>Show Result</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
+
                     @foreach($students as $student)
                         <tr class="odd gradeX" align="center" enctype="multipart/form-data">
                             <td>{{$student->id}}</td>
@@ -46,9 +82,14 @@
                                 @endif
                             </td>
                             <td>{{$student->birthday}}</td>
-                            <td><img src="images/{{$student->image}}" alt="" style="height: 100px;width: 150px"/></td>
+                            <td>
+                                <img src="images/{{$student->image}}" alt="" style="height: 90px"
+                                     class="img-responsive"/></td>
                             <td>{!! $student->address !!}</td>
-
+                            <td>{!! $student->phone !!}</td>
+                            <td class="center"><i class="glyphicon glyphicon-eye-open"></i>
+                                <a href="{{route('student.show',$student->id)}}">Show</a>
+                            </td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
                                 {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}

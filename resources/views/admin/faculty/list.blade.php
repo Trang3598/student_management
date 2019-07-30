@@ -23,6 +23,7 @@
                     <tr align="center">
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Show List Class</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
@@ -33,6 +34,7 @@
                         <tr class="odd gradeX" align="center">
                             <td>{{$faculty->id}}</td>
                             <td>{{$faculty->name}}</td>
+                            <td class="center"><i class="glyphicon glyphicon-eye-open"></i> <a href="{{route('faculty.show',$faculty->id)}}">Show</a></td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['faculty.destroy', $faculty->id]]) !!}
                                     {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
