@@ -21,7 +21,7 @@ class Student extends Model
     protected $fillable = ['name','class_code','gender','birthday','image','phone','address'];
 
     public function subjects(){
-        return $this->belongsToMany(SubjectModel::class,'students_subjects');
+        return $this->belongsToMany(Subject::class,'students_subjects','student_code','subject_code')->withPivot('score');
     }
 
     public function students(){

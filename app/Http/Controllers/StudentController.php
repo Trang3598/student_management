@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MarkAddMoreRequest;
+use App\Http\Requests\MarkRequest;
 use App\Http\Requests\StudentRequest;
 use App\Http\Requests\StudentRequestEdit;
-use App\Models\Students;
+use App\Models\Mark;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\ClassRepository\ClassRepository;
 use App\Repositories\Mark\MarkRepository;
@@ -21,7 +25,7 @@ class StudentController extends Controller
     protected $markRepository;
     protected $subjectRepository;
 
-    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository,SubjectRepository $subjectRepository)
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository, SubjectRepository $subjectRepository)
     {
         $this->classRepository = $classRepository;
         $this->studentRepository = $studentRepository;
@@ -129,25 +133,41 @@ class StudentController extends Controller
         $this->studentRepository->destroy($id);
         return back()->with('success', 'Delete-success !');
     }
+
     /**
      * Fillter post
      *
      */
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $students = $this->studentRepository->searchStudent($request->all());
-        return view('admin.students.index',compact('students'));
+        return view('admin.students.index', compact('students'));
     }
-    public function more($id){
+
+    public function more($id)
+    {
+        $student = $this->studentRepository->getListById($id);
 
         $marks = $this->markRepository->getMarks($id)->get();
 
-        $subjects =$this->subjectRepository->getSubject();
+        $subjects = $this->subjectRepository->getSubject();
 
         return View('admin.marks.more')
-
+            ->with(compact('student'))
             ->with(compact('marks'))
-
             ->with(compact('subjects'));
+    }
+
+    public function add($id, MarkAddMoreRequest $request)
+    {
+        $student = $this->studentRepository->getListById($id);
+        $data = $request->all();
+        $result = [];
+        foreach ($data['subject_code'] as $key => $value) {
+            $result[$value] = ['score' => $data['score'][$key]];
+        }
+        $student->subjects()->sync($result);
+
     }
 
 }

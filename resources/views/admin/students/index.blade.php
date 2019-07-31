@@ -69,7 +69,7 @@
             <th>Delete</th>
             <th>Edit</th>
             <th>Point</th>
-            <th>ADD MORE</th>
+            <th>Add more result</th>
         </tr>
         </thead>
         <tbody>

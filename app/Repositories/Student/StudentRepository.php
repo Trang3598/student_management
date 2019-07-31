@@ -75,4 +75,6 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     {
         return $this->model->where('class_code', $id)->get();
     }
+
+
 }

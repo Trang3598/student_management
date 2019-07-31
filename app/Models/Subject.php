@@ -10,9 +10,9 @@ class Subject extends Model
 
     protected $fillable = ['name','number'];
 
-    public function subjects()
+    public function students()
     {
-        return $this->belongstoMany(Student::class);
+        return $this->belongstoMany(Student::class,'students_subjects','subject_code','student_code')->withPivot('score');
     }
 }
 

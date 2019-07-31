@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="form-group">
             <div class="table-responsive">
-                {{Form::open(['method'=>'POST'])}}
+                {{Form::open(['method'=>'Put','route'=>['students.addMore',$student->id]])}}
                 <table class="table" id="dynamic_field">
                     {{--show list--}}
                     @foreach($marks as $mark)
@@ -22,7 +22,6 @@
                             </td>
                             <td>
                                 {!! Form::text('score[]',$mark->score,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
-                                {!! Form::hidden('student_code[]',$mark->student_code) !!}
                             </td>
                             <td>
                                 <button type="button" name="remove"
@@ -48,7 +47,6 @@
                                 </select>
                             </td>
                             <td>
-                                {!! Form::hidden('student_code[]',$mark->student_code) !!}
                                 {!! Form::text('score[]',null,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
                             </td>
                             <td>

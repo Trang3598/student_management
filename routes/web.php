@@ -44,10 +44,13 @@ Route::resource('marks', 'MarkController');
  */
 Route::get('search', 'StudentController@search');
 /*
- * Route Add more
+ * Route View Add more
  */
 Route::get('students/{student}/more','StudentController@more')->name('students.more');
-
+/*
+ * Route Add more
+ */
+Route::put('students/{student}','StudentController@add')->name('students.addMore');
 
 
 
