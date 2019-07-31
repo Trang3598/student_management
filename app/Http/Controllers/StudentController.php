@@ -167,7 +167,7 @@ class StudentController extends Controller
             $result[$value] = ['score' => $data['score'][$key]];
         }
         $student->subjects()->sync($result);
-
+        return redirect(route('students.index'))->with(['success' => 'create success']);
     }
 
 }

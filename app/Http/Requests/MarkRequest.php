@@ -34,7 +34,7 @@ class MarkRequest extends FormRequest
         return [
             'student_code.required'=>'No Student',
             'subject_code.required'=>'No Subject',
-            'score'=>'No Mark',
+            'score.required'=>'No Mark',
         ];
     }
 }

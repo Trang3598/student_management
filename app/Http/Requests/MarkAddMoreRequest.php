@@ -25,12 +25,19 @@ class MarkAddMoreRequest extends  FormRequest
      */
     public function rules()
     {
-        return [
-        ];
+        $rules=[];
+        foreach($this->request->get('score') as $key => $val){
+        $rules['score.'.$key] = 'required';
+    }
+    return $rules;
     }
     public function messages()
     {
-        return [
-        ];
+        $messages = [];
+        foreach($this->request->get('score') as $key => $val)
+        {
+            $messages['score.'.$key.'.max'] = 'Mark'.$key.'error';
+        }
+        return $messages;
     }
 }
