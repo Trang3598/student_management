@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Repositories\Base\BaseRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class StudentRepository extends BaseRepository implements StudentRepositoryInterface
 {
@@ -57,6 +58,15 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
                 $query->where('score', '<', $data['max_mark']);
             });
         }
+        if (isset($data['mark_count']) ) {
+            $subjects = DB::table('subjects')->count();
+            if ($data['mark_count'] == 1 ){
+                $students->has('subjects','=',$subjects);
+            }
+            if ($data['mark_count'] == 2 ){
+                $students->has('subjects','<>',$subjects);
+            }
+        }
 
         if (isset($data['phones'])) {
             $students->where(function ($query) use ($data) {
@@ -69,6 +79,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         }
 
         return $students->get();
+
     }
 
     public function getStudents($id)

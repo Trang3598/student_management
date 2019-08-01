@@ -41,7 +41,6 @@ class StudentController extends Controller
     public function index()
     {
         $students = $this->studentRepository->searchStudent(request()->all());
-
         return view('admin.students.index', compact('students'));
     }
 
@@ -134,15 +133,6 @@ class StudentController extends Controller
         return back()->with('success', 'Delete-success !');
     }
 
-    /**
-     * Fillter post
-     *
-     */
-    public function search(Request $request)
-    {
-        $students = $this->studentRepository->searchStudent($request->all());
-        return view('admin.students.index', compact('students'));
-    }
 
     public function more($id)
     {
