@@ -30,6 +30,9 @@ class StudentRequest extends FormRequest
             'birthday' => 'required|date|date_format:Y-m-d|after:1-1-1990|before:31-12-2001',
             'image' => 'required',
             'phone' => 'required|numeric|unique:students,phone',
+            'user' => 'required|unique:users,user',
+            'email'=> 'required|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
     /**
@@ -54,6 +57,11 @@ class StudentRequest extends FormRequest
             'phone.required'=>'No Number',
             'phone.numeric'=>'Not Number',
             'phone.unique'=>'Same Number',
+            'user.required'=>'No User',
+            'user.unique'=>'Same User',
+            'email.required'=>'No Email',
+            'email.unique' => 'Same Email',
+            'password.required' =>'No Password',
         ];
     }
 }

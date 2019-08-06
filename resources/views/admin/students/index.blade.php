@@ -59,6 +59,26 @@
             {!! Form::submit('Search', ['class' => 'btn btn-primary']) !!}<br>
             {!! Form::close() !!}<br>
         </div>
+        <div class="col-lg-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">Display</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Warning</th>
+                    <td>
+                        {!! Form::open(['method' => 'GET','route' =>'students.email']) !!}
+                        {!! Form::submit('SHOW',['class'=>"btn btn-warning",]) !!}
+                        {!! Form::close() !!}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!-- /.col-lg-12 -->
     <table class="table table-striped table-bordered table-hover" id="dataTables-example">

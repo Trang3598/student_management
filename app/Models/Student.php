@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -18,7 +19,7 @@ class Student extends Model
 
     ];
 
-    protected $fillable = ['name','class_code','gender','birthday','image','phone','address'];
+    protected $fillable = ['name','class_code','gender','birthday','image','phone','address','user_id'];
 
     public function subjects(){
         return $this->belongsToMany(Subject::class,'students_subjects','student_code','subject_code')->withPivot('score');
@@ -30,5 +31,9 @@ class Student extends Model
     public function marks()
     {
         return $this->hasMany(Mark::class,'student_code','id');
+    }
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

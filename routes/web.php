@@ -51,6 +51,18 @@ Route::get('students/{student}/more','StudentController@more')->name('students.m
  * Route Add more
  */
 Route::put('students/{student}','StudentController@add')->name('students.addMore');
+/*
+ * List Warning
+ */
+Route::get('student/email','StudentController@mail')->name('students.email');
+/*
+ * Send Mail
+ */
+Route::put('student/{student}','StudentController@send')->name('students.send');
+/*
+ *
+ */
+Route::get('student/sendAll','StudentController@sendAll')->name('student.sendAll');
 
 
 

@@ -15,6 +15,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     protected $class;
     protected $mark;
     protected $subject;
+    protected $user;
 
     public function __construct(Student $student, ClassModel $class, Mark $mark, Subject $subject)
     {
@@ -22,16 +23,12 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         $this->class = $class;
         $this->mark = $mark;
         $this->subject = $subject;
+
     }
 
     public function getList()
     {
         return $this->model->all();
-    }
-
-    public function checkAvatar($image)
-    {
-        return $this->model->where('image', $image);
     }
 
     public function searchStudent($data)
@@ -58,13 +55,13 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
                 $query->where('score', '<', $data['max_mark']);
             });
         }
-        if (isset($data['mark_count']) ) {
+        if (isset($data['mark_count'])) {
             $subjects = DB::table('subjects')->count();
-            if ($data['mark_count'] == 1 ){
-                $students->has('subjects','=',$subjects);
+            if ($data['mark_count'] == 1) {
+                $students->has('subjects', '=', $subjects);
             }
-            if ($data['mark_count'] == 2 ){
-                $students->has('subjects','<>',$subjects);
+            if ($data['mark_count'] == 2) {
+                $students->has('subjects', '<>', $subjects);
             }
         }
 
@@ -77,9 +74,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
                 }
             });
         }
-
         return $students->get();
-
     }
 
     public function getStudents($id)
@@ -87,5 +82,16 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         return $this->model->where('class_code', $id)->get();
     }
 
-
+    public function failStudents()
+    {
+        $students = $this->model->all();
+        $warning = [];
+        foreach ($students as $key => $student) {
+            $avg = $student->marks->Avg('score');
+            if ($avg < 5 ){
+                $warning[] = $student;
+            }
+        }
+        return $warning;
+    }
 }
