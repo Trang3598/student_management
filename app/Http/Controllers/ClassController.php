@@ -36,7 +36,8 @@ class ClassController extends Controller
     {
         //
         $faculties = FacultyModel::all();
-        return view('admin.class.create', compact('faculties'));
+        $fls = $faculties->pluck('name','id')->all();
+        return view('admin.class.create', compact('faculties','fls'));
     }
 
     /**
@@ -76,7 +77,8 @@ class ClassController extends Controller
         //
         $faculties = FacultyModel::all();
         $class = $this->classRepository->find($id);
-        return view('admin.class.edit', compact('faculties','class'));
+        $fls = $faculties->pluck('name','id')->all();
+        return view('admin.class.edit', compact('faculties','class','fls'));
 
     }
 

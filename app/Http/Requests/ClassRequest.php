@@ -26,9 +26,11 @@ class ClassRequest extends FormRequest
     {
         $arr_validate = [
             //
-            'name' =>'required|max:50|min:3|unique:classes'
+            'faculty_id' => 'required',
+            'name' => 'required|max:50|min:3|unique:classes'
         ];
-        if(!$this->get('id')) {
+        if ($this->class) {
+            $arr_validate['faculty_id'] = 'required';
             $arr_validate['name'] = 'required|max:50|min:3';
         }
         return $arr_validate;

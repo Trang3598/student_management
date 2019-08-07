@@ -29,9 +29,10 @@
                     <div class="container">
                         <div class="form-group">
                             <div class="table-responsive">
-                                {{Form::open(['method'=>'POST','route' =>['studentsubject.addMoreAction']])}}
+                                {{Form::open(['method'=>'POST','route' =>['studentsubject.addMoreAction','student_code' => $student->id]])}}
                                 <table class="table" id="dynamic_field">
                                     {{--show list--}}
+                                    @if(sizeof($studentsubjectss) > 0 )
                                     @foreach($studentsubjectss as $studentsubject)
                                         <tr class="count">
                                             <td>
@@ -43,25 +44,25 @@
                                             </td>
                                             <td>
                                                 {!! Form::text('score[]',$studentsubject->score,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
-                                                {!! Form::hidden('student_code[]',$studentsubject->student_code) !!}
                                             </td>
                                             <td>
                                                 <button type="button" name="remove"
-                                                        class="btn btn-danger btn_remove"><a
+                                                        class="btn btn-danger btn_remove"><a style="color: white"
                                                             href="{{route('studentsubject.destroyMore',$studentsubject->id)}}">X</a>
                                                 </button>
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @endif
                                     {{--end show list--}}
 
                                     <tr class="addform count">
                                         <div class="form-group col-xs-6">
+
                                             <button type="button" name="add" id="add" class="btn btn-success">
                                                 Add More
                                             </button>
                                             <td>
-
                                                 <select class="form-control" name="subject_code[]">
                                                     @foreach($subjects as $subject)
                                                         <option value="{{$subject->id}}">{{$subject->name}}</option>
@@ -69,7 +70,6 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                {!! Form::hidden('student_code[]',$studentsubject->student_code) !!}
                                                 {!! Form::text('score[]',null,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
                                             </td>
                                             <td>
@@ -79,11 +79,11 @@
                                             </td>
                                     </tr>
                                 </table>
-
                                 {!! Form::submit('Result Add',['class' => 'btn btn-info']) !!}
-                                {!! Form::button('Reset',['class' => 'btn btn-success']) !!}
                                 {!! Form::close() !!}
+
                                 <p id="number-subject" style="display: none">{{count($subjects)}}</p>
+
                             </div>
                         </div>
                     </div>
@@ -91,6 +91,7 @@
 
             </div>
             <!-- /.row -->
+
         </div>
         <!-- /.container-fluid -->
     </div>
@@ -109,7 +110,7 @@
                 if (len < subject) {
                     $('#dynamic_field').append('<tr>' + form + '</tr>');
                 } else {
-                    alert('student has ' + subject + ' subject !')
+                    alert('Students just have ' + subject + ' subjects !')
                 }
                 var $select = $("select");
                 var selected = [];

@@ -86,7 +86,7 @@ class FacultyController extends Controller
      */
     public function update(FacultyRequest $request, $id)
     {
-            $this->facultyRepository->update($id,  $request->all());
+            $this->facultyRepository->update($id,$request->all());
             return redirect(route('faculty.index'))->with('message','Edit successfully');
     }
 

@@ -16,15 +16,15 @@
                     @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover" >
                     <thead>
                     <tr align="center">
                         <th>ID</th>
                         <th>Name</th>
                         <th>Name Of Faculty</th>
                         <th>List Students</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,12 +37,12 @@
                                    {{(isset($class->faculty->name)) ?$class->faculty->name:''}}
                             </td>
                             <td class="center"><i class="glyphicon glyphicon-eye-open "></i> <a href="{{route('class.show',$class->id)}}">Show</a></td>
+                            <td class="center"><button class=" btn btn-success"><a href="{{route('class.edit',$class->id)}}"  style="color: white">Edit</a></button> </td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['class.destroy', $class->id]]) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                {!! Form::submit('Delete',['class'=>'btn btn-danger']) !!}
                                 {!! Form::close() !!}
                             </td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('class.edit',$class->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
 
@@ -52,6 +52,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+        {!! $classes->links() !!}
     </div>
     <!-- /#page-wrapper -->
 @endsection

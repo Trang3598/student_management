@@ -9,6 +9,10 @@ abstract class EloquentRepository
 {
     protected $model;
 
+    const ALL = 0;
+    const STUDIEDENOUGH = 1;
+    const STUDIEDNOTENOUGH = 2;
+
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -16,8 +20,9 @@ abstract class EloquentRepository
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->paginate(5);
     }
+
     public function find($id)
     {
         $result = $this->model->find($id);
@@ -45,6 +50,7 @@ abstract class EloquentRepository
 
         return false;
     }
+
     public function store($data)
     {
         return $this->model->create($data);

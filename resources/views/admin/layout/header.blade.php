@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Admin Area - Trang xinh đẹp</a>
+        <a class="navbar-brand" href="#">Admin Area - Trang xinh đẹp</a>
     </div>
     <!-- /.navbar-header -->
 

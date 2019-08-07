@@ -16,8 +16,8 @@ class StudentsSubjects extends Migration
         //
         Schema::create('students_subjects', function (Blueprint $table) {
         $table->bigIncrements('id');
-        $table->bigInteger('student_code')->unsigned();
-        $table->bigInteger('subject_code')->unsigned();
+        $table->bigInteger('student_code')->nullable()->unsigned();
+        $table->bigInteger('subject_code')->nullable()->unsigned();
         $table->float('score');
         $table->foreign('subject_code')->references('id')->on('subjects')->onDelete('set null');
         $table->foreign('student_code')->references('id')->on('students')->onDelete('set null');;

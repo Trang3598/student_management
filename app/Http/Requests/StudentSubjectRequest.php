@@ -23,18 +23,14 @@ class StudentSubjectRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+
+
+        $array_validate = [
             'score.*' => 'required|numeric|between:0,10',
             'student_code.*' => 'required',
-            'subject_code.*' => 'required'
+            'subject_code.*' => 'required|'
         ];
-    }
-    public function messages()
-    {
-        return [
-            'student_code.required' => 'You have not selected any students',
-           'subject_code.required' => 'You have not selected any subjects'
 
-        ];
+        return $array_validate;
     }
 }

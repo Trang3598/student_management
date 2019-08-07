@@ -15,40 +15,31 @@
                     @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr align="center">
                         <th>ID</th>
                         <th>UserName</th>
                         <th>Email</th>
                         <th>Password</th>
-                        <th>Level</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
                         <tr class="odd gradeX" align="center">
                             <td>{{$user->id}}</td>
-                            <td>{{$user->name}}</td>
+                            <td>{{$user->username}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->password}}</td>
+                            <td class="center"><button class="btn btn-success"><a style="color: white"
+                                            href="{{route('user.edit',$user->id)}}">Edit</a></button> </td>
                             <td>
-                                @if($user->level == 1)
-                                {{'Admin'}}
-                                    @else
-                                {{'Guest'}}
-                                    @endif
+                                {!! Form::open(['route'=>['user.destroy',$user->id],'method' => 'DELETE']) !!}
+                                {!! Form::submit('Delete',['class'=>'btn btn-danger']) !!}
+                                {!! Form::close() !!}
                             </td>
-                            <td>
-                            <form action="{{route('user.destroy', $user->id)}}" method="post">
-                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-adn "><a>Delete</a></button>
-                            </form>
-                            </td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('user.edit',$user->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -56,6 +47,7 @@
             </div>
             <!-- /.row -->
         </div>
+        {!! $users->links() !!}
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->

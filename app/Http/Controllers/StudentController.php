@@ -4,23 +4,32 @@ namespace App\Http\Controllers;
 
 use App\ClassModel;
 use App\Http\Requests\StudentRequest;
+use App\Jobs\SendEmailJob;
+use App\Mail\BadStudent;
 use App\Repositories\StudentEloquentRepository;
-use App\Repositories\StudentSubjectEloquentRepository;
+use App\Repositories\UserEloquentRepository;
 use App\StudentModel;
 use App\SubjectModel;
+use App\User;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Mail;
+use Mockery\Exception;
 
 class StudentController extends Controller
 {
     protected $studentRepository;
-    protected $resultRepository;
+    protected $userRepository;
 
-    public function __construct(StudentEloquentRepository $studentRepository, StudentSubjectEloquentRepository $resultRepository)
+
+    public function __construct(StudentEloquentRepository $studentRepository, UserEloquentRepository $userEloquentRepository)
     {
         $this->studentRepository = $studentRepository;
-        $this->resultRepository = $resultRepository;
+        $this->userRepository = $userEloquentRepository;
     }
 
     /**
@@ -45,7 +54,8 @@ class StudentController extends Controller
     {
         //
         $classes = ClassModel::all();
-        return view('admin.Student.create', compact('classes'));
+        $cls = $classes->pluck('name','id')->all();
+        return view('admin.Student.create', compact('classes','cls'));
     }
 
     /**
@@ -54,7 +64,7 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StudentRequest $request, StudentModel $student)
+    public function store(StudentRequest $request)
     {
         //
         $data = $request->all();
@@ -64,7 +74,16 @@ class StudentController extends Controller
             $file->move('images', $image);
             $data['image'] = $image;
         }
-        $this->studentRepository->store($data);
+        DB::beginTransaction();
+        try {
+            $user = $this->userRepository->store($data);
+            $data['user_id'] = $user->id;
+            $this->studentRepository->store($data);
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new Exception($exception->getMessage());
+        }
         return redirect(route('student.index'))->with('message', "Add successfully");
     }
 
@@ -78,7 +97,7 @@ class StudentController extends Controller
     {
         //
         $studentsubjects = $this->studentRepository->showResults($id);
-        return view('admin.student_subject.list', compact('studentsubjects'));
+        return view('admin.student_subject.list', compact('studentsubjects','id'));
     }
 
     /**
@@ -129,4 +148,19 @@ class StudentController extends Controller
         $this->studentRepository->delete($id);
         return redirect()->route('student.index')->with('message', 'Delete successfully');
     }
+    public function sendMail($id)
+    {
+        $user = User::findOrFail($id);
+        dispatch(new SendEmailJob($user))->delay(Carbon::now()->addMinutes(0.5));
+        return redirect()->back()->with('message','Send Mail Sucessfully');
+    }
+    public function sendMails()
+    {
+        $students = $this->studentRepository->findScoreOfStudent(request()->all());
+        foreach ($students as $student){
+            dispatch(new SendEmailJob($student->user))->delay(Carbon::now()->addMinutes(0.5));
+        }
+        return view('admin.Student.list', compact('students'));
+    }
+
 }

@@ -29,7 +29,7 @@
                     {!! Form::open(['method'=> 'PUT','route'=>['user.update',$user->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('Username') !!}
-                        {!! Form::text('name',$user->name,['class'=>'form-control','placeholder'=>'Please Enter UserName']) !!}
+                        {!! Form::text('username',$user->username,['class'=>'form-control','placeholder'=>'Please Enter UserName']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Email') !!}
@@ -38,16 +38,6 @@
                     <div class="form-group">
                         {!! Form::label('Password') !!}
                         {!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password'],$user->password) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('Level') !!}
-                        <label class="radio-inline">
-                            {!! Form::radio('level','1') !!}{{'Admin'}}
-                        </label>
-                        <label class="radio-inline">
-                            {!! Form::radio('level','1') !!}{{'Guest'}}
-                        </label>
-
                     </div>
                     {!! Form::submit('User Edit',['class' => 'btn btn-default']) !!}
                     {!! Form::button('Reset',['class' => 'btn btn-default']) !!}

@@ -16,7 +16,7 @@ class Classes extends Migration
         //
         Schema::create('classes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('faculty_id')->unsigned();
+            $table->bigInteger('faculty_id')->nullable()->unsigned();
             $table->string('name', 50);
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('set null');
         });

@@ -29,8 +29,7 @@
                         {!!  Form::label('name', 'faculty') !!}
                         {!!  Form::text('name', $faculty->name, ['class' => 'form-control']) !!}
                     </div>
-                    {!! Form::submit('faculty', ['class' => 'btn btn-default']) !!}
-                    {!! Form::button('Reset', ['class' => 'btn btn-default']) !!}
+                    {!! Form::submit('Faculty Edit', ['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
 
 

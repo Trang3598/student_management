@@ -9,23 +9,21 @@
                     <h1 class="page-header">Faculty
                         <small>List</small>
                     </h1>
-                        @if(session('message'))
-                            <div class="alert alert-success">
-                                {{session('message')}}
-                            </div>
-                        @endif
+                    @if(session('message'))
+                        <div class="alert alert-success">
+                            {{session('message')}}
+                        </div>
+                    @endif
                 </div>
                 <!-- /.col-lg-12 -->
-
-
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover" >
                     <thead>
                     <tr align="center">
                         <th>ID</th>
                         <th>Name</th>
                         <th>Show List Class</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,14 +32,15 @@
                         <tr class="odd gradeX" align="center">
                             <td>{{$faculty->id}}</td>
                             <td>{{$faculty->name}}</td>
-                            <td class="center"><i class="glyphicon glyphicon-eye-open"></i> <a href="{{route('faculty.show',$faculty->id)}}">Show</a></td>
+                            <td class="center"><i class="glyphicon glyphicon-eye-open"></i> <a
+                                        href="{{route('faculty.show',$faculty->id)}}">Show</a></td>
+                            <td class="center"><button class="btn btn-success"><a
+                                            href="{{route('faculty.edit',$faculty->id)}}" style="color: white">Edit</a></button></td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['faculty.destroy', $faculty->id]]) !!}
-                                    {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                                 {!! Form::close() !!}
-                                {{--<button class="btn btn-instagram" type="submit" onclick="return confirm('Do you want to delete this field?')"><a> Delete</a></button>--}}
                             </td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('faculty.edit',$faculty->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -50,6 +49,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+        {!! $faculties->links() !!}
     </div>
     <!-- /#page-wrapper -->
 @endsection

@@ -34,7 +34,6 @@
                             {!! Form::text('number',$subject->number,['class'=>'form-control']) !!}
                         </div>
                         {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}
-                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                         {!! Form::close() !!}
                 </div>
             </div>

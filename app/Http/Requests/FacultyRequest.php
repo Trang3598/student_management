@@ -23,9 +23,12 @@ class FacultyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-            'name'=>'required|min:5|max:50'
+        $arr_validate = [
+            'name'=>'required|min:5|max:50|unique:faculties'
         ];
+        if($this->faculty) {
+            $arr_validate['name'] = 'required|max:50|min:5';
+        }
+        return $arr_validate;
     }
 }

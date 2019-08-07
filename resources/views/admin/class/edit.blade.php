@@ -33,7 +33,6 @@
                         {!! Form::text('name',$class->name,['class' =>'form-control']) !!}
                     </div>
                         {!! Form::submit('Class Edit',['class'=> 'btn btn-default']) !!}
-                        {!! Form::button('Reset',['class'=>'btn btn-default']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

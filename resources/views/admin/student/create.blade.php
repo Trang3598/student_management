@@ -6,29 +6,34 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Student
-                        <small>Add</small>
-                    </h1>
+                    <table class="table table-hover">
+                        <tr>
+                            <td> <h1 class="page-header">Student
+                                    <small>Add</small>
+                                </h1></td>
+                            <td>
+                                <h1 class="page-header">
+                                    <small>Create Account</small>
+                                </h1></td>
+                        </tr>
+                    </table>
+
                     @if(count($errors) > 0)
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ $error}}</li>
                                 @endforeach
                             </ul>
                         </div>
                     @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                <div class="col-lg-7" style="padding-bottom:120px">
+                <div class="col-lg-6" style="padding-bottom:120px">
                     {!! Form::open(['route'=>'student.store','method'=>'POST','enctype'=>'multipart/form-data']) !!}
                     <div class="form-group">
                         {!! Form::label('class') !!}
-                        <select class="form-control" name="class_code" id="class_code">
-                            @foreach($classes as $class)
-                                <option value="{{$class->id}}">{{$class->name}}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::select('class_code', ['' => 'Please enter a class...'] + $cls,\Request::get('class_code'), ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Name') !!}
@@ -47,7 +52,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('Address')!!}
-                        {!! Form::textarea('address',old('address'),['class'=>'form-control ckeditor']) !!}
+                        {!! Form::text('address',old('address'),['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Gender') !!}
@@ -61,11 +66,26 @@
                             {!! Form::radio('gender','3') !!}{{'Other'}}
                         </label>
                     </div>
-                    {!! Form::submit('Student Add',['class'=> 'btn btn-default']) !!}
-                    {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
-                    {!! Form::close() !!}
-
                 </div>
+
+                {{--form of table account--}}
+                <div class="col-lg-6" style="padding-bottom:120px">
+                    <div class="form-group">
+                        {!! Form::label('Username') !!}
+                        {!! Form::text('username',old('username'),['class'=> 'form-control','placeholder' => 'Please Enter Username']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('Password') !!}
+                        {!! Form::password('password',['class'=> 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('Email')!!}
+                        {!! Form::text('email',old('email'),['class'=>'form-control','placeholder' => 'Please Enter Email']) !!}
+                    </div>
+                    {!! Form::submit('Student Add',['class'=> 'btn btn-success']) !!}
+                    {!! Form::close() !!}
+                </div>
+
             </div>
             <!-- /.row -->
         </div>

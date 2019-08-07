@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\LoginModel;
 use App\User;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
     public function index()
     {
         //
-
     }
 
     /**
@@ -32,11 +34,17 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LoginRequest $request,LoginModel $loginModel)
+    public function store(LoginRequest $request)
     {
         //
-        $loginModel->create($request->all());
-        return  redirect('admin/faculty/list')->with('message','Create account successfully');
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        if( Auth::attempt(['username' => $username, 'password' =>$password])) {
+            return redirect(route('user.index'))->with('message','Login sucessfully');
+        } else {
+            return redirect('login.create')->with('error','Username or pasword is incorrect');
+        }
     }
 
     /**

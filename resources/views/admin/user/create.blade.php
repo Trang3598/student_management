@@ -29,7 +29,7 @@
                         {!! Form::open(['method'=> 'POST','route'=>'user.store']) !!}
                         <div class="form-group">
                             {!! Form::label('Username') !!}
-                            {!! Form::text('name',old('name'),['class'=>'form-control','placeholder'=>'Please Enter UserName']) !!}
+                            {!! Form::text('username',old('username'),['class'=>'form-control','placeholder'=>'Please Enter UserName']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('Email') !!}
@@ -38,16 +38,6 @@
                         <div class="form-group">
                             {!! Form::label('Password') !!}
                             {!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password']) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('Level') !!}
-                                <label class="radio-inline">
-                                    {!! Form::radio('level','1') !!}{{'Admin'}}
-                                </label>
-                                <label class="radio-inline">
-                                    {!! Form::radio('level','1') !!}{{'Guest'}}
-                                </label>
-
                         </div>
                         {!! Form::submit('User Add',['class' => 'btn btn-default']) !!}
                         {!! Form::button('Reset',['class' => 'btn btn-default']) !!}

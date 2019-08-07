@@ -28,7 +28,7 @@ class SubjectRequest extends FormRequest
             'name' => 'required|min:2|max:50|unique:subjects',
             'number' =>'required|numeric|between:0,5'
         ];
-        if(!$this->get('id')){
+        if($this->subject){
             $array_validate[ 'name'] = 'required|min:2|max:50';
             $array_validate[ 'number'] = 'required|numeric|between:0,5' ;
         }

@@ -29,10 +29,9 @@
                     {!! Form::open(['method'=>'POST','route'=>'faculty.store']) !!}
                     <div class="form-group">
                         {!! Form::label('name','Name') !!}
-                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'faculty']) !!}
+                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'Add faculty name']) !!}
                     </div>
                         {!! Form::submit('Faculty Add',['class'=>'btn btn-default']) !!}
-                        {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

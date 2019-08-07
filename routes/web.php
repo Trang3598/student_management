@@ -14,10 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('studentsubject1/{id}','StudentSubjectController@addMore')->name('studentsubject.addmore');
+Route::get('addmore/{id}','StudentSubjectController@addMore')->name('studentsubject.addmore');
 Route::post('studentsubject','StudentSubjectController@addMoreAction')->name('studentsubject.addMoreAction');
-Route::get('studentsubject2/{id}','StudentSubjectController@destroyMore')->name('studentsubject.destroyMore');
+Route::get('destroyMore/{id}','StudentSubjectController@destroyMore')->name('studentsubject.destroyMore');
 Route::get('student','StudentController@search')->name('student.search');
+Route::get('sendMail/{id}','StudentController@sendMail')->name('student.sendMail');
+Route::get('sendAll','StudentController@sendMails')->name('student.sendAll');
 
 Route::group(['prefix' => 'admin'], function () {
         Route::resource('login', 'LoginController');

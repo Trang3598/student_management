@@ -65,7 +65,6 @@
                         </label>
                     </div>
                     {!! Form::submit('Student Edit',['class'=> 'btn btn-default']) !!}
-                    {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

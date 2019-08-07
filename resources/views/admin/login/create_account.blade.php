@@ -19,7 +19,8 @@
     <link href="{{asset('admin_asset/dist/css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"
+          type="text/css">
 
 </head>
 
@@ -34,27 +35,25 @@
                         {{session('message')}}
                     </div>
                 @endif
-                @if(count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                    @if(session('error'))
+                        <div class="alert alert-success">
+                            {{session('error')}}
+                        </div>
+                    @endif
                 <div class="panel-heading">
-                    <h3 class="panel-title">Please Create Account</h3>
+                    <h3 class="panel-title">Login</h3>
                 </div>
                 <div class="panel-body">
                     <form role="form" action="{{route('login.store')}}" method="POST">
                         <fieldset>
                             <input type="hidden" name="_token" value="{{csrf_token()}}"/>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus value="{{old('email')}}">
+                                <input class="form-control" placeholder="Usename" name="username" type="username" autofocus
+                                       value="{{old('username')}}">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="{{old('password')}}">
+                                <input class="form-control" placeholder="Password" name="password" type="password"
+                                       value="{{old('password')}}">
                             </div>
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>

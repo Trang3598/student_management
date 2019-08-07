@@ -44,7 +44,9 @@ class StudentSubjectController extends Controller
         //
         $students = StudentModel::all();
         $subjects = SubjectModel::all();
-        return view('admin.student_subject.create', compact('students', 'subjects'));
+        $sts = $students->pluck('name','id')->all();
+        $sjs = $subjects->pluck('name','id')->all();
+        return view('admin.student_subject.create', compact('students', 'subjects','sts','sjs'));
     }
 
     /**
@@ -93,7 +95,7 @@ class StudentSubjectController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentSubjectRequest $request, $id)
     {
         //
         $this->studentsubjectRepository->update($id, $request->all());
@@ -115,24 +117,24 @@ class StudentSubjectController extends Controller
 
     public function addMore($id)
     {
-        $studentsubjectss = $this->studentsubjectRepository->getListById($id);
+        $student = $this->studentRepository->getListById($id);
+        $studentsubjectss = $student->studentSubjects()->get();
         $subjects = SubjectModel::all();
-        return view('admin.student_subject.createMore', compact('subjects', 'students', 'studentsubjectss'));
+        return view('admin.student_subject.createMore', compact('subjects', 'student', 'studentsubjectss'));
     }
 
     public function addMoreAction(StudentSubjectRequest $request)
     {
         $data = [];
-        if (count($request->student_code) > 0) {
-            foreach ($request->student_code as $item => $value) {
+        if (!empty($request->student_code)) {
+            foreach ($request->subject_code as $item => $value) {
                 array_push($data, [
-                    'student_code' => $request->student_code[$item],
                     'subject_code' => $request->subject_code[$item],
                     'score' => $request->score[$item]
                 ]);
             }
         }
-        $student = $this->studentRepository->getListById($request->student_code[0]);
+        $student = $this->studentRepository->getListById($request->student_code);
         $scores = [];
         foreach ($data as $key => $value) {
             $scores[$value['subject_code']] = ['score' => $value['score']];
@@ -143,7 +145,7 @@ class StudentSubjectController extends Controller
 
     public function destroyMore($id)
     {
-        $results = $this->studentsubjectRepository->delete($id);
+        $this->studentsubjectRepository->delete($id);
         return redirect()->back();
 }
 }

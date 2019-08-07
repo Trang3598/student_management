@@ -30,7 +30,6 @@
                     {!! Form::text('number',old('number'),['class'=>'form-control','placeholder'=>'Please Enter Number of Credit']) !!}
                 </div>
                 {!! Form::submit('Result Add',['class' => 'btn btn-default']) !!}
-                {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                 {!! Form::close() !!}
             </div>
         </div>

@@ -16,14 +16,14 @@
                 </div>
                 <!-- /.col-lg-12 -->
 
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr align="center">
                         <th>ID</th>
                         <th>Name</th>
                         <th>Credit</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,12 +32,12 @@
                             <td>{{$subject->id}}</td>
                             <td>{{$subject->name}}</td>
                             <td>{{$subject->number}}</td>
+                            <td class="center"><button class="btn btn-success"><a style="color: white" href="{{route('subject.edit',$subject->id)}}">Edit</a></button></td>
                             <td>
                             {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->id]]) !!}
-                            {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                            {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                             {!! Form::close() !!}
                             </td>
-                            <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="{{route('subject.edit',$subject->id)}}">Edit</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -46,6 +46,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+        {!! $subjects->links() !!}
     </div>
     <!-- /#page-wrapper -->
 @endsection

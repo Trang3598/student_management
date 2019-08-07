@@ -67,5 +67,6 @@
 
 @yield('script')
 </body>
-
+<!-- Bootstrap Core JavaScript -->
+<script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 </html>

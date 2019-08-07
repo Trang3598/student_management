@@ -15,15 +15,15 @@
                     @endif
                 </div>
                 <!-- /.col-lg-12 -->
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr align="center">
                         <th>ID</th>
                         <th>Student</th>
                         <th>Subject</th>
                         <th>Score</th>
-                        <th>Delete</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,30 +34,26 @@
                                 <td>{{(isset($studentsubject->student)) ?$studentsubject->student->name:''}}</td>
                                 <td> {{(isset($studentsubject->subject)) ?$studentsubject->subject->name:''}}</td>
                                 <td>{{$studentsubject->score}}</td>
+                                <td class="center">
+                                    <button class="btn btn-success"><a style="color: white"
+                                                                       href="{{route('studentsubject.edit',$studentsubject->id)}}">Edit</a>
+                                    </button>
+                                </td>
                                 <td> {!! Form::open(['method'=> 'DELETE','route' => ['studentsubject.destroy', $studentsubject->id]]) !!}
-                                    {!! Form::submit('Delete',['class'=>'btn btn-instagram']) !!}
+                                    {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                                     {!! Form::close() !!}</td>
-                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
-                                            href="{{route('studentsubject.edit',$studentsubject->id)}}">Edit</a></td>
+
                             </tr>
                         @endforeach
 
                     </tbody>
                 </table>
             </div>
-            <div style="">
-                <td class="center">
-
-                        <button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>
-                            <a href="{{route('studentsubject.addmore',$studentsubject->student_code)}}">
-                                Add More</a>
-                        </button>
-                </td>
-            </div>
         @endif
         <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+        {!! $studentsubjects->links() !!}
     </div>
 
     <!-- /#page-wrapper -->

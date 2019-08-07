@@ -26,18 +26,13 @@
                     {!! Form::open(['method'=>'POST','route'=> 'class.store']) !!}
                     <div class="form-group">
                         {!! Form::label('Faculty Name') !!}
-                        <select class="form-control" name="faculty_id">
-                            @foreach($faculties as $faculty)
-                                <option value="{{$faculty->id}}">{{$faculty->name}}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::select('faculty_id', ['' => 'Please enter a faculty...'] + $fls,\Request::get('faculty_id'), ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Class Name') !!}
                         {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'Please Enter Name Of Class']) !!}
                     </div>
                         {!! Form::submit('Class Add',['class'=>'btn btn-default']) !!}
-                        {!! Form::button('Reset',['class'=>'btn btn-default']) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
