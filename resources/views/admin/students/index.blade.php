@@ -23,7 +23,7 @@
                     <Small>
                         MARK-COUNT
                     </Small>
-                    {!! Form::select('mark_count', ['0' => 'Mark-Count', '1' => 'Enough mark-count','2' => 'Not enough Mark-Count'],null,['class'=>'form-control']) !!}
+                    {!! Form::select('mark_count', ['0' => 'Mark-Count', '1' => 'Enough mark-count','2' => 'Not enough Mark-Count'],\Request::get('mark_count'),['class'=>'form-control']) !!}
                     <br>
 
                 </div>
@@ -85,13 +85,14 @@
         <thead>
         <tr align="center">
             <th>ID</th>
-            <th>Class-Code</th>
+            <th>Class-Name</th>
             <th>Student</th>
             <th>Gender</th>
             <th>Birthday</th>
             <th>Image</th>
             <th>Address</th>
             <th>Phone</th>
+            <th>Account</th>
             <th>Delete</th>
             <th>Edit</th>
             <th>Point</th>
@@ -102,13 +103,14 @@
         @foreach($students as $student)
             <tr class="odd gradeX" align="center">
                 <td>{{$student->id}}</td>
-                <td>{{$student->class_code}}</td>
+                <td>{{$student->students->name}}</td>
                 <td>{{$student->name}}</td>
                 <td>@if($student->gender == 1) Male @else Female @endif</td>
                 <td>{{$student->birthday}}</td>
                 <td><img src="{{ asset('img/' . $student->image) }}" style="width: 50px;height: 50px"></td>
                 <td>{{$student->address}}</td>
                 <td>{{$student->phone}}</td>
+                <td><a href="{{route('students.account',['Student'=>$student])}}"><i class="fa fa-lock fa-fw"></i></a></td>
                 <td class="center">
                     {!! Form::open(['method'=>"Post",'route'=>['students.destroy',$student->id]]) !!}
                     <input type="hidden" name="_method" value="DELETE">
@@ -116,10 +118,8 @@
                             class="fa fa-trash-o  fa-fw"></i></button>
                     {!! Form::close() !!}
                 </td>
-                <td class="center"><a href="{{route('students.edit',['Student'=>$student])}}"><i
-                            class="fa fa-edit fa-fw"></i></a></td>
-                <td class="center"><a href="{{route('students.show',['Student'=>$student])}}"><i
-                            class="fa fa-search fa-fw"></i></a></td>
+                <td class="center"><a href="{{route('students.edit',['Student'=>$student])}}"><i class="fa fa-edit fa-fw"></i></a></td>
+                <td class="center"><a href="{{route('students.show',['Student'=>$student])}}"><i class="fa fa-search fa-fw"></i></a></td>
                 <td>
                     {!! Form::open(['method' => 'GET','route' => ['students.more',$student->id]]) !!}
                     {!! Form::submit('Add',['class'=>"btn btn-success",]) !!}

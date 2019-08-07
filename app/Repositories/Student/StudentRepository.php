@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class StudentRepository extends BaseRepository implements StudentRepositoryInterface
 {
+    const ENOUGHMARKCOUNT = 1;
+    const NOTENOUGHMARKCOUNT = 2;
     protected $class;
     protected $mark;
     protected $subject;
@@ -57,10 +59,10 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
         }
         if (isset($data['mark_count'])) {
             $subjects = DB::table('subjects')->count();
-            if ($data['mark_count'] == 1) {
+            if ($data['mark_count'] == self::ENOUGHMARKCOUNT) {
                 $students->has('subjects', '=', $subjects);
             }
-            if ($data['mark_count'] == 2) {
+            if ($data['mark_count'] ==  self::NOTENOUGHMARKCOUNT) {
                 $students->has('subjects', '<>', $subjects);
             }
         }
@@ -84,11 +86,12 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
 
     public function failStudents()
     {
-        $students = $this->model->all();
+        $subjects = DB::table('subjects')->count();
+        $students = $this->model->has('subjects', '=', $subjects)->get();
         $warning = [];
         foreach ($students as $key => $student) {
             $avg = $student->marks->Avg('score');
-            if ($avg < 5 ){
+            if ($avg < 5) {
                 $warning[] = $student;
             }
         }

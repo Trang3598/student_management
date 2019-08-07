@@ -46,6 +46,10 @@ Route::get('search', 'StudentController@search');
 /*
  * Route View Add more
  */
+Route::get('students/{student}/account','StudentController@account')->name('students.account');
+/*
+ * Route View Add more
+ */
 Route::get('students/{student}/more','StudentController@more')->name('students.more');
 /*
  * Route Add more
@@ -63,7 +67,22 @@ Route::put('student/{student}','StudentController@send')->name('students.send');
  *
  */
 Route::get('student/sendAll','StudentController@sendAll')->name('student.sendAll');
-
+/*
+ * Edit account
+ */
+Route::get('users/{user}/edit','UserController@edit')->name('users.edit');
+/*
+ * Update account
+ */
+Route::put('users/{user}/update','UserController@update')->name('users.update');
+/*
+ * Change password
+ */
+Route::get('users/{user}/change','UserController@change')->name('users.change');
+/*
+ * Changed password
+ */
+Route::put('users/{user}/update','UserController@changed')->name('users.changed');
 
 
 

@@ -172,6 +172,14 @@ class StudentController extends Controller
         $student->subjects()->sync($result);
         return redirect(route('students.index'))->with(['success' => 'create success']);
     }
+    public function account($id)
+    {
+        $student = $this->studentRepository->getListById($id);
+
+        $user = $this->userRepository->getListById($student['user_id']);
+
+        return view('admin.users.index', compact('student', 'user'));
+    }
 
     public function mail(){
         $students = $this->studentRepository->failStudents();
@@ -185,6 +193,7 @@ class StudentController extends Controller
         foreach ($users as $user){
             $email = $user['email'];
         }
+        $this->dispatch(new FailStudents($user));
         Mail::to($email)->send(new FailStudents($user));
         return redirect()->back()->with(['success' => 'send success']);
     }
@@ -196,8 +205,5 @@ class StudentController extends Controller
         }
         return redirect()->back()->with(['success' => 'send success']);
     }
-
-
-
 }
 

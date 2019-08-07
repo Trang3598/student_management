@@ -25,21 +25,18 @@
                             </td>
                             <td>
                                 <button type="button" name="remove"
-                                        class="btn btn-danger btn_remove"><a
-                                        href="#"><i class="glyphicon glyphicon-remove"></i></a>
+                                        class="btn btn-danger btn_remove"><a href="#"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
                                 </button>
                             </td>
                         </tr>
                     @endforeach
                     {{--end show list--}}
 
-                    <tr class="addform count">
+                    <tr class="addform count ">
                         <div>
-                            <button type="button" name="add" id="add" class="btn btn-success">
-                                <i class="glyphicon glyphicon-plus"></i>
-                            </button>
+                            <button type="button" name="add" id="add" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button>
                             <td>
-
                                 <select class="form-control" name="subject_code[]">
                                     @foreach($subjects as $subject)
                                         <option value="{{$subject->id}}">{{$subject->name}}</option>
@@ -51,7 +48,7 @@
                             </td>
                             <td>
                                 <button type="button" name="remove"
-                                        class="btn btn-danger btn_remove"><i class="glyphicon glyphicon-remove"></i>
+                                    class="btn btn-danger btn_remove"><a href="#"><i class="glyphicon glyphicon-remove"></i></a>
                                 </button>
                             </td>
                         </div>
