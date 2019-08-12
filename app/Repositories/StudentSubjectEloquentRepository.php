@@ -20,7 +20,7 @@ class StudentSubjectEloquentRepository  extends EloquentRepository
     }
     public function getListById($id)
     {
-        return $this->studentsubjectModel->where('student_code','=',$id)->get();
+        return $this->studentsubjectModel->where('student_code','=',$id)->paginate(5);
     }
 
 }

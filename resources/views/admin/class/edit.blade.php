@@ -22,11 +22,7 @@
                     {!! Form::open(['method'=>'PUT','route'=> ['class.update','class'=>$class]]) !!}
                     <div class="form-group">
                         {!! Form::label('faculty') !!}
-                        <select class="form-control" name="Faculty">
-                            @foreach($faculties as $faculty)
-                                <option value="{{$faculty->id}}" {{$class->faculty_id == $faculty->id ? 'selected': ''}}>{{$faculty->name}}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::select('faculty_id', ['' => 'Please enter a faculty...'] + $fls,$class->faculty_id, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('class') !!}

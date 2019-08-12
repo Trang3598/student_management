@@ -15,16 +15,22 @@
         <!-- /.dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                </li>
-                <li class="divider"></li>
-                <li><a href="{{route('login.create')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                </li>
+                @if(isset($user_login))
+                    <li><i class="fa fa-user fa-fw" style="margin-left: 20px"></i>{{$user_login->username}}</a>
+                    </li>
+                    <li><a href="{{route('user.edit',$user_login->id)}}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        {!! Form::open(['method'=>'POST', 'route'=>'logout']) !!}
+                        <i class="fa fa-sign-out fa-fw" style="margin-left: 20px"></i>
+                        {!! Form::submit('Logout', ['style'=> 'margin-left: 20px, display: inline; border: none;background: none;']) !!}
+                        {!! Form::close() !!}
+                    </li>
+                @endif
             </ul>
             <!-- /.dropdown-user -->
         </li>

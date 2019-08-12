@@ -13,7 +13,21 @@ return [
     | to have a conventional place to find your various credentials.
     |
     */
-
+    'facebook' => [
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('FACEBOOK_CALLBACK_URL'),
+    ],
+    'google' => [
+        'client_id' => env('GOOGLE_APP_ID'),
+        'client_secret' => env('GOOGLE_APP_SECRET'),
+        'redirect' => env('GOOGLE_CALLBACK_URL'),
+    ],
+    'twitter' => [
+        'client_id' => env('TWITTER_APP_ID'),
+        'client_secret' => env('TWITTER_APP_SECRET'),
+        'redirect' => env('TWITTER_CALLBACK_URL'),
+    ],
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

@@ -28,6 +28,8 @@ class StudentController extends Controller
 
     public function __construct(StudentEloquentRepository $studentRepository, UserEloquentRepository $userEloquentRepository)
     {
+        parent::__construct();
+
         $this->studentRepository = $studentRepository;
         $this->userRepository = $userEloquentRepository;
     }
@@ -54,8 +56,8 @@ class StudentController extends Controller
     {
         //
         $classes = ClassModel::all();
-        $cls = $classes->pluck('name','id')->all();
-        return view('admin.Student.create', compact('classes','cls'));
+        $cls = $classes->pluck('name', 'id')->all();
+        return view('admin.Student.create', compact('classes', 'cls'));
     }
 
     /**
@@ -97,7 +99,7 @@ class StudentController extends Controller
     {
         //
         $studentsubjects = $this->studentRepository->showResults($id);
-        return view('admin.student_subject.list', compact('studentsubjects','id'));
+        return view('admin.student_subject.list', compact('studentsubjects', 'id'));
     }
 
     /**
@@ -111,7 +113,8 @@ class StudentController extends Controller
         //
         $classes = ClassModel::all();
         $student = $this->studentRepository->find($id);
-        return view('admin.Student.edit', compact('classes', 'student'));
+        $cls = $classes->pluck('name', 'id')->all();
+        return view('admin.Student.edit', compact('classes', 'student', 'cls'));
     }
 
     /**
@@ -121,7 +124,7 @@ class StudentController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
         //
         $data = $request->all();
@@ -131,8 +134,9 @@ class StudentController extends Controller
             $file->move('images', $image);
             $data['image'] = $image;
         }
-        $this->studentRepository->update($id, $data);
-        return redirect(route('student.index'))->with('message', 'Edit successfully');
+        $students = $this->studentRepository->update($id, $data);
+//        return redirect(route('student.index'))->with('message', 'Edit successfully');
+        return response()->json($students);
 
     }
 
@@ -148,16 +152,18 @@ class StudentController extends Controller
         $this->studentRepository->delete($id);
         return redirect()->route('student.index')->with('message', 'Delete successfully');
     }
+
     public function sendMail($id)
     {
         $user = User::findOrFail($id);
         dispatch(new SendEmailJob($user))->delay(Carbon::now()->addMinutes(0.5));
-        return redirect()->back()->with('message','Send Mail Sucessfully');
+        return redirect()->back()->with('message', 'Send Mail Sucessfully');
     }
+
     public function sendMails()
     {
         $students = $this->studentRepository->findScoreOfStudent(request()->all());
-        foreach ($students as $student){
+        foreach ($students as $student) {
             dispatch(new SendEmailJob($student->user))->delay(Carbon::now()->addMinutes(0.5));
         }
         return view('admin.Student.list', compact('students'));

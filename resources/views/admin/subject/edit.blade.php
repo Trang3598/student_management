@@ -26,11 +26,11 @@
                         @endif
                     {!! Form::open(['route'=>['subject.update','subject'=>$subject],'method'=>'PUT']) !!}
                         <div class="form-group">
-                            {!!  Form::label('subject') !!}
+                            {!!  Form::label('Name of Subject') !!}
                             {!! Form::text('name',$subject->name,['class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            {!!  Form::label('subject') !!}
+                            {!!  Form::label('Number of credit') !!}
                             {!! Form::text('number',$subject->number,['class'=>'form-control']) !!}
                         </div>
                         {!! Form::submit('Result Edit',['class' => 'btn btn-default']) !!}

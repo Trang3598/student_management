@@ -26,16 +26,18 @@
     22 => 'Barryvdh\\Debugbar\\ServiceProvider',
     23 => 'BeyondCode\\DumpServer\\DumpServerServiceProvider',
     24 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    25 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    26 => 'Collective\\Html\\HtmlServiceProvider',
-    27 => 'Carbon\\Laravel\\ServiceProvider',
-    28 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    29 => 'Collective\\Html\\HtmlServiceProvider',
-    30 => 'App\\Providers\\AppServiceProvider',
-    31 => 'App\\Providers\\AuthServiceProvider',
-    32 => 'App\\Providers\\EventServiceProvider',
-    33 => 'App\\Providers\\RouteServiceProvider',
-    34 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    25 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    26 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    27 => 'Collective\\Html\\HtmlServiceProvider',
+    28 => 'Carbon\\Laravel\\ServiceProvider',
+    29 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    30 => 'Collective\\Html\\HtmlServiceProvider',
+    31 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    32 => 'App\\Providers\\AppServiceProvider',
+    33 => 'App\\Providers\\AuthServiceProvider',
+    34 => 'App\\Providers\\EventServiceProvider',
+    35 => 'App\\Providers\\RouteServiceProvider',
+    36 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -165,6 +167,7 @@
     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
+    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
     'html' => 'Collective\\Html\\HtmlServiceProvider',
     'form' => 'Collective\\Html\\HtmlServiceProvider',
@@ -208,6 +211,9 @@
     array (
     ),
     'Illuminate\\Validation\\ValidationServiceProvider' => 
+    array (
+    ),
+    'Laravel\\Socialite\\SocialiteServiceProvider' => 
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 

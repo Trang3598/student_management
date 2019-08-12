@@ -13,6 +13,9 @@
                             {{session('message')}}
                         </div>
                     @endif
+                    <div class="edit-form">
+
+                    </div>
                     {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
                         <table class="table table-hover" style="width:600px">
                             <tr>
@@ -108,10 +111,12 @@
                             <td class="center"><i class="glyphicon glyphicon-eye-open"></i>
                                 <a href="{{route('studentsubject.addmore',$student->id)}}">Show</a>
                             </td>
+
                             <td class="center">
                                 <button class="btn btn-success"><a
                                             href="{{route('student.edit',$student->id)}}" style="color: white">Edit</a>
                                 </button>
+                                {{--<button class="btn btn-success" id="edit-item">Edit</button>--}}
                             </td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
@@ -132,5 +137,18 @@
 
     </div>
     <!-- /#page-wrapper -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('edit-item').click(function(status){
+                if(status == 'success'){
+                    alert('success');
+                }
+                if(status == 'error'){
+                    alert('fail');
+                }
+                $(".edit-form").load('edit.blade.php');
+            });
+        });
+    </script>
 
 @endsection

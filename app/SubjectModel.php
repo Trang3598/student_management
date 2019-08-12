@@ -11,7 +11,7 @@ class SubjectModel extends Model
     public $timestamps = false;
     protected $fillable = ['name', 'number'];
 
-    public function studentsubject2()
+    public function studentsubject()
     {
         return $this->hasMany('App\StudentSubjectModel');
     }

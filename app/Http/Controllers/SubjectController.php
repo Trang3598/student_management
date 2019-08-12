@@ -13,6 +13,7 @@ class SubjectController extends Controller
     public function __construct(SubjectEloquentRepository $subjectRepository)
     {
         $this->subjectRepository = $subjectRepository;
+        parent::__construct();
     }
     /**
      * Display a listing of the resource.

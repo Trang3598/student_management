@@ -66,6 +66,8 @@
                             {!! Form::radio('gender','3') !!}{{'Other'}}
                         </label>
                     </div>
+                    {!! Form::hidden('level',0,['class'=> 'form-control']) !!}
+                    {!! Form::hidden('student',0,['class'=> 'form-control']) !!}
                 </div>
 
                 {{--form of table account--}}
@@ -77,6 +79,10 @@
                     <div class="form-group">
                         {!! Form::label('Password') !!}
                         {!! Form::password('password',['class'=> 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('Confirm Password') !!}
+                        {!! Form::password('confirm',['class'=> 'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Email')!!}

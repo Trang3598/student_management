@@ -14,6 +14,7 @@ class ClassController extends Controller
     public function __construct(ClassEloquentRepository $classRepository)
     {
         $this->classRepository = $classRepository;
+        parent::__construct();
     }
     /**
      * Display a listing of the resource.

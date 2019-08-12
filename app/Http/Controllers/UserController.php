@@ -12,6 +12,7 @@ class UserController extends Controller
     protected $userRepository;
     public function __construct(UserEloquentRepository $userRepository)
     {
+        parent::__construct();
         $this->userRepository = $userRepository;
     }
     /**
@@ -81,10 +82,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         //
-        $this->userRepository->update($id,  $request->all());
+        dd($request->all());
+        $this->userRepository->update($id,$request->all());
         return redirect(route('user.index'))->with('message', 'Edit successfully');
     }
 

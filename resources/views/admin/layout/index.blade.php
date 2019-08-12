@@ -18,15 +18,18 @@
     <link href="{{asset('admin_asset/dist/css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('admin_asset/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"
+          type="text/css">
 
     <!-- DataTables CSS -->
-    <link href="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+    <link href="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}"
+          rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
-    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.css')}}" rel="stylesheet">
-    <script type="text/javascript" language="javascript" src="admin_asset/ckeditor/ckeditor.js" ></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.css')}}"
+          rel="stylesheet">
+    <script type="text/javascript" language="javascript" src="admin_asset/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -58,13 +61,12 @@
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#dataTables-example').DataTable({
             responsive: true
         });
     });
 </script>
-
 @yield('script')
 </body>
 <!-- Bootstrap Core JavaScript -->

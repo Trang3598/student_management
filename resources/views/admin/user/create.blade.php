@@ -39,6 +39,15 @@
                             {!! Form::label('Password') !!}
                             {!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password']) !!}
                         </div>
+                        <div class="form-group">
+                            {!! Form::label('Level') !!}
+                            <label class="radio-inline">
+                                {!! Form::radio('level','1') !!}{{'Admin'}}
+                            </label>
+                            <label class="radio-inline">
+                                {!! Form::radio('level','0') !!}{{'Guest'}}
+                            </label>
+                        </div>
                         {!! Form::submit('User Add',['class' => 'btn btn-default']) !!}
                         {!! Form::button('Reset',['class' => 'btn btn-default']) !!}
                         {!! Form::close() !!}

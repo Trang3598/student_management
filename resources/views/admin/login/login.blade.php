@@ -35,30 +35,30 @@
                         {{session('message')}}
                     </div>
                 @endif
-                    @if(session('error'))
-                        <div class="alert alert-success">
-                            {{session('error')}}
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endif
                 <div class="panel-heading">
                     <h3 class="panel-title">Login</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="{{route('login.store')}}" method="POST">
+                    {!! Form::open(['method' => 'POST','route' => 'login.store' , 'role' =>'form']) !!}
                         <fieldset>
-                            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Usename" name="username" type="username" autofocus
-                                       value="{{old('username')}}">
+                                {!! Form::text('username',old('username'),['class'=> 'form-control','placeholder'=>'Usename'],'autofocus') !!}
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password"
-                                       value="{{old('password')}}">
+                                {!! Form::password('password',['class'=> 'form-control','placeholder'=>'Password']) !!}
                             </div>
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                            {!! Form::submit('Login',['class'=>'btn btn-lg btn-success btn-block']) !!}
                         </fieldset>
-                    </form>
+                   {!! Form::close() !!}
                 </div>
             </div>
         </div>

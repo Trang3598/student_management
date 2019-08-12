@@ -19,6 +19,7 @@ class FacultyController extends Controller
     public function __construct(FacultyEloquentRepository $facultyRepository)
     {
         $this->facultyRepository = $facultyRepository;
+        parent::__construct();
     }
     public function index()
     {

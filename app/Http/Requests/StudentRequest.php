@@ -24,24 +24,17 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         $arr_validate = [
-            //
             'name' => 'required|min:5',
             'birthday' => 'required|date|before:now',
             'image' => 'mimes:jpeg,bmp,png|required',
-            'phone' => 'required|numeric',
+            'phone' => ['required','numeric','regex:/(^0[3|7|8|9][0-9]{8}$)/u'],
             'gender' => 'required',
-            'class_code' =>'required'
+            'class_code' => 'required'
         ];
-        if ($this->student) {
-            $arr_validate['class_code'] = 'required';
-            $arr_validate['name'] = 'required|max:50|min:5';
-            $arr_validate['birthday'] = 'required|date|before:now';
-            $arr_validate['image'] = 'mimes:jpeg,bmp,png|required';
-           $arr_validate['phone'] = 'required|numeric|';
-        }
-        if($this->request->has('username')) {
+        if (!$this->student){
             $arr_validate['username'] = 'required|min:5|unique:users';
-            $arr_validate['password'] = 'required|min:5|';
+            $arr_validate['password'] = 'required|min:5|required_with:confirm|same:confirm';
+            $arr_validate['confirm'] = 'required|min:5|same:password';
             $arr_validate['email'] = 'required|email|unique:users';
         }
         return $arr_validate;

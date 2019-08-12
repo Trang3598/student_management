@@ -21,7 +21,7 @@
                         <th>ID</th>
                         <th>UserName</th>
                         <th>Email</th>
-                        <th>Password</th>
+                        <th>Level</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -32,7 +32,13 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->username}}</td>
                             <td>{{$user->email}}</td>
-                            <td>{{$user->password}}</td>
+                            <td>
+                                @if($user->level == 1)
+                                    {{'Admin'}}
+                                    @else
+                                    {{'Guest'}}
+                                    @endif
+                            </td>
                             <td class="center"><button class="btn btn-success"><a style="color: white"
                                             href="{{route('user.edit',$user->id)}}">Edit</a></button> </td>
                             <td>

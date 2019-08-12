@@ -33,40 +33,41 @@
                                 <table class="table" id="dynamic_field">
                                     {{--show list--}}
                                     @if(sizeof($studentsubjectss) > 0 )
-                                    @foreach($studentsubjectss as $studentsubject)
-                                        <tr class="count">
-                                            <td>
-                                                <select class="form-control" name="subject_code[]">
-                                                    @foreach($subjects as $subject)
-                                                        <option value="{{$subject->id}}" {{$subject->id == $studentsubject->subject_code ?'selected' : ''}}>{{$subject->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                {!! Form::text('score[]',$studentsubject->score,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
-                                            </td>
-                                            <td>
-                                                <button type="button" name="remove"
-                                                        class="btn btn-danger btn_remove"><a style="color: white"
-                                                            href="{{route('studentsubject.destroyMore',$studentsubject->id)}}">X</a>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($studentsubjectss as $studentsubject)
+                                            <tr class="count">
+                                                <td>
+                                                    {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
+                                                    <select class="form-control" name="subject_code[]">
+                                                        <option>Please enter a subject</option>
+                                                        @foreach($subjects as $subject)
+                                                            <option value="{{$subject->id}}" {{$subject->id == $studentsubject->subject_code ?'selected' : ''}}>{{$subject->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    {!! Form::text('score[]',$studentsubject->score,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
+                                                </td>
+                                                <td>
+                                                    <button type="button" name="remove"
+                                                            class="btn btn-danger btn_remove">X
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endif
                                     {{--end show list--}}
 
                                     <tr class="addform count">
                                         <div class="form-group col-xs-6">
-
                                             <button type="button" name="add" id="add" class="btn btn-success">
                                                 Add More
                                             </button>
                                             <td>
+                                                {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
                                                 <select class="form-control" name="subject_code[]">
-                                                    @foreach($subjects as $subject)
-                                                        <option value="{{$subject->id}}">{{$subject->name}}</option>
-                                                    @endforeach
+                                                @foreach($subjects as $subject)
+                                                <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                                @endforeach
                                                 </select>
                                             </td>
                                             <td>
@@ -88,16 +89,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.row -->
-
         </div>
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-
-
     </div>
     <!-- /#wrapper -->
     <script type="text/javascript">
@@ -108,9 +105,9 @@
                 var len = $('tr.count').length;
                 var subject = $('p#number-subject').html();
                 if (len < subject) {
-                    $('#dynamic_field').append('<tr>' + form + '</tr>');
+                    $('#dynamic_field').append('<tr class="count">' + form + '</tr>');
                 } else {
-                    alert('Students just have ' + subject + ' subjects !')
+                    alert('Students just only have ' + subject + ' subjects !')
                 }
                 var $select = $("select");
                 var selected = [];
@@ -126,7 +123,7 @@
             });
             $(document).on('click', '.btn_remove', function () {
 
-                if ($(this).parent().parent().hasClass('addform')) {
+                if ($(this).parent().parent().hasClass('.addform')) {
                     stop();
                 } else {
                     $(this).parent().parent().remove();

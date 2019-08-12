@@ -16,20 +16,20 @@
                         {{session('message')}}
                     </div>
                 @endif
-                @if(session('error'))
-                    <div class="alert alert-success">
-                        {{session('error')}}
+                @if(count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
                 <div class="col-lg-7" style="padding-bottom:120px">
                     {!! Form::open(['route'=>['student.update','student' => $student],'method'=>'PUT','enctype'=>'multipart/form-data']) !!}
                     <div class="form-group">
-                        {!! Form::label('Class code') !!}
-                        <select class="form-control" name="class_code">
-                            @foreach($classes as $class)
-                                <option value="{{$class->id}}" {{$class->id == $student->class_code ? 'selected': ''}}> {{$class->name}}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('Class Code ') !!}
+                        {!! Form::select('class_code', ['' => 'Please enter a class...'] +$cls,$student->class_code, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('Name') !!}

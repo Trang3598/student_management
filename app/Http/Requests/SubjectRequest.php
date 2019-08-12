@@ -23,15 +23,13 @@ class SubjectRequest extends FormRequest
      */
     public function rules()
     {
-        $array_validate = [
-            //
-            'name' => 'required|min:2|max:50|unique:subjects',
+        $arr_validate = [
+            'name' => 'required|min:3|max:50|unique:subjects,name',
             'number' =>'required|numeric|between:0,5'
         ];
         if($this->subject){
-            $array_validate[ 'name'] = 'required|min:2|max:50';
-            $array_validate[ 'number'] = 'required|numeric|between:0,5' ;
+            $arr_validate['name'] = 'required|min:3|max:50|unique:subjects,name,'.$this->subject;
         }
-        return $array_validate;
+        return $arr_validate;
     }
 }

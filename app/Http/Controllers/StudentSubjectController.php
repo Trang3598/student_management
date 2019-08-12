@@ -19,6 +19,7 @@ class StudentSubjectController extends Controller
     {
         $this->studentsubjectRepository = $studentsubjectRepository;
         $this->studentRepository = $studentRepository;
+        parent::__construct();
 
     }
 
@@ -120,7 +121,8 @@ class StudentSubjectController extends Controller
         $student = $this->studentRepository->getListById($id);
         $studentsubjectss = $student->studentSubjects()->get();
         $subjects = SubjectModel::all();
-        return view('admin.student_subject.createMore', compact('subjects', 'student', 'studentsubjectss'));
+        $sjs = $subjects->pluck('name','id')->all();
+        return view('admin.student_subject.createMore', compact('subjects', 'student', 'studentsubjectss','sjs'));
     }
 
     public function addMoreAction(StudentSubjectRequest $request)
@@ -140,7 +142,9 @@ class StudentSubjectController extends Controller
             $scores[$value['subject_code']] = ['score' => $value['score']];
         }
         $student->subjects()->sync($scores);
-        return redirect(route('studentsubject.index'))->with('message', 'Add successfully');
+
+        $studentsubjects =  $this->studentsubjectRepository->getListById($request->student_code);
+        return view('admin.student_subject.list',compact('studentsubjects'));
     }
 
     public function destroyMore($id)
