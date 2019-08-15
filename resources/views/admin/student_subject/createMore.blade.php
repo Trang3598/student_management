@@ -65,9 +65,10 @@
                                             <td>
                                                 {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
                                                 <select class="form-control" name="subject_code[]">
-                                                @foreach($subjects as $subject)
-                                                <option value="{{$subject->id}}">{{$subject->name}}</option>
-                                                @endforeach
+                                                    <option value="">Please enter a subject ...</option>
+                                                    @foreach($subjects as $subject)
+                                                        <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                                    @endforeach
                                                 </select>
                                             </td>
                                             <td>
@@ -95,11 +96,10 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-    </div>
+    {{--</div>--}}
     <!-- /#wrapper -->
     <script type="text/javascript">
         $(document).ready(function () {
-
             var form = $('.addform').html();
             $('#add').click(function () {
                 var len = $('tr.count').length;
@@ -110,6 +110,7 @@
                     alert('Students just only have ' + subject + ' subjects !')
                 }
                 var $select = $("select");
+                hv
                 var selected = [];
                 $.each($select, function (index, select) {
                     if (select.value !== "") {

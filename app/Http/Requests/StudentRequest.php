@@ -26,7 +26,7 @@ class StudentRequest extends FormRequest
         $arr_validate = [
             'name' => 'required|min:5',
             'birthday' => 'required|date|before:now',
-            'image' => 'mimes:jpeg,bmp,png|required',
+//            'image' => 'mimes:jpeg,bmp,png|required',
             'phone' => ['required','numeric','regex:/(^0[3|7|8|9][0-9]{8}$)/u'],
             'gender' => 'required',
             'class_code' => 'required'

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Repositories\UserEloquentRepository;
-use App\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 
 class UserController extends Controller
 {
@@ -85,7 +85,6 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         //
-        dd($request->all());
         $this->userRepository->update($id,$request->all());
         return redirect(route('user.index'))->with('message', 'Edit successfully');
     }
@@ -98,8 +97,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userRepository->delete($id);
-
-        return redirect(route('user.index'))->with('message','Delete successfully');
+        if (Gate::allows('level', 'user')) {
+            $this->userRepository->delete($id);
+            return redirect(route('user.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('user.index'))->with('error', 'You have no permission to perform this action');
     }
+
 }

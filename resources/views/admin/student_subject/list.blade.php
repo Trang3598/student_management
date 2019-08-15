@@ -53,7 +53,7 @@
         <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        {!! $studentsubjects->links() !!}
+        {{--{!! $studentsubjects->links() !!}--}}
     </div>
 
     <!-- /#page-wrapper -->

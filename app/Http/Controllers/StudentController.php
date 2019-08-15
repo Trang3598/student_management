@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use App\ClassModel;
 use App\Http\Requests\StudentRequest;
 use App\Jobs\SendEmailJob;
-use App\Mail\BadStudent;
 use App\Repositories\StudentEloquentRepository;
 use App\Repositories\UserEloquentRepository;
-use App\StudentModel;
 use App\SubjectModel;
 use App\User;
-
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 
 class StudentController extends Controller
@@ -25,11 +18,9 @@ class StudentController extends Controller
     protected $studentRepository;
     protected $userRepository;
 
-
     public function __construct(StudentEloquentRepository $studentRepository, UserEloquentRepository $userEloquentRepository)
     {
         parent::__construct();
-
         $this->studentRepository = $studentRepository;
         $this->userRepository = $userEloquentRepository;
     }
@@ -43,7 +34,7 @@ class StudentController extends Controller
     {
         $students = $this->studentRepository->searchStudent(request()->all());
         $subjects = SubjectModel::all();
-        return view('admin.Student.list', compact('students', 'subjects'));
+        return view('admin.Student.list', compact('students', 'classes'));
 
     }
 
@@ -110,11 +101,10 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
         $classes = ClassModel::all();
         $student = $this->studentRepository->find($id);
-        $cls = $classes->pluck('name', 'id')->all();
-        return view('admin.Student.edit', compact('classes', 'student', 'cls'));
+//        $cls = $classes->pluck('name', 'id')->all();
+        return view('admin.student.popupForm', compact('classes', 'student'));
     }
 
     /**
@@ -136,7 +126,10 @@ class StudentController extends Controller
         }
         $students = $this->studentRepository->update($id, $data);
 //        return redirect(route('student.index'))->with('message', 'Edit successfully');
-        return response()->json($students);
+        return response()->json([
+            'student' => $students,
+            'redirect_url' => route('student.index'),
+        ]);
 
     }
 

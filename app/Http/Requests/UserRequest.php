@@ -30,17 +30,18 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $array_validate = [
+        $arr_validate = [
             'username' => 'required|min:3|max:50|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:5|max:10',
+//            'password' => 'required|min:5|max:10',
             'level' => 'required'
         ];
-        if ($this->user) {
-            $array_validate['username'] = 'required|min:3|max:50|unique:users,username,'.$this->user;
-             $array_validate['email'] = 'required|email|unique:users,email,'.$this->user;
-       }
+        if($this->user){
+            $arr_validate['username'] = 'required|min:3|max:50|unique:users,username,'.$this->user;
+            $arr_validate['email'] = 'required|email|unique:users,email,'.$this->user;
+//            $arr_validate['password'] = 'required|min:5|max:10,'.$this->user;
+        }
 
-        return $array_validate;
+        return $arr_validate;
     }
 }

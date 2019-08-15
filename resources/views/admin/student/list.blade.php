@@ -14,52 +14,52 @@
                         </div>
                     @endif
                     <div class="edit-form">
-
                     </div>
                     {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
-                        <table class="table table-hover" style="width:600px">
-                            <tr>
-                                <td>Age</td>
-                                <td>{{Form::number('min_age',\Request::get('min_age'),['class' => 'form-control'])}}</td>
-                                <td align="center">TO</td>
-                                <td>{{Form::number('max_age',\Request::get('max_age'),['class' => 'form-control'])}}</td>
-                            </tr>
-                            <tr>
-                                <td>Score</td>
-                                <td>{{Form::number('min_score',\Request::get('min_score'),['class' => 'form-control'])}}</td>
-                                <td align="center">TO</td>
-                                <td>{{Form::number('max_score',\Request::get('max_score'),['class' => 'form-control'])}}</td>
+                    <table class="table table-hover" style="width:600px">
+                        <tr>
+                            <td>Age</td>
+                            <td>{{Form::number('min_age',\Request::get('min_age'),['class' => 'form-control'])}}</td>
+                            <td align="center">TO</td>
+                            <td>{{Form::number('max_age',\Request::get('max_age'),['class' => 'form-control'])}}</td>
+                        </tr>
+                        <tr>
+                            <td>Score</td>
+                            <td>{{Form::number('min_score',\Request::get('min_score'),['class' => 'form-control'])}}</td>
+                            <td align="center">TO</td>
+                            <td>{{Form::number('max_score',\Request::get('max_score'),['class' => 'form-control'])}}</td>
 
-                            </tr>
-                            <tr>
-                                <td>Phone</td>
-                                <td colspan="3">
-                                    {{Form::checkbox('phone[1]','1',!empty(\Request::get('phone')[1]) && \Request::get('phone')[1] == 1)}}Viettel
-                                    {{Form::checkbox('phone[2]','2',!empty(\Request::get('phone')[2]) && \Request::get('phone')[2]== 2)}}
-                                    Mobiphone
-                                    {{Form::checkbox('phone[3]','3',!empty(\Request::get('phone')[3]) && \Request::get('phone')[3] == 3)}}
-                                    Vinaphone
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Show</td>
-                                <td colspan="3">
-                                    {!! Form::select('showList', ['0' => 'All', '1' => 'Studied All Subject','2' => 'Did Not Study All Subject'], \Request::get('showList'),['class'=>'form-control']) !!}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <button class="btn btn-warning"><a
-                                                href="{{route('student.sendAll')}}"
-                                                style="color: white"><label>Send Mail To Bad Students</label></a></button>
-                                </td>
-                            </tr>
-                        </table>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td colspan="3">
+                                {{Form::checkbox('phone[1]','1',!empty(\Request::get('phone')[1]) && \Request::get('phone')[1] == 1)}}
+                                Viettel
+                                {{Form::checkbox('phone[2]','2',!empty(\Request::get('phone')[2]) && \Request::get('phone')[2]== 2)}}
+                                Mobiphone
+                                {{Form::checkbox('phone[3]','3',!empty(\Request::get('phone')[3]) && \Request::get('phone')[3] == 3)}}
+                                Vinaphone
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Show</td>
+                            <td colspan="3">
+                                {!! Form::select('showList', ['0' => 'All', '1' => 'Studied All Subject','2' => 'Did Not Study All Subject'], \Request::get('showList'),['class'=>'form-control']) !!}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn btn-warning"><a
+                                            href="{{route('student.sendAll')}}"
+                                            style="color: white"><label>Send Mail To Bad Students</label></a></button>
+                            </td>
+                        </tr>
+                    </table>
                     </form>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -82,10 +82,11 @@
                         <th>Delete</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='students-crud'>
 
                     @foreach($students as $student)
-                        <tr class="odd gradeX" align="center" enctype="multipart/form-data">
+                        <tr class="odd gradeX" align="center" enctype="multipart/form-data"
+                            id="student_id_{{ $student->id }}">
                             <td>{{$student->id}}</td>
                             <td>{{(isset($student->classM->name)) ?$student->classM->name:''}}</td>
                             <td>{{$student->name}}</td>
@@ -111,12 +112,14 @@
                             <td class="center"><i class="glyphicon glyphicon-eye-open"></i>
                                 <a href="{{route('studentsubject.addmore',$student->id)}}">Show</a>
                             </td>
-
+                            {{--<td class="center" id="edit_item">--}}
+                            {{--<button class="btn btn-success"><a--}}
+                            {{--href="{{route('student.edit',$student->id)}}" style="color: white">Edit</a>--}}
+                            {{--</button>--}}
+                            {{--</td>--}}
                             <td class="center">
-                                <button class="btn btn-success"><a
-                                            href="{{route('student.edit',$student->id)}}" style="color: white">Edit</a>
-                                </button>
-                                {{--<button class="btn btn-success" id="edit-item">Edit</button>--}}
+                                <a href="javascript:void(0)" class="edit-student btn btn-success"
+                                   data-id="{{ $student->id }}">Edit</a>
                             </td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
@@ -134,21 +137,71 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-
     </div>
     <!-- /#page-wrapper -->
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('edit-item').click(function(status){
-                if(status == 'success'){
-                    alert('success');
+@endsection
+@section('form-add')
+    <div id="loading"></div>
+    <div id="student">
+    </div>
+    <script>
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                if(status == 'error'){
-                    alert('fail');
-                }
-                $(".edit-form").load('edit.blade.php');
+            });
+            // /* When click edit user */
+            $('body').on('click', '.edit-student', function () {
+                var student_id = $(this).data('id');
+                $.get('admin/student/' + student_id + '/edit', function (data) {
+                    $("#student").html(data);
+                    $('#studentCrudModal').html("Edit Student");
+                    $('#btn-save').val("edit-student");
+                    $('#ajax-crud-modal').modal('show');
+                    $('#student_id').val(data.id);
+                    $('#image').val(data.image);
+                })
             });
         });
-    </script>
+        function ajaxLoad(filename, content) {
+            content = typeof content !== 'undefined' ? content : 'content';
+            $('.loading').show();
+            $.ajax({
+                type: "GET",
+                url: filename,
+                contentType: false,
+                success: function (data) {
+                    $("#" + content).html(data);
+                    $('.loading').hide();
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+        $(document).on('click', '#btn-save', function (event) {
+            event.preventDefault();
+            var student_id = $('#student_id_form').val();
 
+            $.ajax({
+                data: $('#studentForm').serialize(),
+                url: "admin/student/" + student_id,
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
+                    $('#ajax-crud-modal').modal('hide');
+                    $('#studentForm').trigger("reset");
+                    $('#btn-save').html('Save Changes');
+                    ajaxLoad(data.redirect_url);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    $('#btn-save').html('Save Changes');
+                }
+            });
+        })
+
+
+    </script>
 @endsection

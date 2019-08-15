@@ -46,4 +46,13 @@ class User extends Authenticatable
     public function student(){
         return $this->hasOne(StudentModel::class);
     }
+    //check quyền quản trị của user
+    public function hasDefinePrivilege($level)
+    {
+        if(!$level)
+        {
+            return false;
+        }
+        return $this->level == $level;
+    }
 }

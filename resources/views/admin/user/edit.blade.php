@@ -35,10 +35,10 @@
                         {!! Form::label('Email') !!}
                         {!! Form::text('email',$user->email,['class'=>'form-control','placeholder'=>'Please Enter Email']) !!}
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('Password') !!}
-                        {!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password'],$user->password) !!}
-                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--{!! Form::label('Password') !!}--}}
+                        {{--{!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password'],$user->password) !!}--}}
+                    {{--</div>--}}
                     <div class="form-group">
                         {!! Form::label('Level') !!}
                         <label class="radio-inline">

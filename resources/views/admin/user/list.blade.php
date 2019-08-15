@@ -8,11 +8,23 @@
                     <h1 class="page-header">User
                         <small>List</small>
                     </h1>
-                    @if(session('message'))
-                        <div class="alert alert-success">
-                            {{session('message')}}
-                        </div>
-                    @endif
+                    <div class="message_warning">
+                        @if(session('message'))
+                            <div class="alert alert-success">
+                                {{session('message')}}
+                                <button style="float: right;border: none;background-color: #dff0d8">X</button>
+                            </div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{session('error')}}
+                                <button style="float: right;border: none;background-color: #f2dede">X</button>
+                            </div>
+
+                        @endif
+
+                    </div>
+
                 </div>
                 <!-- /.col-lg-12 -->
                 <table class="table table-striped table-bordered table-hover">
@@ -57,4 +69,11 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('div.message_warning').on('click',function(){
+                $('div.message_warning').remove();
+            });
+        });
+    </script>
 @endsection

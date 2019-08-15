@@ -20,7 +20,7 @@ Route::get('destroyMore/{id}', 'StudentSubjectController@destroyMore')->name('st
 Route::get('student', 'StudentController@search')->name('student.search');
 Route::get('sendMail/{id}', 'StudentController@sendMail')->name('student.sendMail');
 Route::get('sendAll', 'StudentController@sendMails')->name('student.sendAll');
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
 
     Route::resource('user', 'UserController');
     Route::resource('faculty', 'FacultyController');
