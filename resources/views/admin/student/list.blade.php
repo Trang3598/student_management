@@ -85,12 +85,11 @@
                     <tbody id='students-crud'>
 
                     @foreach($students as $student)
-                        <tr class="odd gradeX" align="center" enctype="multipart/form-data"
-                            id="student_id_{{ $student->id }}">
-                            <td>{{$student->id}}</td>
-                            <td>{{(isset($student->classM->name)) ?$student->classM->name:''}}</td>
-                            <td>{{$student->name}}</td>
-                            <td>
+                        <tr>
+                            <td id="student_id_{{$student->id}}">{{$student->id}}</td>
+                            <td id="class_code_{{$student->id}}">{{(isset($student->classM->name)) ?$student->classM->name:''}}</td>
+                            <td id="name_{{$student->id}}">{{$student->name}}</td>
+                            <td id="gender_{{$student->id}}">
                                 @if($student->gender == 1)
                                     {{'Male'}}
                                 @elseif($student->gender == 2)
@@ -99,13 +98,13 @@
                                     {{'Other'}}
                                 @endif
                             </td>
-                            <td>{{$student->birthday}}</td>
-                            <td>
+                            <td id="birthday_{{$student->id}}">{{$student->birthday}}</td>
+                            <td id="image_{{$student->id}}">
                                 <img src="images/{{$student->image}}" alt="" style="height:50px;width: 50px"
                                      class="img-responsive"/></td>
-                            <td>{!! $student->address !!}</td>
-                            <td>{!! $student->phone !!}</td>
-                            <td>{!! $student->user->email !!}</td>
+                            <td id="address_{{$student->id}}">{!! $student->address !!}</td>
+                            <td id="phone_{{$student->id}}">{!! $student->phone !!}</td>
+                            <td id="email_{{$student->id}}">{!! $student->user->email !!}</td>
                             <td class="center"><i class="glyphicon glyphicon-send"></i>
                                 <a href="{{route('student.sendMail',$student->user->id)}}">Send</a>
                             </td>
@@ -141,7 +140,6 @@
     <!-- /#page-wrapper -->
 @endsection
 @section('form-add')
-    <div id="loading"></div>
     <div id="student">
     </div>
     <script>
@@ -160,44 +158,38 @@
                     $('#btn-save').val("edit-student");
                     $('#ajax-crud-modal').modal('show');
                     $('#student_id').val(data.id);
-                    $('#image').val(data.image);
                 })
             });
         });
-        function ajaxLoad(filename, content) {
-            content = typeof content !== 'undefined' ? content : 'content';
-            $('.loading').show();
-            $.ajax({
-                type: "GET",
-                url: filename,
-                contentType: false,
-                success: function (data) {
-                    $("#" + content).html(data);
-                    $('.loading').hide();
-                },
-                error: function (xhr, status, error) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
         $(document).on('click', '#btn-save', function (event) {
             event.preventDefault();
             var student_id = $('#student_id_form').val();
-
+            var form_data = new FormData($(this)[0]);
             $.ajax({
-                data: $('#studentForm').serialize(),
+                data: $('#studentForm').serialize(), form_data,
                 url: "admin/student/" + student_id,
                 type: "PUT",
                 dataType: 'json',
                 success: function (data) {
                     $('#ajax-crud-modal').modal('hide');
+                    $("#student_id_" + data.id).html(data.id);
+                    $("#class_code_" +data.id).html(data.class_code);
+                    $("#name_" + data.id).html(data.name);
+                    $("#gender_" + data.id).html(data.gender);
+                    $("#birthday_" + data.id).html(data.birthday);
+                    $("#image_" + data.id).attr(src,'images/'+data.image);
+                    $("#address_" + data.id).html(data.address);
+                    $("#phone_" + data.id).html(data.phone);
+                    $("#email_" + data.id).html(data.email);
+
                     $('#studentForm').trigger("reset");
                     $('#btn-save').html('Save Changes');
-                    ajaxLoad(data.redirect_url);
                 },
                 error: function (data) {
                     console.log('Error:', data);
                     $('#btn-save').html('Save Changes');
+                    $('.status').text(res);
+                    $('#image').val('');
                 }
             });
         })

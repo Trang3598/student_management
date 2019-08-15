@@ -7,10 +7,12 @@ use App\Http\Requests\StudentRequest;
 use App\Jobs\SendEmailJob;
 use App\Repositories\StudentEloquentRepository;
 use App\Repositories\UserEloquentRepository;
+use App\StudentModel;
 use App\SubjectModel;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Mockery\Exception;
 
 class StudentController extends Controller
@@ -117,6 +119,7 @@ class StudentController extends Controller
     public function update(StudentRequest $request, $id)
     {
         //
+        $student = $this->studentRepository->getListById($id);
         $data = $request->all();
         if ($request->hasFile('image')) {
             $file = $request->image;
@@ -125,11 +128,15 @@ class StudentController extends Controller
             $data['image'] = $image;
         }
         $students = $this->studentRepository->update($id, $data);
-//        return redirect(route('student.index'))->with('message', 'Edit successfully');
-        return response()->json([
-            'student' => $students,
-            'redirect_url' => route('student.index'),
-        ]);
+        $students->class_code = $students->ClassM->name;
+        if ($students->gender == 1) {
+            $students->gender = "Male";
+        }elseif ($students->gender == 2){
+            $students->gender = "Female";
+        }else{
+            $students->gender = "Other";
+        }
+        return Response::json($students);
 
     }
 
