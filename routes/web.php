@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::resource('subject', 'SubjectController');
     Route::resource('class', 'ClassController');
     Route::resource('student', 'StudentController');
-    Route::post('student/update/{student}', 'StudentController@update')->name('student.updateAjax');
+//    Route::post('student/update/{student}', 'StudentController@update')->name('student.updateAjax');
     Route::resource('studentsubject', 'StudentSubjectController');
     Auth::routes();
 });

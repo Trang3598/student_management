@@ -6,8 +6,9 @@
             </div>
             <div class="modal-body">
                 <form id="studentForm" name="studentForm" class="form-horizontal"
-                      action="{{route('student.updateAjax',$student->id)}}" method="Post" enctype="multipart/form-data">
-                    <input type="hidden" name="student_id" id="student_id">
+                      action="{{route('student.update',$student->id)}}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="student_id" id="student_id" value="{{$student->id}}">
+                    <input type="hidden" name="_method" value="PUT">
                     @csrf
                     <div class="form-group">
                         <label class="col-sm-12">Class</label>

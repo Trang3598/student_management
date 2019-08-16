@@ -13,6 +13,9 @@
                             {{session('message')}}
                         </div>
                     @endif
+                    <div class="alert alert-success" id="showmess" style="display: none">
+
+                    </div>
                     <div class="edit-form">
                     </div>
                     {!! Form::open(['method' => 'GET','route' => 'student.index']) !!}
@@ -174,6 +177,7 @@
         $(document).on('click', '#btn-save', function (event) {
             event.preventDefault();
             var form_data = new FormData($('#studentForm')[0]);
+            form_data.append('_method', 'patch');
             $.ajax({
                 data: form_data,
                 url: $('#studentForm').attr('action'),
@@ -194,6 +198,7 @@
 
                     $('#studentForm').trigger("reset");
                     $('#btn-save').html('Save Changes');
+                    $('#showmess').html('done').css({'display':'block'});
                 },
                 error: function (data) {
                     console.log(data.responseJSON.errors.address);

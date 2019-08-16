@@ -29,6 +29,9 @@
                     <div class="container">
                         <div class="form-group">
                             <div class="table-responsive">
+                                <button type="button" name="add" id="add" class="btn btn-success">
+                                    Add More
+                                </button>
                                 {{Form::open(['method'=>'POST','route' =>['studentsubject.addMoreAction','student_code' => $student->id]])}}
                                 <table class="table" id="dynamic_field">
                                     {{--show list--}}
@@ -57,11 +60,14 @@
                                     @endif
                                     {{--end show list--}}
 
-                                    <tr class="addform count">
+                                </table>
+                                {!! Form::submit('Result Add',['class' => 'btn btn-info']) !!}
+                                {!! Form::close() !!}
+
+                                <p id="number-subject" style="display: none">{{count($subjects)}}</p>
+                                <table style="display: none">
+                                    <tr class="addform">
                                         <div class="form-group col-xs-6">
-                                            <button type="button" name="add" id="add" class="btn btn-success">
-                                                Add More
-                                            </button>
                                             <td>
                                                 {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
                                                 <select class="form-control" name="subject_code[]">
@@ -79,13 +85,10 @@
                                                         class="btn btn-danger btn_remove">X
                                                 </button>
                                             </td>
+                                        </div>
                                     </tr>
+                                    {{--old form--}}
                                 </table>
-                                {!! Form::submit('Result Add',['class' => 'btn btn-info']) !!}
-                                {!! Form::close() !!}
-
-                                <p id="number-subject" style="display: none">{{count($subjects)}}</p>
-
                             </div>
                         </div>
                     </div>
@@ -110,7 +113,7 @@
                     alert('Students just only have ' + subject + ' subjects !')
                 }
                 var $select = $("select");
-                hv
+
                 var selected = [];
                 $.each($select, function (index, select) {
                     if (select.value !== "") {
