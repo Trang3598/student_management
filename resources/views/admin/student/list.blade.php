@@ -99,8 +99,9 @@
                                 @endif
                             </td>
                             <td id="birthday_{{$student->id}}">{{$student->birthday}}</td>
-                            <td id="image_{{$student->id}}">
-                                <img src="images/{{$student->image}}" alt="" style="height:50px;width: 50px"
+                            <td>
+                                <img id="image_student_{{$student->id}}" src="images/{{$student->image}}" alt=""
+                                     style="height:50px;width: 50px"
                                      class="img-responsive"/></td>
                             <td id="address_{{$student->id}}">{!! $student->address !!}</td>
                             <td id="phone_{{$student->id}}">{!! $student->phone !!}</td>
@@ -161,23 +162,32 @@
                 })
             });
         });
+
+        function printErrorMsg(msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display', 'block');
+            $.each(msg, function (key, value) {
+                $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
+            });
+        }
+
         $(document).on('click', '#btn-save', function (event) {
             event.preventDefault();
-            var student_id = $('#student_id_form').val();
-            var form_data = new FormData($(this)[0]);
+            var form_data = new FormData($('#studentForm')[0]);
             $.ajax({
-                data: $('#studentForm').serialize(), form_data,
-                url: "admin/student/" + student_id,
-                type: "PUT",
-                dataType: 'json',
+                data: form_data,
+                url: $('#studentForm').attr('action'),
+                type: "POST",
+                contentType: false,
+                processData: false,
                 success: function (data) {
                     $('#ajax-crud-modal').modal('hide');
                     $("#student_id_" + data.id).html(data.id);
-                    $("#class_code_" +data.id).html(data.class_code);
+                    $("#class_code_" + data.id).html(data.class_code);
                     $("#name_" + data.id).html(data.name);
                     $("#gender_" + data.id).html(data.gender);
                     $("#birthday_" + data.id).html(data.birthday);
-                    $("#image_" + data.id).attr(src,'images/'+data.image);
+                    $("#image_student_" + data.id).attr('src', 'images/' + data.image);
                     $("#address_" + data.id).html(data.address);
                     $("#phone_" + data.id).html(data.phone);
                     $("#email_" + data.id).html(data.email);
@@ -186,14 +196,35 @@
                     $('#btn-save').html('Save Changes');
                 },
                 error: function (data) {
-                    console.log('Error:', data);
-                    $('#btn-save').html('Save Changes');
-                    $('.status').text(res);
-                    $('#image').val('');
+                    console.log(data.responseJSON.errors.address);
+                    if (data.responseJSON.errors) {
+                        if (data.responseJSON.errors.class_code) {
+                            $('#class_code-error').html(data.responseJSON.errors.class_code);
+                        }
+                        if (data.responseJSON.errors.name) {
+                            $('#name-error').html(data.responseJSON.errors.name);
+                        }
+                        if (data.responseJSON.errors.birthday) {
+                            $('#birthday-error').html(data.responseJSON.errors.birthday);
+                        }
+                        if (data.responseJSON.errors.phone) {
+                            $('#phone-error').html(data.responseJSON.errors.phone);
+                        }
+                        if (data.responseJSON.errors.image) {
+                            $('#image-error').html(data.responseJSON.errors.image);
+                        }
+                        if (data.responseJSON.errors.address) {
+                            $('#address-error').html(data.responseJSON.errors.address);
+                        }
+                        if (data.responseJSON.errors.gender) {
+                            $('#gender-error').html(data.responseJSON.errors.gender);
+                        }
+                        $('#btn-save').html('Save Changes');
+                        $('#image').val('');
+                    }
                 }
             });
-        })
-
+        });
 
     </script>
 @endsection

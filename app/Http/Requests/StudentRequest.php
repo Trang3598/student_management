@@ -29,7 +29,8 @@ class StudentRequest extends FormRequest
 //            'image' => 'mimes:jpeg,bmp,png|required',
             'phone' => ['required','numeric','regex:/(^0[3|7|8|9][0-9]{8}$)/u'],
             'gender' => 'required',
-            'class_code' => 'required'
+            'class_code' => 'required',
+            'address' => 'required|min:5'
         ];
         if (!$this->student){
             $arr_validate['username'] = 'required|min:5|unique:users';

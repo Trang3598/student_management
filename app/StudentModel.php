@@ -8,7 +8,7 @@ class StudentModel extends Model
 {
     protected $table = "students";
     public $timestamps = false;
-    protected $fillable = ['name','class_code','gender','birthday','phone','address','user_id'];
+    protected $fillable = ['name','class_code','gender','birthday','phone','address','user_id','image'];
     const PHONES = [
         self::VIETTEL => ['086', '096', '097', '098', '032', '033', '034', '035', '036', '037', '038', '039'],
         self::MOBIPHONE => ['089', '090', '093', '070', '079', '077', '076', '078'],

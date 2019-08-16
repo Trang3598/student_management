@@ -20,18 +20,20 @@ Route::get('destroyMore/{id}', 'StudentSubjectController@destroyMore')->name('st
 Route::get('student', 'StudentController@search')->name('student.search');
 Route::get('sendMail/{id}', 'StudentController@sendMail')->name('student.sendMail');
 Route::get('sendAll', 'StudentController@sendMails')->name('student.sendAll');
-Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
 
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function () {
     Route::resource('user', 'UserController');
     Route::resource('faculty', 'FacultyController');
     Route::resource('subject', 'SubjectController');
     Route::resource('class', 'ClassController');
     Route::resource('student', 'StudentController');
+    Route::post('student/update/{student}', 'StudentController@update')->name('student.updateAjax');
     Route::resource('studentsubject', 'StudentSubjectController');
     Auth::routes();
 });
 Route::get('callback/{provider}','Auth\LoginController@handleProviderCallback');
 Route::get('login/{provider}','Auth\LoginController@redirect');
+
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

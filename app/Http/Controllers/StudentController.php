@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
 class StudentController extends Controller
@@ -118,8 +119,6 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, $id)
     {
-        //
-        $student = $this->studentRepository->getListById($id);
         $data = $request->all();
         if ($request->hasFile('image')) {
             $file = $request->image;
@@ -131,13 +130,12 @@ class StudentController extends Controller
         $students->class_code = $students->ClassM->name;
         if ($students->gender == 1) {
             $students->gender = "Male";
-        }elseif ($students->gender == 2){
+        } elseif ($students->gender == 2) {
             $students->gender = "Female";
-        }else{
+        } else {
             $students->gender = "Other";
         }
         return Response::json($students);
-
     }
 
     /**
