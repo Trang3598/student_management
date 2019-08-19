@@ -5,6 +5,7 @@
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row">
+                {{--{{dd(old('score'))}}--}}
                 <div class="col-lg-12">
                     <h1 class="page-header">Result of Student
                         <small>Add More</small>
@@ -35,11 +36,13 @@
                                 {{Form::open(['method'=>'POST','route' =>['studentsubject.addMoreAction','student_code' => $student->id]])}}
                                 <table class="table" id="dynamic_field">
                                     {{--show list--}}
-                                    @if(sizeof($studentsubjectss) > 0 )
+                                    {{--{{dd(old('subject_code'))}}--}}
+                                    @if(!empty(old('subject_code')))
+                                        {{--ko lm gi in ra cai da co--}}
+                                    @else(sizeof($studentsubjectss) > 0 )
                                         @foreach($studentsubjectss as $studentsubject)
                                             <tr class="count">
                                                 <td>
-                                                    {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
                                                     <select class="form-control" name="subject_code[]">
                                                         <option>Please enter a subject</option>
                                                         @foreach($subjects as $subject)
@@ -58,8 +61,30 @@
                                             </tr>
                                         @endforeach
                                     @endif
+                                    @if(!empty(old('subject_code')))
+                                        @foreach(old('subject_code') as $key =>  $subject_code)
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control" name="subject_code[]">
+                                                        <option value="">Please enter a subject ...</option>
+                                                        @foreach($subjects as $subject)
+                                                            <option value="{{$subject->id}}" {{$subject->id == $subject_code ? 'selected':''}}>{{$subject->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control"
+                                                           value="{{old('score')[$key]}}" name="score[]">
+                                                </td>
+                                                <td>
+                                                    <button type="button" name="remove"
+                                                            class="btn btn-danger btn_remove">X
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                     {{--end show list--}}
-
                                 </table>
                                 {!! Form::submit('Result Add',['class' => 'btn btn-info']) !!}
                                 {!! Form::close() !!}
@@ -69,7 +94,6 @@
                                     <tr class="addform">
                                         <div class="form-group col-xs-6">
                                             <td>
-                                                {{--{!! Form::select('subject_code', ['' => 'Please enter a subject...'] +$sjs,null,['class'=>'form-control']) !!}--}}
                                                 <select class="form-control" name="subject_code[]">
                                                     <option value="">Please enter a subject ...</option>
                                                     @foreach($subjects as $subject)
@@ -87,7 +111,6 @@
                                             </td>
                                         </div>
                                     </tr>
-                                    {{--old form--}}
                                 </table>
                             </div>
                         </div>

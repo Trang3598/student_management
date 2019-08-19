@@ -20,11 +20,8 @@
                                 {{session('error')}}
                                 <button style="float: right;border: none;background-color: #f2dede">X</button>
                             </div>
-
                         @endif
-
                     </div>
-
                 </div>
                 <!-- /.col-lg-12 -->
                 <table class="table table-striped table-bordered table-hover">
@@ -47,12 +44,15 @@
                             <td>
                                 @if($user->level == 1)
                                     {{'Admin'}}
-                                    @else
+                                @else
                                     {{'Guest'}}
-                                    @endif
+                                @endif
                             </td>
-                            <td class="center"><button class="btn btn-success"><a style="color: white"
-                                            href="{{route('user.edit',$user->id)}}">Edit</a></button> </td>
+                            <td class="center">
+                                <button class="btn btn-success"><a style="color: white"
+                                                                   href="{{route('user.edit',$user->id)}}">Edit</a>
+                                </button>
+                            </td>
                             <td>
                                 {!! Form::open(['route'=>['user.destroy',$user->id],'method' => 'DELETE']) !!}
                                 {!! Form::submit('Delete',['class'=>'btn btn-danger']) !!}
@@ -65,13 +65,13 @@
             </div>
             <!-- /.row -->
         </div>
-        {!! $users->links() !!}
-        <!-- /.container-fluid -->
+    {!! $users->links() !!}
+    <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('div.message_warning').on('click',function(){
+        $(document).ready(function () {
+            $('div.message_warning').on('click', function () {
                 $('div.message_warning').remove();
             });
         });

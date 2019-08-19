@@ -25,7 +25,7 @@ class FacultyEloquentRepository extends EloquentRepository
 
     }
     public function showClasses($id) {
-        return $this->classModel->where('faculty_id','=', $id)->get();
+        return $this->classModel->where('faculty_id','=', $id)->paginate(5);
     }
 
 }

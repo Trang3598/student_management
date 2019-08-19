@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('addmore/{id}', 'StudentSubjectController@addMore')->name('studentsubject.addmore');
 Route::post('studentsubject', 'StudentSubjectController@addMoreAction')->name('studentsubject.addMoreAction');

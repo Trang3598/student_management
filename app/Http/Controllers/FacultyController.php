@@ -7,6 +7,7 @@ use App\FacultyModel;
 use App\Http\Requests\FacultyRequest;
 use App\Repositories\FacultyEloquentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class FacultyController extends Controller
 {
@@ -100,7 +101,10 @@ class FacultyController extends Controller
     public function destroy($id)
     {
 //        Fal::where('in_black_list', true)->get()->delete();
-        $this->facultyRepository->delete($id);
-        return redirect()->route('faculty.index')->with('message','Delete successfully');
+        if (Gate::allows('level')) {
+            $this->facultyRepository->delete($id);
+            return redirect(route('faculty.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('faculty.index'))->with('error', 'You have no permission to perform this action !');
     }
 }

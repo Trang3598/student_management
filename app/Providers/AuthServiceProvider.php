@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
     ];
+    protected $is_Admin = 1;
 
     /**
      * Register any authentication / authorization services.
@@ -24,9 +25,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Gate::define('level', function ($level) {
-            $user = new User();
-            return $user->hasDefinePrivilege($level) == 1;
+        Gate::define('level', function (User $user) {
+            return $user->level == $this->is_Admin;
         });
     }
 }

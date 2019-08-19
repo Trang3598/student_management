@@ -101,7 +101,7 @@ class UserController extends Controller
             $this->userRepository->delete($id);
             return redirect(route('user.index'))->with('message', 'Delete successfully');
         }
-        return redirect(route('user.index'))->with('error', 'You have no permission to perform this action');
+        return redirect(route('user.index'))->with('error', 'You have no permission to perform this action !');
     }
 
 }

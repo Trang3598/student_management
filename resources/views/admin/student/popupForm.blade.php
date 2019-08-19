@@ -92,6 +92,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn-save" value="edit_student">Save changes
                 </button>
+                <button type="button" class="btn btn-default" id="btn-back" value="back">Back
+                </button>
             </div>
         </div>
     </div>

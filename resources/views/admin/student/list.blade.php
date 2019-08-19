@@ -8,11 +8,20 @@
                     <h1 class="page-header">Student
                         <small>List</small>
                     </h1>
-                    @if(session('message'))
-                        <div class="alert alert-success">
-                            {{session('message')}}
-                        </div>
-                    @endif
+                    <div class="message_warning">
+                        @if(session('message'))
+                            <div class="alert alert-success">
+                                {{session('message')}}
+                                <button style="float: right;border: none;background-color: #dff0d8">X</button>
+                            </div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{session('error')}}
+                                <button style="float: right;border: none;background-color: #f2dede">X</button>
+                            </div>
+                        @endif
+                    </div>
                     <div class="alert alert-success" id="showmess" style="display: none">
 
                     </div>
@@ -63,7 +72,7 @@
                             </td>
                         </tr>
                     </table>
-                    </form>
+                    {{--</form>--}}
                 </div>
                 <!-- /.col-lg-12 -->
 
@@ -115,11 +124,6 @@
                             <td class="center"><i class="glyphicon glyphicon-eye-open"></i>
                                 <a href="{{route('studentsubject.addmore',$student->id)}}">Show</a>
                             </td>
-                            {{--<td class="center" id="edit_item">--}}
-                            {{--<button class="btn btn-success"><a--}}
-                            {{--href="{{route('student.edit',$student->id)}}" style="color: white">Edit</a>--}}
-                            {{--</button>--}}
-                            {{--</td>--}}
                             <td class="center">
                                 <a href="javascript:void(0)" class="edit-student btn btn-success"
                                    data-id="{{ $student->id }}">Edit</a>
@@ -146,12 +150,22 @@
 @section('form-add')
     <div id="student">
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div.message_warning').on('click', function () {
+                $('div.message_warning').remove();
+            });
+        });
+    </script>
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+            $(document).on('click','#btn-back',function () {
+                $('#ajax-crud-modal').hide();
             });
             // /* When click edit user */
             $('body').on('click', '.edit-student', function () {
@@ -165,15 +179,6 @@
                 })
             });
         });
-
-        function printErrorMsg(msg) {
-            $(".print-error-msg").find("ul").html('');
-            $(".print-error-msg").css('display', 'block');
-            $.each(msg, function (key, value) {
-                $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
-            });
-        }
-
         $(document).on('click', '#btn-save', function (event) {
             event.preventDefault();
             var form_data = new FormData($('#studentForm')[0]);

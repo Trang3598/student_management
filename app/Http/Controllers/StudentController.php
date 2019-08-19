@@ -12,6 +12,7 @@ use App\SubjectModel;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
@@ -20,6 +21,9 @@ class StudentController extends Controller
 {
     protected $studentRepository;
     protected $userRepository;
+    protected $MALE = 1;
+    protected $FEMALE = 2;
+    protected $OTHER = 3;
 
     public function __construct(StudentEloquentRepository $studentRepository, UserEloquentRepository $userEloquentRepository)
     {
@@ -128,11 +132,11 @@ class StudentController extends Controller
         }
         $students = $this->studentRepository->update($id, $data);
         $students->class_code = $students->ClassM->name;
-        if ($students->gender == 1) {
+        if ($students->gender == $this->MALE) {
             $students->gender = "Male";
-        } elseif ($students->gender == 2) {
+        } elseif ($students->gender == $this->FEMALE) {
             $students->gender = "Female";
-        } else {
+        } elseif($students->gender == $this->OTHER) {
             $students->gender = "Other";
         }
         return Response::json($students);
@@ -147,8 +151,11 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
-        $this->studentRepository->delete($id);
-        return redirect()->route('student.index')->with('message', 'Delete successfully');
+        if (Gate::allows('level')) {
+            $this->studentRepository->delete($id);
+            return redirect(route('student.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('student.index'))->with('error', 'You have no permission to perform this action !');
     }
 
     public function sendMail($id)

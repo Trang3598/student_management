@@ -8,14 +8,16 @@ use App\Repositories\StudentSubjectEloquentRepository;
 use App\StudentModel;
 use App\StudentSubjectModel;
 use App\SubjectModel;
+//use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StudentSubjectController extends Controller
 {
     protected $studentsubjectRepository;
     protected $studentRepository;
 
-    public function __construct(StudentSubjectEloquentRepository $studentsubjectRepository,StudentEloquentRepository $studentRepository)
+    public function __construct(StudentSubjectEloquentRepository $studentsubjectRepository, StudentEloquentRepository $studentRepository)
     {
         $this->studentsubjectRepository = $studentsubjectRepository;
         $this->studentRepository = $studentRepository;
@@ -45,9 +47,9 @@ class StudentSubjectController extends Controller
         //
         $students = StudentModel::all();
         $subjects = SubjectModel::all();
-        $sts = $students->pluck('name','id')->all();
-        $sjs = $subjects->pluck('name','id')->all();
-        return view('admin.student_subject.create', compact('students', 'subjects','sts','sjs'));
+        $sts = $students->pluck('name', 'id')->all();
+        $sjs = $subjects->pluck('name', 'id')->all();
+        return view('admin.student_subject.create', compact('students', 'subjects', 'sts', 'sjs'));
     }
 
     /**
@@ -112,8 +114,11 @@ class StudentSubjectController extends Controller
     public function destroy($id)
     {
         //
-        $this->studentsubjectRepository->delete($id);
-        return redirect()->route('studentsubject.index')->with('message', 'Delete successfully');
+        if (Gate::allows('level')) {
+            $this->studentsubjectRepository->delete($id);
+            return redirect(route('studentsubject.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('studentsubject.index'))->with('error', 'You have no permission to perform this action !');
     }
 
     public function addMore($id)
@@ -121,8 +126,8 @@ class StudentSubjectController extends Controller
         $student = $this->studentRepository->getListById($id);
         $studentsubjectss = $student->studentSubjects()->get();
         $subjects = SubjectModel::all();
-        $sjs = $subjects->pluck('name','id')->all();
-        return view('admin.student_subject.createMore', compact('subjects', 'student', 'studentsubjectss','sjs'));
+        $sjs = $subjects->pluck('name', 'id')->all();
+        return view('admin.student_subject.createMore', compact('subjects', 'student', 'studentsubjectss', 'sjs'));
     }
 
     public function addMoreAction(StudentSubjectRequest $request)
@@ -143,13 +148,13 @@ class StudentSubjectController extends Controller
         }
         $student->subjects()->sync($scores);
 
-        $studentsubjects =  $this->studentsubjectRepository->getListById($request->student_code);
-        return view('admin.student_subject.list',compact('studentsubjects'));
+        $studentsubjects = $this->studentsubjectRepository->getListById($request->student_code);
+        return view('admin.student_subject.list', compact('studentsubjects'));
     }
 
     public function destroyMore($id)
     {
         $this->studentsubjectRepository->delete($id);
         return redirect()->back();
-}
+    }
 }

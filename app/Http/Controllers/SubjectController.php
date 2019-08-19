@@ -6,6 +6,7 @@ use App\Repositories\SubjectEloquentRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\SubjectRequest;
 use App\SubjectModel;
+use Illuminate\Support\Facades\Gate;
 
 class SubjectController extends Controller
 {
@@ -99,7 +100,10 @@ class SubjectController extends Controller
     public function destroy($id)
     {
         //
-        $this->subjectRepository->delete($id);
-        return redirect(route('subject.index'))->with('message','Delete successfully');
+        if (Gate::allows('level')) {
+            $this->subjectRepository->delete($id);
+            return redirect(route('subject.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('subject.index'))->with('error', 'You have no permission to perform this action !');
     }
 }

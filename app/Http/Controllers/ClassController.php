@@ -7,6 +7,7 @@ use App\FacultyModel;
 use App\Http\Requests\ClassRequest;
 use App\Repositories\ClassEloquentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ClassController extends Controller
 {
@@ -106,7 +107,10 @@ class ClassController extends Controller
     public function destroy($id)
     {
         //
-        $this->classRepository->delete($id);
-        return redirect()->route('class.index')->with('message','Delete successfully');
+        if (Gate::allows('level')) {
+            $this->classRepository->delete($id);
+            return redirect(route('class.index'))->with('message', 'Delete successfully');
+        }
+        return redirect(route('class.index'))->with('error', 'You have no permission to perform this action !');
     }
 }

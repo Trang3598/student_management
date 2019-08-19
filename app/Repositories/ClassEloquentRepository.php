@@ -21,6 +21,6 @@ class ClassEloquentRepository  extends EloquentRepository
     }
     public function showStudents($id)
     {
-        return $this->studentModel->where('class_code','=',$id)->get();
+        return $this->studentModel->where('class_code','=',$id)->paginate(5);
     }
 }
