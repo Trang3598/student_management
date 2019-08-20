@@ -10,7 +10,9 @@
     <title>Admin - Trang xinh đẹp</title>
     <base href="{{asset('')}}">
     <!-- Bootstrap Core CSS -->
+    <script src="{{asset('admin_asset/bower_components/jquery/dist/jquery.min.js')}}"></script>
     <link href="{{asset('admin_asset/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 
     <!-- MetisMenu CSS -->
     <link href="{{asset('admin_asset/bower_components/metisMenu/dist/metisMenu.min.css')}}" rel="stylesheet">
@@ -29,17 +31,15 @@
     <!-- DataTables Responsive CSS -->
     <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.css')}}"
           rel="stylesheet">
-    <script type="text/javascript" language="javascript" src="admin_asset/ckeditor/ckeditor.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {{--<script type="text/javascript" language="javascript" src="admin_asset/ckeditor/ckeditor.js"></script>--}}
     <style>
-        .container{
+        .container {
             padding: 0.5%;
         }
-        .modal-backdrop.in {
-            display: none;
-        }
+
+        /*.modal-backdrop.in {*/
+        /*display: none;*/
+        /*}*/
     </style>
 </head>
 
@@ -52,7 +52,7 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('admin_asset/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
 
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -79,5 +79,7 @@
 </body>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+
 </html>
 @yield('form-add')
+@yield('show-image')

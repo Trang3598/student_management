@@ -11,6 +11,7 @@ use App\StudentModel;
 use App\SubjectModel;
 use App\User;
 use Carbon\Carbon;
+use Faker\Provider\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
@@ -42,6 +43,13 @@ class StudentController extends Controller
         $students = $this->studentRepository->searchStudent(request()->all());
         $subjects = SubjectModel::all();
         return view('admin.Student.list', compact('students', 'classes'));
+
+    }
+
+    public function showImage($id)
+    {
+        $student = $this->studentRepository->find($id);
+        return view('admin.student.popup_image', compact('student'));
 
     }
 
@@ -110,7 +118,6 @@ class StudentController extends Controller
     {
         $classes = ClassModel::all();
         $student = $this->studentRepository->find($id);
-//        $cls = $classes->pluck('name', 'id')->all();
         return view('admin.student.popupForm', compact('classes', 'student'));
     }
 
@@ -136,7 +143,7 @@ class StudentController extends Controller
             $students->gender = "Male";
         } elseif ($students->gender == $this->FEMALE) {
             $students->gender = "Female";
-        } elseif($students->gender == $this->OTHER) {
+        } elseif ($students->gender == $this->OTHER) {
             $students->gender = "Other";
         }
         return Response::json($students);

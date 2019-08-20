@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="studentCrudModal"></h4>
+                <h1 class="modal-title" id="userCrudModal">Student information</h1>
             </div>
             <div class="modal-body">
                 <form id="studentForm" name="studentForm" class="form-horizontal"

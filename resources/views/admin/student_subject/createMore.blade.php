@@ -63,7 +63,7 @@
                                     @endif
                                     @if(!empty(old('subject_code')))
                                         @foreach(old('subject_code') as $key =>  $subject_code)
-                                            <tr>
+                                            <tr class="count">
                                                 <td>
                                                     <select class="form-control" name="subject_code[]">
                                                         <option value="">Please enter a subject ...</option>
@@ -91,7 +91,7 @@
 
                                 <p id="number-subject" style="display: none">{{count($subjects)}}</p>
                                 <table style="display: none">
-                                    <tr class="addform">
+                                    <tr class="addform count">
                                         <div class="form-group col-xs-6">
                                             <td>
                                                 <select class="form-control" name="subject_code[]">

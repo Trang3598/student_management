@@ -32,15 +32,15 @@ class StudentRequest extends FormRequest
             'class_code' => 'required',
             'address' => 'required|min:5'
         ];
-        if($this->request->has('username')) {
+        if ($this->request->has('username')) {
             $arr_validate['username'] = 'required|min:5|unique:users,username';
             $arr_validate['password'] = 'required|min:5|required_with:confirm|same:confirm';
             $arr_validate['confirm'] = 'required|min:5|same:password';
             $arr_validate['email'] = 'required|email|unique:users,email';
         }
-        if($this->request->has('student_id')) {
+        if ($this->request->has('student_id')) {
             $student_id = $this->request->all()['student_id'];
-            $arr_validate['phone'] = ['required','numeric','unique:students,phone,' . $student_id];
+            $arr_validate['phone'] = ['required', 'numeric', 'unique:students,phone,' . $student_id];
         }
         return $arr_validate;
     }

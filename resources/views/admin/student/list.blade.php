@@ -112,9 +112,12 @@
                             </td>
                             <td id="birthday_{{$student->id}}">{{$student->birthday}}</td>
                             <td>
-                                <img id="image_student_{{$student->id}}" src="images/{{$student->image}}" alt=""
-                                     style="height:50px;width: 50px"
-                                     class="img-responsive"/></td>
+                                <a href="javascript:void(0)" class="show-image"
+                                   data-id="{{ $student->id }}">
+                                    <img id="image_student_{{$student->id}}" src="images/{{$student->image}}" alt=""
+                                         style="height:50px;width: 50px" class="img-responsive"/>
+                                </a>
+                            </td>
                             <td id="address_{{$student->id}}">{!! $student->address !!}</td>
                             <td id="phone_{{$student->id}}">{!! $student->phone !!}</td>
                             <td id="email_{{$student->id}}">{!! $student->user->email !!}</td>
@@ -148,9 +151,9 @@
     <!-- /#page-wrapper -->
 @endsection
 @section('form-add')
-    <div id="student">
-    </div>
+    <div id="student"></div>
     <script type="text/javascript">
+        //delete message
         $(document).ready(function () {
             $('div.message_warning').on('click', function () {
                 $('div.message_warning').remove();
@@ -164,7 +167,11 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $(document).on('click','#btn-back',function () {
+            // $(document).on('click', '.img-responsive', function () {
+            //     $('.img-responsive').show();
+            // });
+            //when click button back
+            $(document).on('click', '#btn-back', function () {
                 $('#ajax-crud-modal').hide();
             });
             // /* When click edit user */
@@ -183,58 +190,77 @@
             event.preventDefault();
             var form_data = new FormData($('#studentForm')[0]);
             form_data.append('_method', 'patch');
-            $.ajax({
-                data: form_data,
-                url: $('#studentForm').attr('action'),
-                type: "POST",
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    $('#ajax-crud-modal').modal('hide');
-                    $("#student_id_" + data.id).html(data.id);
-                    $("#class_code_" + data.id).html(data.class_code);
-                    $("#name_" + data.id).html(data.name);
-                    $("#gender_" + data.id).html(data.gender);
-                    $("#birthday_" + data.id).html(data.birthday);
-                    $("#image_student_" + data.id).attr('src', 'images/' + data.image);
-                    $("#address_" + data.id).html(data.address);
-                    $("#phone_" + data.id).html(data.phone);
-                    $("#email_" + data.id).html(data.email);
+            if ($("#studentForm").length > 0) {
+                var actionType = $('#btn-save').val();
+                $('#btn-save').html('Sending..');
 
-                    $('#studentForm').trigger("reset");
-                    $('#btn-save').html('Save Changes');
-                    $('#showmess').html('done').css({'display':'block'});
-                },
-                error: function (data) {
-                    console.log(data.responseJSON.errors.address);
-                    if (data.responseJSON.errors) {
-                        if (data.responseJSON.errors.class_code) {
-                            $('#class_code-error').html(data.responseJSON.errors.class_code);
-                        }
-                        if (data.responseJSON.errors.name) {
-                            $('#name-error').html(data.responseJSON.errors.name);
-                        }
-                        if (data.responseJSON.errors.birthday) {
-                            $('#birthday-error').html(data.responseJSON.errors.birthday);
-                        }
-                        if (data.responseJSON.errors.phone) {
-                            $('#phone-error').html(data.responseJSON.errors.phone);
-                        }
-                        if (data.responseJSON.errors.image) {
-                            $('#image-error').html(data.responseJSON.errors.image);
-                        }
-                        if (data.responseJSON.errors.address) {
-                            $('#address-error').html(data.responseJSON.errors.address);
-                        }
-                        if (data.responseJSON.errors.gender) {
-                            $('#gender-error').html(data.responseJSON.errors.gender);
-                        }
+                $.ajax({
+                    data: form_data,
+                    url: $('#studentForm').attr('action'),
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $("#student_id_" + data.id).html(data.id);
+                        $("#class_code_" + data.id).html(data.class_code);
+                        $("#name_" + data.id).html(data.name);
+                        $("#gender_" + data.id).html(data.gender);
+                        $("#birthday_" + data.id).html(data.birthday);
+                        $("#image_student_" + data.id).attr('src', 'images/' + data.image);
+                        $("#address_" + data.id).html(data.address);
+                        $("#phone_" + data.id).html(data.phone);
+                        $("#email_" + data.id).html(data.email);
+                        $('#ajax-crud-modal').modal('hide');
+                        $('#studentForm').trigger("reset");
                         $('#btn-save').html('Save Changes');
-                        $('#image').val('');
+                        $('#showmess').html('Edit successfully').css({'display': 'block'});
+                    },
+                    error: function (data) {
+                        console.log(data.responseJSON.errors.address);
+                        if (data.responseJSON.errors) {
+                            if (data.responseJSON.errors.class_code) {
+                                $('#class_code-error').html(data.responseJSON.errors.class_code);
+                            }
+                            if (data.responseJSON.errors.name) {
+                                $('#name-error').html(data.responseJSON.errors.name);
+                            }
+                            if (data.responseJSON.errors.birthday) {
+                                $('#birthday-error').html(data.responseJSON.errors.birthday);
+                            }
+                            if (data.responseJSON.errors.phone) {
+                                $('#phone-error').html(data.responseJSON.errors.phone);
+                            }
+                            if (data.responseJSON.errors.image) {
+                                $('#image-error').html(data.responseJSON.errors.image);
+                            }
+                            if (data.responseJSON.errors.address) {
+                                $('#address-error').html(data.responseJSON.errors.address);
+                            }
+                            if (data.responseJSON.errors.gender) {
+                                $('#gender-error').html(data.responseJSON.errors.gender);
+                            }
+                            $('#btn-save').html('Save Changes');
+                            $('#image').val('');
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
+    </script>
+@endsection
+
+@section('show-image')
+    <div id="image">
+
+    </div>
+    <script>
+        $('body').on('click', '.show-image', function () {
+            var student_id = $(this).data('id');
+            $.get('admin/student/' + student_id + '/showImage', function (data) {
+                $("#image").html(data);
+                $('#ajax-show-image').modal('show');
+            });
+        });
     </script>
 @endsection
