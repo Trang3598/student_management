@@ -1,22 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\ClassModel;
 use App\Http\Requests\StudentRequest;
 use App\Jobs\SendEmailJob;
 use App\Repositories\StudentEloquentRepository;
 use App\Repositories\UserEloquentRepository;
-use App\StudentModel;
 use App\SubjectModel;
 use App\User;
 use Carbon\Carbon;
-use Faker\Provider\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -38,11 +35,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $students = $this->studentRepository->searchStudent(request()->all());
-        $subjects = SubjectModel::all();
-        return view('admin.Student.list', compact('students', 'classes'));
+        $items = $request->items ?? 10;
+        $students = $this->studentRepository->searchStudent(request()->all())->paginate($items);
+        foreach ($students as $student){
+            $student->class_code = $student->ClassM->name;
+        }
+        return view('admin.Student.list', compact('students','items'));
 
     }
 
@@ -180,5 +180,41 @@ class StudentController extends Controller
         }
         return view('admin.Student.list', compact('students'));
     }
+    public function setAccount($id)
+    {
 
+        $user = $this->userRepository->find($id);
+        $student = $this->studentRepository->findStudentThroughUser($user->id);
+        $classes = ClassModel::all();
+        $cls = $classes->pluck('name', 'id')->all();
+        return view('admin.account.account_infor', compact('user','student','cls'));
+    }
+    public function updateAccount(StudentRequest $request,$id)
+    {
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $image = time() . $file->getClientOriginalName();
+            $file->move('images', $image);
+            $data['image'] = $image;
+        }
+        DB::beginTransaction();
+        try {
+            $user = $this->userRepository->update($id,$data);
+            $data['user_id'] = $user->id;
+            $student_id = $this->studentRepository->findStudentThroughUser($user->id);
+            if (empty($student_id[0]->id)){
+                $student = $this->studentRepository->store($data);
+            }else{
+                $student = $this->studentRepository->update($student_id[0]->id,$data);
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new Exception($exception->getMessage());
+        }
+     return Response::json([
+         'user' => $user,
+        'student'=> $student]);
+    }
 }

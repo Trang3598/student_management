@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use  Illuminate\Validation\Rule;
 
 class StudentRequest extends FormRequest
 {
@@ -26,11 +27,11 @@ class StudentRequest extends FormRequest
         $arr_validate = [
             'name' => 'required|min:5',
             'birthday' => 'required|date|before:now',
-//            'image' => 'mimes:jpeg,bmp,png|required',
             'phone' => ['required', 'numeric', 'unique:students,phone'],
             'gender' => 'required',
             'class_code' => 'required',
-            'address' => 'required|min:5'
+            'address' => 'required|min:5',
+            'image' => 'mimes:jpeg,bmp,png|max:2000'
         ];
         if ($this->request->has('username')) {
             $arr_validate['username'] = 'required|min:5|unique:users,username';
@@ -41,6 +42,14 @@ class StudentRequest extends FormRequest
         if ($this->request->has('student_id')) {
             $student_id = $this->request->all()['student_id'];
             $arr_validate['phone'] = ['required', 'numeric', 'unique:students,phone,' . $student_id];
+            $arr_validate['image'] = ['mimes:jpeg,bmp,png','max:2000'];
+        }
+        if ($this->request->has('user_id')) {
+            $user_id = request('user_id');
+            $arr_validate['phone'] = ['required', 'numeric', Rule::unique('students', 'phone')->where(function ($query) use ($user_id){
+                return $query->where('user_id', '!=', $user_id);
+            })];
+            $arr_validate['email'] = 'required|email|unique:users,email,'.$this->user_id;
         }
         return $arr_validate;
     }

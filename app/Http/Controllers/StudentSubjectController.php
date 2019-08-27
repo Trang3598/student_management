@@ -132,6 +132,7 @@ class StudentSubjectController extends Controller
 
     public function addMoreAction(StudentSubjectRequest $request)
     {
+
         $data = [];
         if (!empty($request->student_code)) {
             foreach ($request->subject_code as $item => $value) {
@@ -147,7 +148,6 @@ class StudentSubjectController extends Controller
             $scores[$value['subject_code']] = ['score' => $value['score']];
         }
         $student->subjects()->sync($scores);
-
         $studentsubjects = $this->studentsubjectRepository->getListById($request->student_code);
         return view('admin.student_subject.list', compact('studentsubjects'));
     }
@@ -156,5 +156,29 @@ class StudentSubjectController extends Controller
     {
         $this->studentsubjectRepository->delete($id);
         return redirect()->back();
+    }
+
+    public function registerSubject($id)
+    {
+        $student = $this->studentRepository->findStudentThroughUser($id);
+        $subjects = $this->studentsubjectRepository->getListUnregisteredSubject($student[0]->id);
+        return view('admin.student_subject.register_subject', compact('subjects', 'id', 'student'));
+    }
+
+    public function insertRegisteredSubjects(StudentSubjectRequest $request, $id)
+    {
+        $data = [];
+        $student = $this->studentRepository->findStudentThroughUser($id);
+        if (isset($request->all()['subject_code'])) {
+            foreach ($request->subject_code as $item => $value) {
+                array_push($data, [
+                    'student_code' => $request->student_code,
+                    'subject_code' => $request->subject_code[$item],
+                    'score' => $request->score[$item]
+                ]);
+                $this->studentsubjectRepository->store($data[$item]);
+            }
+        }
+        return redirect(route('studentsubject.index'))->with('message', "Register subjects successfully");
     }
 }

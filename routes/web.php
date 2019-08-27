@@ -29,11 +29,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('student', 'StudentController');
     Route::get('student/{student}/showImage', 'StudentController@showImage')->name('student.showImage');
     Route::resource('studentsubject', 'StudentSubjectController');
+    Route::get('student/account/{id}', 'StudentController@setAccount')->name('student.setAccount');
+    Route::post('student/account/update/{id}', 'StudentController@updateAccount')->name('student.updateAccount');
+    Route::get('register/subject/{id}', 'StudentSubjectController@registerSubject')->name('studentsubject.registerSubject');
+    Route::resource('products','ProductController');
+    Route::resource('roles','RoleController');
     Auth::routes();
 });
 Route::get('callback/{provider}', 'Auth\LoginController@handleProviderCallback');
 Route::get('login/{provider}', 'Auth\LoginController@redirect');
-
+Route::post('student/subjects/update/{id}', 'StudentSubjectController@insertRegisteredSubjects')->name('studentsubject.insertRegisteredSubjects');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

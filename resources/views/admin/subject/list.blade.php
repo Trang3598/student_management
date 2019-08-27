@@ -35,23 +35,25 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($subjects as $subject)
-                            <tr class="odd gradeX" align="center">
-                                <td>{{$subject->id}}</td>
-                                <td>{{$subject->name}}</td>
-                                <td>{{$subject->number}}</td>
-                                <td class="center">
-                                    <button class="btn btn-success"><a style="color: white"
-                                                                       href="{{route('subject.edit',$subject->id)}}">Edit</a>
-                                    </button>
-                                </td>
-                                <td>
-                                    {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->id]]) !!}
-                                    {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
-                                    {!! Form::close() !!}
-                                </td>
-                            </tr>
-                        @endforeach
+
+                            @foreach($subjects as $subject)
+                                <tr class="odd gradeX" align="center">
+                                    <td>{{$subject->id}}</td>
+                                    <td>{{$subject->name}}</td>
+                                    <td>{{$subject->number}}</td>
+                                    <td class="center">
+                                        <button class="btn btn-success"><a style="color: white"
+                                                                           href="{{route('subject.edit',$subject->id)}}">Edit</a>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->id]]) !!}
+                                        {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
+                                        {!! Form::close() !!}
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>

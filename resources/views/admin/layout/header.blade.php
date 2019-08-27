@@ -21,7 +21,7 @@
                 @if(isset($user_login))
                     <li><i class="fa fa-user fa-fw" style="margin-left: 20px"></i>{{$user_login->username}}</a>
                     </li>
-                    <li><a href="{{route('user.edit',$user_login->id)}}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="{{route('student.setAccount',$user_login->id)}}"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
                     <li>

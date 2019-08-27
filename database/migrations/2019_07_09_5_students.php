@@ -22,7 +22,7 @@ class Students extends Migration
             $table->date('birthday');
             $table->string('image',190);
             $table->string('address',190);
-            $table->string('phone',10);
+            $table->string('phone',50);
             $table->bigInteger('user_id')->nullable()->unsigned();
             $table->foreign('class_code')->references('id')->on('classes')->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');

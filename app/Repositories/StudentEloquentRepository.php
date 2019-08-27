@@ -50,7 +50,7 @@ class StudentEloquentRepository extends EloquentRepository
 
     public function searchStudent($data)
     {
-        $students = $this->model->newQuery();
+        $students = $this->model->with(['user','ClassM']);
         if (isset($data['min_age'])) {
             $minAge = Carbon::now()->subYears($data['min_age']);
             $students->where('birthday', '<', $minAge);
@@ -88,10 +88,8 @@ class StudentEloquentRepository extends EloquentRepository
                 $students->select();
             }
         }
-
-
-        return $students->paginate(5);
-    }
+        return  $students;
+}
 
     public function findScoreOfStudent()
     {
@@ -104,4 +102,12 @@ class StudentEloquentRepository extends EloquentRepository
         return $students->paginate(5);
     }
 
+    public function findStudentThroughUser($id)
+    {
+        $students = $this->model->newQuery();
+        $students->whereHas('user', function ($query) use ($id) {
+            $query->where('user_id', $id);
+        });
+        return $students->paginate(5);
+    }
 }

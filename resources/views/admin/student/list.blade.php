@@ -64,17 +64,17 @@
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="3">
-                                <button class="btn btn-warning"><a
-                                            href="{{route('student.sendAll')}}"
-                                            style="color: white"><label>Send Mail To Bad Students</label></a></button>
-                            </td>
-                        </tr>
                     </table>
-                    {{--</form>--}}
+
                 </div>
-                <!-- /.col-lg-12 -->
+                <div style="width: 160px">
+                    {!! Form::select('pagination', ['0'=>'Open this select menu','50' => '50', '100' => '100','200' => '200'], \Request::get('pagination'),['class'=>'form-control','id'=>'pagination']) !!}
+                </div>
+                <button class="btn btn-warning" style="float: right"><a
+                            href="{{route('student.sendAll')}}"
+                            style="color: white"><label>Send Mail To Bad Students</label></a></button>
+
+                {!! Form::close() !!}
 
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
@@ -99,7 +99,7 @@
                     @foreach($students as $student)
                         <tr>
                             <td id="student_id_{{$student->id}}">{{$student->id}}</td>
-                            <td id="class_code_{{$student->id}}">{{(isset($student->classM->name)) ?$student->classM->name:''}}</td>
+                            <td id="class_code_{{$student->id}}">{{$student->name}}</td>
                             <td id="name_{{$student->id}}">{{$student->name}}</td>
                             <td id="gender_{{$student->id}}">
                                 @if($student->gender == 1)
@@ -142,7 +142,7 @@
 
                     </tbody>
                 </table>
-                {!! $students->links() !!}
+                {!! $students->appends(compact('items'))->links()!!}
             </div>
             <!-- /.row -->
         </div>
@@ -152,6 +152,11 @@
 @endsection
 @section('form-add')
     <div id="student"></div>
+    <script type="text/javascript">
+        document.getElementById('pagination').onchange = function () {
+            window.location = "{{ $students->url(1) }}&items=" + this.value;
+        };
+    </script>
     <script type="text/javascript">
         //delete message
         $(document).ready(function () {
@@ -167,9 +172,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // $(document).on('click', '.img-responsive', function () {
-            //     $('.img-responsive').show();
-            // });
             //when click button back
             $(document).on('click', '#btn-back', function () {
                 $('#ajax-crud-modal').hide();
@@ -249,7 +251,6 @@
 
     </script>
 @endsection
-
 @section('show-image')
     <div id="image">
 

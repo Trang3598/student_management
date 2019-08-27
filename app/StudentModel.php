@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class StudentModel extends Model
 {
+    use Notifiable;
     protected $table = "students";
     public $timestamps = false;
     protected $fillable = ['name','class_code','gender','birthday','phone','address','user_id','image'];

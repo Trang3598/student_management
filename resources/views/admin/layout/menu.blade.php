@@ -6,6 +6,11 @@
                 </div>
                 <!-- /input-group -->
             </li>
+            @if(isset($user_login))
+            <li>
+                <a href="{{route('studentsubject.registerSubject',$user_login->id)}}"><i class="fas fa-book-open"></i>Course registration<span class="fa arrow"></span></a>
+            </li>
+            @endif
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Faculties<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -55,7 +60,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-users fa-fw"></i>  Results Of Students<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-users fa-fw"></i> Results Of Students<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('studentsubject.index')}}">List Result Of Students</a>

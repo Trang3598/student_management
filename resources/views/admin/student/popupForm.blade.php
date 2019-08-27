@@ -15,9 +15,9 @@
                         <div class="col-sm-12">
                             <select class="form-control" name="class_code">
                                 <option value="">Please enter a class ...</option>
-                                @foreach($classes as $class)
-                                    <option value="{{$class->id}}" {{$student->ClassM->id == $class->id ? 'selected' : ''}}>{{$class->name}}</option>
-                                @endforeach
+                                    @foreach($classes as $class)
+                                        <option value="{{$class->id}}" {{$student->ClassM->id == $class->id ? 'selected' : ''}}>{{$class->name}}</option>
+                                    @endforeach
                             </select>
                             <span class="text-danger">
                                 <strong id="class_code-error"></strong>
