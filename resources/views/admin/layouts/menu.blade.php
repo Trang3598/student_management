@@ -64,6 +64,30 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="#"><i class="fa fa-cube fa-fw"></i> Permission <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{route('permissions.index')}}">Show Permission</a>
+                    </li>
+                    <li>
+                        <a href="{{route('permissions.create')}}">Create Permission</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-cube fa-fw"></i> Role <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{route('roles.index')}}">Show Role</a>
+                    </li>
+                    <li>
+                        <a href="{{route('roles.create')}}">Create Role</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

@@ -23,12 +23,15 @@ class StudentRequestEdit extends FormRequest
      */
     public function rules()
     {
+        $student_id = $this->request->get('student_id');
         return [
             'name'=>'required|min:3|max:100',
             'class_code'=>'required',
             'gender'=>'required',
             'birthday' => 'required|date|date_format:Y-m-d|after:1-1-1990|before:31-12-2001',
-            'phone' => 'unique:students,phone|numeric',
+            'phone' => 'required|numeric|unique:students,phone,'.$student_id,
+            'address'=>'required',
+            'image' =>'max:2000',
         ];
     }
     public function messages()
@@ -45,7 +48,8 @@ class StudentRequestEdit extends FormRequest
             'birthday.after'=>'Error after 1-1-1990',
             'birthday.before'=>'Error before 31-12-2001',
             'phone.unique' => 'Error Same Phone',
-            'phone.numeric'=> 'It is number'
+            'phone.numeric'=> 'It is number',
+            'image.max' => 'File quá lớn'
         ];
     }
 }

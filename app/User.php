@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user', 'email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -42,9 +42,4 @@ class User extends Authenticatable
         return $this->hasOne(Student::class);
     }
 
-    public function setPasswordAttribute($pass){
-
-        $this->attributes['password'] = Hash::make($pass);
-
-    }
 }

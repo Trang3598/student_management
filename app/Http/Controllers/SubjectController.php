@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
 use App\Http\Requests\SubjectRequestEdit;
-use Illuminate\Http\Request;
 use App\Repositories\Subject\SubjectRepository;
 
 class SubjectController extends Controller

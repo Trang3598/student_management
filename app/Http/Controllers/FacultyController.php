@@ -82,9 +82,18 @@ class FacultyController extends Controller
      */
     public function update($id, FacultyRequestEdit $request)
     {
-        $this->facultyRepository->update($id, $request->all());
+        $name_edit = $request->all()['name'];
+        $faculties = $this->facultyRepository->getListById($id);
+        $name_update = $faculties->name;
+        if ($name_edit == $name_update) {
+            $this->facultyRepository->update($id, $request->all());
 
-        return redirect(route('faculties.index'))->with(['success' => 'updated']);
+            return redirect(route('faculties.index'))->with(['success' => 'Nothing Update']);
+        } else {
+            $this->facultyRepository->update($id, $request->all());
+
+            return redirect(route('faculties.index'))->with(['success' => 'Update']);
+        }
     }
 
     /**

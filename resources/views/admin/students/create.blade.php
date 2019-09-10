@@ -52,6 +52,14 @@
                 {!! Form::label('address', 'Address') !!}
                 {!! Form::text('address',old('address'),['class'=>"form-control",'placeholder'=>"Please Enter Your Address"]) !!}
             </div>
+            <div class="form-group">
+                {{Form::label('Role', 'Role')}}
+                <select class="form-control" name="role_id">
+                    @foreach($roles as $id => $role)
+                        <option value="{{ $id }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
             {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}
 
@@ -59,13 +67,14 @@
 
         <div class="col-lg-6" style="padding-bottom:120px">
             <div class="form-group">
-                {{Form::label('user', 'User')}}
-                {!! Form::text('user', old('user'), ['class' =>"form-control", 'placeholder' => "Please Enter User Name"]) !!}
+                {{Form::label('username', 'Username')}}
+                {!! Form::text('username', old('username'), ['class' =>"form-control", 'placeholder' => "Please Enter User Name"]) !!}
             </div>
             <div class="form-group">
                 {{Form::label('email', 'Email')}}
                 {!! Form::text('email', old('email'), ['class' =>"form-control", 'placeholder' => "Please Enter Your Email"]) !!}
             </div>
+
             <div class="form-group">
                 {{Form::label('password', 'Password')}}
                 {!! Form::password('password', ['class' =>"form-control", 'placeholder' => "Please Enter Password",'id'=>"password"]) !!}

@@ -24,7 +24,7 @@ class ClassRequestEdit extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:classes,name|min:3|max:100',
+            'name'=>'required|min:3|max:100|unique:classes,name,'.$this->class,
         ];
     }
     public function messages()

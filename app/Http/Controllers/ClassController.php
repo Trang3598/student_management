@@ -84,8 +84,18 @@ class ClassController extends Controller
      */
     public function update($id, ClassRequestEdit $request)
     {
-        $this->classRepository->update($id, $request->all());
-        return redirect(route('classes.index'))->with(['success' => 'updated']);
+        $classes = $this->classRepository->getListById($id);
+        $name_edit = $classes->name;
+        $name_update = $request->all()['name'];
+        if ($name_edit == $name_update) {
+            $this->classRepository->update($id, $request->all());
+
+            return redirect(route('classes.index'))->with(['success' => 'Nothing update']);
+        } else {
+            $this->classRepository->update($id, $request->all());
+
+            return redirect(route('classes.index'))->with(['success' => 'Update']);
+        }
     }
 
     /**

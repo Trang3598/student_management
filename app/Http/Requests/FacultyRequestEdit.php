@@ -24,7 +24,7 @@ class FacultyRequestEdit extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:faculties,name|min:3|max:100',
+            'name'=>'required|min:3|max:100|unique:faculties,name,'.$this->faculty,
         ];
     }
     public function messages()

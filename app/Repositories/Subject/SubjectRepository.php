@@ -34,4 +34,8 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
     {
         return $this->subject::all();
     }
+    public function getSubjectNotScore($id)
+    {
+        return $this->subject->whereNotIn('id', $id)->get();
+    }
 }

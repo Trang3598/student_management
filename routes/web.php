@@ -14,75 +14,46 @@
 Route::get('/', function () {
     return view('welcome');
 });
+/*
+* Login
+*/
+Auth::routes();
 
-Route::get('dashboard',function (){
+Route::get('dashboard', function () {
     return view('admin.layouts.index');
 });
-/**
- * Route Faculty
- */
-Route::resource('faculties', 'FacultyController');
 
-/**
- * Route Student
- */
-Route::resource('students', 'StudentController');
-/**
- * Route Subject
- */
-Route::resource('subjects', 'SubjectController');
-/**
- * Route Class
- */
-Route::resource('classes', 'ClassController');
-/**
- * Route Mark
- */
-Route::resource('marks', 'MarkController');
-/*
- * Route Search
- */
-Route::get('search', 'StudentController@search');
-/*
- * Route View Add more
- */
-Route::get('students/{student}/account','StudentController@account')->name('students.account');
-/*
- * Route View Add more
- */
-Route::get('students/{student}/more','StudentController@more')->name('students.more');
-/*
- * Route Add more
- */
-Route::put('students/{student}','StudentController@add')->name('students.addMore');
-/*
- * List Warning
- */
-Route::get('student/email','StudentController@mail')->name('students.email');
-/*
- * Send Mail
- */
-Route::put('student/{student}','StudentController@send')->name('students.send');
-/*
- *
- */
-Route::get('student/sendAll','StudentController@sendAll')->name('student.sendAll');
-/*
- * Edit account
- */
-Route::get('users/{user}/edit','UserController@edit')->name('users.edit');
-/*
- * Update account
- */
-Route::put('users/{user}/update','UserController@update')->name('users.update');
-/*
- * Change password
- */
-Route::get('users/{user}/change','UserController@change')->name('users.change');
-/*
- * Changed password
- */
-Route::put('users/{user}/update','UserController@changed')->name('users.changed');
+Route::group(['middleware' => 'checkLogin'], function () {
+    Route::resource('students', 'StudentController');
+    Route::get('student/profile', 'StudentController@profile')->name('student.profile');
+    Route::put('students/newUpdate/{student}', 'StudentController@newUpdate')->name('student.newUpdate');
+    Route::put('students/newUpdate1/{student}', 'StudentController@newUpdate1')->name('student.newUpdate1');
+
+    Route::resource('subjects', 'SubjectController');
+    Route::resource('classes', 'ClassController');
+    Route::resource('marks', 'MarkController');
+
+    Route::get('search', 'StudentController@search');
+
+    Route::get('students/{student}/account', 'StudentController@account')->name('students.account');
+    Route::get('students/{student}/more', 'StudentController@more')->name('students.more');
+    Route::put('students/add/{student}', 'StudentController@add')->name('students.addMore');
+    Route::put('students/editpopup', 'StudentController@editpopup')->name('students.editpopup');
+    Route::get('student/email', 'StudentController@mail')->name('students.email');
+    Route::put('student/{student}', 'StudentController@send')->name('students.send');
+    Route::get('student/sendAll', 'StudentController@sendAll')->name('student.sendAll');
+    Route::resource('users', 'UserController');
+    Route::get('users/{user}/change', 'UserController@change')->name('users.change');
+    Route::put('users/{user}/update', 'UserController@changed')->name('users.changed');
+    Route::resource('faculties', 'FacultyController');
+    Route::resource('permissions', 'PermissionController');
+    Route::resource('roles', 'RolesController');
+    Route::get('roles/{role}/more', 'RolesController@more')->name('roles.more');
+    Route::put('roles/add/{role}', 'RolesController@add')->name('roles.add');
+});
+
+Route::get('/redirect/{social}', 'SocialAuthController@redirect');
+Route::get('/callback/{social}', 'SocialAuthController@callback');
 
 
 

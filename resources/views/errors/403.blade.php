@@ -1,0 +1,1 @@
+Không được phân quyền

@@ -76,7 +76,7 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
                 }
             });
         }
-        return $students->get();
+        return $students;
     }
 
     public function getStudents($id)

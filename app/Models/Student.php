@@ -18,7 +18,7 @@ class Student extends Model
         self::VIETTEL => ['097', '098','035','086','096','032','033','034','037','036','038','039'],
     ];
 
-    protected $fillable = ['name','class_code','gender','birthday','image','phone','address','user_id'];
+    protected $fillable = ['name','class_code','gender','birthday','image','phone','address','user_id','role_id'];
 
     public function subjects(){
         return $this->belongsToMany(Subject::class,'students_subjects','student_code','subject_code')->withPivot('score');
@@ -39,5 +39,8 @@ class Student extends Model
     {
         return $this->belongsTo(ClassModel::class,'id','class_code');
     }
-
+    public function role()
+    {
+        return $this->hasOne(Role::class);
+    }
 }

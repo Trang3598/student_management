@@ -8,9 +8,14 @@
     <meta name="author" content="">
     <title>Admin</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .modal-backdrop.in {
+            display: none;
+        }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('admin_asset/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -31,8 +36,8 @@
         rel="stylesheet">
 
     {{--    <!-- DataTables Responsive CSS -->--}}
-    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.')}}"
-          rel="stylesheet">
+{{--    <link href="{{asset('admin_asset/bower_components/datatables-responsive/css/dataTables.responsive.')}}"
+          rel="stylesheet">--}}
 </head>
 
 <body>
@@ -69,6 +74,7 @@
                     {{session('mes')}}
                 </div>
             @endif
+
             @yield('content')
         </div>
     </div>
@@ -94,6 +100,7 @@
     src="{{asset('admin_asset/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js')}}"></script>
 
 {{--<!-- Page-Level Demo Scripts - Tables - Use for reference -->--}}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#dataTables-example').DataTable({
@@ -101,6 +108,7 @@
         });
     });
 </script>
+
 
 @yield('script')
 </body>

@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MarkAddMoreRequest;
+use App\Http\Requests\Profile1Request;
+use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\StudentRequest;
 use App\Http\Requests\StudentRequestEdit;
+use App\Jobs\SendEmail;
 use App\Mail\FailStudents;
+use App\Models\ClassModel;
+use App\Models\Role;
 use App\Models\Student;
+use App\Repositories\Role\RoleRepository;
 use App\Users;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\ClassRepository\ClassRepository;
@@ -14,8 +20,11 @@ use App\Repositories\Mark\MarkRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
@@ -28,13 +37,14 @@ class StudentController extends Controller
     protected $subjectRepository;
     protected $userRepository;
 
-    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository, SubjectRepository $subjectRepository,UserRepository $userRepository)
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository, SubjectRepository $subjectRepository, UserRepository $userRepository,RoleRepository $roleRepository)
     {
         $this->classRepository = $classRepository;
         $this->studentRepository = $studentRepository;
         $this->markRepository = $markRepository;
         $this->subjectRepository = $subjectRepository;
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -42,12 +52,28 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $students = $this->studentRepository->searchStudent(request()->all());
+        if (empty($request->page)){
+            $data = request()->all();
+        }
+        else{
+            $data = request()->data;
+            $data['page'] = $request->page;
+        }
 
-        return view('admin.students.index', compact('students'));
+        if (empty($request->pagination)){
+            $pagination = 10;
+        }else{
+            $pagination = $request->pagination;
+        }
+        $students = $this->studentRepository->searchStudent($data)->paginate($pagination);
+
+        $classes = ClassModel::all();
+
+        return view('admin.students.index', compact('students', 'classes','pagination','data'));
     }
+
 
     /**
      * Create single post
@@ -55,8 +81,10 @@ class StudentController extends Controller
      */
     public function create()
     {
+//        $this->authorize('create', Student::class);
         $classes = $this->classRepository->getClasses();
-        return view('admin.students.create', compact('classes'));
+        $roles = Role::all();
+        return view('admin.students.create', compact('classes','roles'));
     }
 
     /**
@@ -67,6 +95,10 @@ class StudentController extends Controller
      */
     public function show($id)
     {
+        $student = Student::findOrFail($id);
+
+        $this->authorize('view', $student);
+
         $students = $this->studentRepository->getStudents($id);
 
         $marks = $this->markRepository->getMarks($id)->get();
@@ -91,12 +123,13 @@ class StudentController extends Controller
             $data['image'] = $image;
         }
         DB::beginTransaction();
-        try{
+        try {
+            $data['password'] = Hash::make($data['password']);
             $user = $this->userRepository->store($data);
-            $data['user_id']= $user->id;
+            $data['user_id'] = $user->id;
             $this->studentRepository->store($data);
             DB::commit();
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             throw new Exception($e->getMessage());
         }
@@ -106,11 +139,12 @@ class StudentController extends Controller
 
     public function edit($id)
     {
-        $students = $this->studentRepository->getListById($id);
+        $student = Student::findOrFail($id);
+        $this->authorize('view', $student);
+        $where = array('id' => $id);
+        $student = Student::where($where)->first();
 
-        $classes = $this->classRepository->getClasses();
-
-        return view('admin.students.edit', compact('students', 'classes'));
+        return Response::json($student);
     }
 
     /**
@@ -120,10 +154,11 @@ class StudentController extends Controller
      * @param $id int Post ID
      * @return \Illuminate\Http\Response
      */
-    public function update($id, StudentRequestEdit $request)
+    public function update(StudentRequestEdit $request)
     {
-        $data = $request->all();
 
+        $student_id = $request->student_id;
+        $data = $request->all();
         if ($request->hasFile('image')) {
             $file = $request->image;
             $image = time() . $file->getClientOriginalName();
@@ -131,8 +166,16 @@ class StudentController extends Controller
             $data['image'] = $image;
         }
 
-        $this->studentRepository->update($id, $data);
-        return redirect(route('students.index'))->with(['success' => 'updated']);
+        $this->studentRepository->update($student_id, $data);
+
+        $student = $this->studentRepository->getListById($student_id);
+
+        if ($request->ajax()) {
+            if (!empty($student->image)) {
+                $student->image = asset('img/' . $student->image);
+            }
+            return Response::json($student);
+        }
     }
 
     /**
@@ -143,12 +186,15 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Student::class);
         $this->studentRepository->destroy($id);
         return back()->with('success', 'Delete-success !');
     }
 
     public function more($id)
     {
+        $student = Student::findOrFail($id);
+        $this->authorize('view', $student);
         $student = $this->studentRepository->getListById($id);
 
         $marks = $this->markRepository->getMarks($id)->get();
@@ -170,8 +216,9 @@ class StudentController extends Controller
             $result[$value] = ['score' => $data['score'][$key]];
         }
         $student->subjects()->sync($result);
-        return redirect(route('students.index'))->with(['success' => 'create success']);
+        return redirect()->back()->with(['success' => 'add success']);
     }
+
     public function account($id)
     {
         $student = $this->studentRepository->getListById($id);
@@ -181,7 +228,8 @@ class StudentController extends Controller
         return view('admin.users.index', compact('student', 'user'));
     }
 
-    public function mail(){
+    public function mail()
+    {
         $students = $this->studentRepository->failStudents();
         return view('admin.students.email', compact('students'));
     }
@@ -190,20 +238,66 @@ class StudentController extends Controller
     {
         $students = Student::findOrFail($id);
         $users = $this->userRepository->getUser($students['user_id'])->get();
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $email = $user['email'];
         }
-        $this->dispatch(new FailStudents($user));
         Mail::to($email)->send(new FailStudents($user));
         return redirect()->back()->with(['success' => 'send success']);
     }
+
     public function sendAll()
     {
         $students = $this->studentRepository->failStudents(request()->all());
         foreach ($students as $student) {
-            Mail::to($student->users->email)->send(new FailStudents($student->user));
+            dispatch(new SendEmail($student->user));
         }
-        return redirect()->back()->with(['success' => 'send success']);
+        return redirect()->back()->with(['success' => 'send all success']);
+    }
+
+    public function profile()
+    {
+        $student = Auth::user()->students;
+        $classes = ClassModel::all()->pluck('name', 'id');
+        $marks = $this->markRepository->getMarks(Auth::user()->students->id)->get();
+        $subject_code = [];
+        foreach ($marks as $key => $mark) {
+           array_push(
+               $subject_code,[$marks[$key]->subject_code]
+           );
+        }
+        $subjects = $this->subjectRepository->getSubjectNotScore($subject_code);
+        return view('admin.students.edit', compact('student', 'classes','marks','subjects'));
+    }
+
+    public function newUpdate($id, ProfileRequest $request)
+    {
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $image = time() . $file->getClientOriginalName();
+            $file->move('img', $image);
+            $data['image'] = $image;
+        }
+        $this->studentRepository->update($id, $data);
+        return redirect()->back()->with(['success' => 'updated']);
+    }
+    public function newUpdate1($id, Profile1Request $request)
+    {
+        $student = $this->studentRepository->getListById($id);
+        $data = $request->all();
+        if ($request->checkbox) {
+            $data['subject_code'] = $data['checkbox'];
+        }
+        if (empty($data['subject_code'])){
+            return redirect()->back()->with(['success' => 'Chưa chọn môn học']);
+        }else{
+            $result = [];
+            foreach ($data['subject_code'] as $key => $value) {
+                $result[$value] = ['score' => $data['score'][$key]];
+            }
+            $student->subjects()->attach($result);
+            return redirect()->back()->with(['success' => 'Đã cập nhập điểm 0 vào mỗi môn']);
+        }
     }
 }
 

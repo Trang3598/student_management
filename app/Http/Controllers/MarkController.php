@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MarkRequest;
-use App\Models\Student;
 use App\Repositories\Mark\MarkRepository;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\Subject\SubjectRepository;
+use http\Env\Request;
 
 class MarkController extends Controller
 {
@@ -109,5 +109,4 @@ class MarkController extends Controller
 
         return back()->with('success', 'Delete-success !');
     }
-
 }

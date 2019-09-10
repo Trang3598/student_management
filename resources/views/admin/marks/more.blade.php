@@ -8,10 +8,13 @@
                 {{Form::open(['method'=>'Put','route'=>['students.addMore',$student->id]])}}
                 <table class="table" id="dynamic_field">
                     {{--show list--}}
+                    @if(!empty(old('subject_code')))
+                    @else
                     @foreach($marks as $mark)
                         <tr class="count">
                             <td>
                                 <select class="form-control" name="subject_code[]">
+                                    <option value="">Please choose subject...</option>
                                     @foreach($subjects as $subject)
                                         <option
                                             value="{{$subject->id}}" {{$subject->id == $mark->subject_code ?'selected' : ''}}>
@@ -25,19 +28,54 @@
                             </td>
                             <td>
                                 <button type="button" name="remove"
-                                        class="btn btn-danger btn_remove"><a href="#"><i
-                                            class="glyphicon glyphicon-remove"></i></a>
+                                        class="btn btn-danger btn_remove"><i
+                                        class="glyphicon glyphicon-remove"></i>
                                 </button>
                             </td>
                         </tr>
                     @endforeach
-                    {{--end show list--}}
-
-                    <tr class="addform count ">
+                    @endif
+                    @if(!empty(old('subject_code')))
+                        @foreach(old('subject_code') as $subject_code)
+                            <tr class="count">
+                                <td>
+                                    <select class="form-control" name="subject_code[]">
+                                        <option value="">Please choose subject...</option>
+                                        @foreach($subjects as $subject)
+                                            <option
+                                                value="{{$subject->id}}" {{$subject->id == $subject_code ?'selected' : ''}}>
+                                                {{$subject->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                @if(!empty(old('score')))
+                                @else
+                                <td>
+                                    {!! Form::text('score[]',$subject_code,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
+                                </td>
+                                @endif
+                                @if(!empty(old('score')))
+                                <td>
+                                {!! Form::text('score[]',null,['class'=>'form-control','placeholder'=> 'Please Enter Score']) !!}
+                                </td>
+                                @endif
+                                <td>
+                                    <button type="button" name="remove"
+                                            class="btn btn-danger btn_remove"><i
+                                            class="glyphicon glyphicon-remove"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    <tr class="addform count" style="display: none">
                         <div>
-                            <button type="button" name="add" id="add" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                            <button type="button" name="add" id="add" class="btn btn-success"><i
+                                    class="glyphicon glyphicon-plus"></i></button>
                             <td>
                                 <select class="form-control" name="subject_code[]">
+                                    <option value="">Please choose subject...</option>
                                     @foreach($subjects as $subject)
                                         <option value="{{$subject->id}}">{{$subject->name}}</option>
                                     @endforeach
@@ -48,14 +86,14 @@
                             </td>
                             <td>
                                 <button type="button" name="remove"
-                                    class="btn btn-danger btn_remove"><a href="#"><i class="glyphicon glyphicon-remove"></i></a>
+                                        class="btn btn-danger btn_remove"><i class="glyphicon glyphicon-remove"></i>
                                 </button>
                             </td>
                         </div>
                     </tr>
                 </table>
                 <div>
-                    {!! Form::submit('Add Mark',['class' => 'btn btn-success']) !!}
+                    {!! Form::submit('Add Mark',['class' => 'btn btn-success','id' =>'btn-submit']) !!}
                 </div>
                 {!! Form::close() !!}
                 <p id="number-subject" style="display: none">{{count($subjects)}}</p>
@@ -71,8 +109,8 @@
             $('#add').click(function () {
                 var len = $('tr.count').length;
                 var subject = $('p#number-subject').html();
-                if (len < subject) {
-                    $('#dynamic_field').append('<tr>' + form + '</tr>');
+                if (len - 1 < subject) {
+                    $('#dynamic_field').append('<tr class="count">' + form + '</tr>');
                 } else {
                     alert('student has ' + subject + ' subject !')
                 }
@@ -90,7 +128,7 @@
             });
             $(document).on('click', '.btn_remove', function () {
 
-                if ($(this).parent().parent().hasClass('addform')) {
+                if ($(this).parent().parent().hasClass('.addform')) {
                     stop();
                 } else {
                     $(this).parent().parent().remove();
@@ -130,6 +168,11 @@
                     }
                 });
             });
+
+            $('#btn-submit').on('click', function () {
+
+                $('.addform').remove();
+            })
         });
     </script>
 

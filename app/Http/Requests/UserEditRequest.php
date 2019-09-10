@@ -24,8 +24,8 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user' => 'required|unique:users,user',
-            'email' => 'required|unique:users,email',
+            'user' => 'required|unique:users,user,'.$this->user,
+            'email' => 'required|email|unique:users,email,'.$this->user,
         ];
     }
 
@@ -35,6 +35,7 @@ class UserEditRequest extends FormRequest
             'user.unique'=>'Same User',
             'email.required'=>'No Email',
             'email.unique' => 'Same Email',
+            'email.email' => 'ERROR Email'
         ];
     }
 }

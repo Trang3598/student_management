@@ -18,12 +18,13 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li><a href="#"><i class="fa fa-user fa-fw"></i> @if(isset(Auth::user()->students->name)){{{Auth::user()->students->name}}}@else{{Auth::user()->username}} @endif </a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li>
+                    {!! Form::open(['method'=>'POST', 'route'=>'logout']) !!}
+                    {!! Form::submit('Logout', ['style'=> 'text:center ;display: inline; border: none;background: none;']) !!}
+                    {!! Form::close() !!}
                 </li>
             </ul>
             <!-- /.dropdown-user -->
