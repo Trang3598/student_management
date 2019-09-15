@@ -17,6 +17,6 @@ $factory->define(\App\StudentModel::class, function (Faker $faker) use ($users) 
         'user_id' => function () {
             return factory(App\User::class)->create()->id;
         },
-        'image' => $faker->image,
+        'image' => $faker->image('public/images',400,300, null, false)
     ];
 });

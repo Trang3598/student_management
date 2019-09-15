@@ -41,13 +41,11 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->username}}</td>
                             <td>{{$user->email}}</td>
-                            <td>
-                                @if($user->level == 1)
-                                    {{'Admin'}}
-                                @else
-                                    {{'Guest'}}
-                                @endif
-                            </td>
+                            <td>@if(!empty($user->getRoleNames()))
+                                    @foreach($user->getRoleNames() as $role)
+                                        {{ $role}}
+                                    @endforeach
+                                @endif</td>
                             <td class="center">
                                 <button class="btn btn-success"><a style="color: white"
                                                                    href="{{route('user.edit',$user->id)}}">Edit</a>

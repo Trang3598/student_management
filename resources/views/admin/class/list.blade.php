@@ -37,7 +37,7 @@
                     </tr>
                     </thead>
                     <tbody>
-
+                    @if(isset($classes))
                     @foreach($classes as $class)
                         <tr class="odd gradeX" align="center">
                             <td>{{(isset($class->id))? $class->id: ''}}</td>
@@ -55,6 +55,7 @@
                         </tr>
                     @endforeach
 
+
                     </tbody>
                 </table>
             </div>
@@ -62,6 +63,7 @@
         </div>
         <!-- /.container-fluid -->
         {!! $classes->links() !!}
+        @endif
     </div>
     <!-- /#page-wrapper -->
     <script type="text/javascript">

@@ -5,10 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
-
+use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $fillable = [
-        'username', 'email', 'password','level','provider','provider_id'
+        'username', 'email', 'password','provider','provider_id'
     ];
     public $timestamps = false;
 
@@ -45,7 +45,10 @@ class User extends Authenticatable
     public function student(){
         return $this->hasOne(StudentModel::class);
     }
-    //check quyền quản trị của user
+    public function role()
+    {
+        return $this->hasOne(Role::class,'id','level');
+    }
     public function hasDefinePrivilege($level)
     {
         if(!$level)

@@ -35,18 +35,9 @@
                         {!! Form::label('Email') !!}
                         {!! Form::text('email',$user->email,['class'=>'form-control','placeholder'=>'Please Enter Email']) !!}
                     </div>
-                    {{--<div class="form-group">--}}
-                        {{--{!! Form::label('Password') !!}--}}
-                        {{--{!! Form::password('password',['class'=>'form-control','placeholder'=>'Please Enter Password'],$user->password) !!}--}}
-                    {{--</div>--}}
                     <div class="form-group">
                         {!! Form::label('Level') !!}
-                        <label class="radio-inline">
-                            {!! Form::radio('level','1',$user->level == 1) !!}{{'Admin'}}
-                        </label>
-                        <label class="radio-inline">
-                            {!! Form::radio('level','0',$user->level == 0) !!}{{'Guest'}}
-                        </label>
+                        {!! Form::select('roles', $roles, $userRole, ['class' => 'form-control']) !!}
                     </div>
                     {!! Form::submit('User Edit',['class' => 'btn btn-default']) !!}
                     {!! Form::button('Reset',['class' => 'btn btn-default']) !!}

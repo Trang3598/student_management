@@ -1,4 +1,5 @@
 @extends('admin.layout.index')
+
 @section('content')
     <!-- Page Content -->
     <div id="page-wrapper">
@@ -70,12 +71,14 @@
                 <div style="width: 160px">
                     {!! Form::select('pagination', ['0'=>'Open this select menu','50' => '50', '100' => '100','200' => '200'], \Request::get('pagination'),['class'=>'form-control','id'=>'pagination']) !!}
                 </div>
+
                 <button class="btn btn-warning" style="float: right"><a
                             href="{{route('student.sendAll')}}"
                             style="color: white"><label>Send Mail To Bad Students</label></a></button>
-
                 {!! Form::close() !!}
-
+                @if(isset($number))
+                    <p>Number of records: {{$number}}</p>
+                @endif
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr align="center">
@@ -90,8 +93,12 @@
                         <th>Email</th>
                         <th>Send Email</th>
                         <th>Show Result</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        @can('student-edit')
+                            <th>Edit</th>
+                        @endcan
+                        @can('student-delete')
+                            <th>Delete</th>
+                        @endcan
                     </tr>
                     </thead>
                     <tbody id='students-crud'>
@@ -99,7 +106,7 @@
                     @foreach($students as $student)
                         <tr>
                             <td id="student_id_{{$student->id}}">{{$student->id}}</td>
-                            <td id="class_code_{{$student->id}}">{{$student->name}}</td>
+                            <td id="class_code_{{$student->id}}">{{$student->class_code}}</td>
                             <td id="name_{{$student->id}}">{{$student->name}}</td>
                             <td id="gender_{{$student->id}}">
                                 @if($student->gender == 1)
@@ -120,23 +127,36 @@
                             </td>
                             <td id="address_{{$student->id}}">{!! $student->address !!}</td>
                             <td id="phone_{{$student->id}}">{!! $student->phone !!}</td>
-                            <td id="email_{{$student->id}}">{!! $student->user->email !!}</td>
-                            <td class="center"><i class="glyphicon glyphicon-send"></i>
-                                <a href="{{route('student.sendMail',$student->user->id)}}">Send</a>
+
+                            <td id="email_{{$student->id}}">
+                                @if(isset($student->user))
+                                    {!! $student->user->email !!}
+                                @endif
                             </td>
+                            <td class="center"><i class="glyphicon glyphicon-send"></i>
+                                <a
+                                        @if(isset($student->user))
+                                        href="{{route('student.sendMail',$student->user->id)}}"
+                                        @endif
+                                >Send</a>
+                            </td>
+
                             <td class="center"><i class="glyphicon glyphicon-eye-open"></i>
                                 <a href="{{route('studentsubject.addmore',$student->id)}}">Show</a>
                             </td>
-                            <td class="center">
-                                <a href="javascript:void(0)" class="edit-student btn btn-success"
-                                   data-id="{{ $student->id }}">Edit</a>
-                            </td>
-                            <td>
-                                {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
-                                {!! Form::close() !!}
-                            </td>
-
+                            @can('student-edit')
+                                <td class="center">
+                                    <a href="javascript:void(0)" class="edit-student btn btn-success"
+                                       data-id="{{ $student->id }}">Edit</a>
+                                </td>
+                            @endcan
+                            @can('student-delete')
+                                <td>
+                                    {!! Form::open(['method'=> 'DELETE','route' => ['student.destroy', $student->id]]) !!}
+                                    {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
+                                    {!! Form::close() !!}
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
 
@@ -150,6 +170,7 @@
     </div>
     <!-- /#page-wrapper -->
 @endsection
+
 @section('form-add')
     <div id="student"></div>
     <script type="text/javascript">
@@ -253,7 +274,6 @@
 @endsection
 @section('show-image')
     <div id="image">
-
     </div>
     <script>
         $('body').on('click', '.show-image', function () {

@@ -63,6 +63,8 @@ class Kernel extends HttpKernel
         //sparti permission
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        //da ngon ngu
+        'locale' => \App\Http\Middleware\Locale::class
     ];
 
     /**

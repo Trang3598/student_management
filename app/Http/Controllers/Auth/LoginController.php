@@ -7,6 +7,8 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Socialite;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -51,6 +53,7 @@ class LoginController extends Controller
         $user->provider = $provider;
         $authUser = $this->findOrCreateUser($user);
         Auth::login($authUser);
+//        $user->assignRole('student');
         return redirect(route('user.index'));
     }
 
@@ -78,7 +81,6 @@ class LoginController extends Controller
             'email' => $provider->email,
             'password' => $provider->id,
             'confirm' => '',
-            'level' => 0,
             'provider_id' => $provider->id,
             'provider' => $provider->provider,
         ]);

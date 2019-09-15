@@ -18,6 +18,7 @@ class Subjects extends Migration
             $table->bigIncrements('id');
             $table->string('name',50);
             $table->integer('number');
+            $table->string('slug',50);
         });
     }
 

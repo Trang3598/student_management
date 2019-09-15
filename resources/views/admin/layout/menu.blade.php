@@ -6,19 +6,33 @@
                 </div>
                 <!-- /input-group -->
             </li>
-            @if(isset($user_login))
+
             <li>
-                <a href="{{route('studentsubject.registerSubject',$user_login->id)}}"><i class="fas fa-book-open"></i>Course registration<span class="fa arrow"></span></a>
+                <div style="margin-left: 15px">
+                    <img src="images/vietnam.png" style="height: 30px">
+                    <a href="{!! route('user.change-language', ['vi']) !!}">{{__('message.Vietnamese')}}</a>
+                </div>
             </li>
+            <li>
+                <div style="margin-left: 15px">
+                    <img src="images/england.png" style="height: 23px">
+                    <a href="{!! route('user.change-language', ['en']) !!}">{{__('message.English')}}</a>
+                </div>
+            </li>
+            @if(isset($user_login))
+                <li>
+                    <a href="{{route('studentsubject.registerSubject',$user_login->id)}}"><i
+                                class="fa fa-book"></i> Course registration<span class="fa arrow"></span></a>
+                </li>
             @endif
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Faculties<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> {{__('message.Faculties')}}<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{route('faculty.index')}}">List Faculties</a>
+                        <a href="{{route('faculty.index')}}">{{__('message.List_Faculties')}}</a>
                     </li>
                     <li>
-                        <a href="{{route('faculty.create')}}">Add Faculties</a>
+                        <a href="{{route('faculty.create')}}">{{__('message.Add_Faculties')}}</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -42,7 +56,7 @@
                         <a href="{{route('student.index')}}">List Students</a>
                     </li>
                     <li>
-                        <a href="{{route('student.create')}}">Add Students</a>
+                        <a href="{{route('student.create')}}">{{__('message.Add_Students')}}</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -64,6 +78,7 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('studentsubject.index')}}">List Result Of Students</a>
+
                     </li>
                     <li>
                         <a href="{{route('studentsubject.create')}}">Add Result of Student</a>
@@ -72,7 +87,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-users fa-fw"></i>Users<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-user fa-fw"></i> Users<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('user.index')}}">List Of Users</a>
@@ -80,6 +95,35 @@
                     <li>
                         <a href="{{route('user.create')}}">Add Users</a>
                     </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-users fa-fw"></i> Roles<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{route('roles.index')}}">List Of Roles</a>
+                    </li>
+                    <li>
+                        @can('role-create')
+                            <a href="{{route('roles.create')}}">Add Roles</a>
+                        @endcan
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-users fa-fw"></i> Permission<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{route('permissions.index')}}">List Of Permissions</a>
+                    </li>
+                    @can('permission-create')
+                        <li>
+                            <a href="{{route('permissions.create')}}">Add Permissions</a>
+                        </li>
+                    @endcan
                 </ul>
                 <!-- /.nav-second-level -->
             </li>

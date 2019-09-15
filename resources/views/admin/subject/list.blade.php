@@ -42,12 +42,16 @@
                                     <td>{{$subject->name}}</td>
                                     <td>{{$subject->number}}</td>
                                     <td class="center">
+                                        @if(isset($subject->slug))
                                         <button class="btn btn-success"><a style="color: white"
-                                                                           href="{{route('subject.edit',$subject->id)}}">Edit</a>
+                                                                           href="{{route('subject.edit',$subject->slug)}}">Edit</a>
                                         </button>
+                                        @endif
                                     </td>
                                     <td>
-                                        {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->id]]) !!}
+                                        @if(isset($subject->slug))
+                                        {!! Form::open(['method'=> 'DELETE','route' => ['subject.destroy', $subject->slug]]) !!}
+                                        @endif
                                         {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                                         {!! Form::close() !!}
                                     </td>

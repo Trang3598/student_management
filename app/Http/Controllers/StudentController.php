@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\ClassModel;
 use App\Http\Requests\StudentRequest;
 use App\Jobs\SendEmailJob;
 use App\Repositories\StudentEloquentRepository;
 use App\Repositories\UserEloquentRepository;
-use App\SubjectModel;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Mockery\Exception;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
 {
@@ -28,6 +30,11 @@ class StudentController extends Controller
         parent::__construct();
         $this->studentRepository = $studentRepository;
         $this->userRepository = $userEloquentRepository;
+        $this->middleware('permission:student-list');
+        $this->middleware('permission:student-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:student-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:student-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:student-account', ['only' => ['setAccount','updateAccount']]);
     }
 
     /**
@@ -39,10 +46,12 @@ class StudentController extends Controller
     {
         $items = $request->items ?? 10;
         $students = $this->studentRepository->searchStudent(request()->all())->paginate($items);
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $student->class_code = $student->ClassM->name;
         }
-        return view('admin.Student.list', compact('students','items'));
+
+        $number = $this->studentRepository->countListStudents();
+        return view('admin.Student.list', compact('students', 'items','number'));
 
     }
 
@@ -86,7 +95,8 @@ class StudentController extends Controller
         try {
             $user = $this->userRepository->store($data);
             $data['user_id'] = $user->id;
-            $this->studentRepository->store($data);
+            $students = $this->studentRepository->store($data);
+            $user->assignRole($request->input('roles'));
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -180,6 +190,7 @@ class StudentController extends Controller
         }
         return view('admin.Student.list', compact('students'));
     }
+
     public function setAccount($id)
     {
 
@@ -187,9 +198,10 @@ class StudentController extends Controller
         $student = $this->studentRepository->findStudentThroughUser($user->id);
         $classes = ClassModel::all();
         $cls = $classes->pluck('name', 'id')->all();
-        return view('admin.account.account_infor', compact('user','student','cls'));
+        return view('admin.account.account_infor', compact('user', 'student', 'cls'));
     }
-    public function updateAccount(StudentRequest $request,$id)
+
+    public function updateAccount(StudentRequest $request, $id)
     {
         $data = $request->all();
         if ($request->hasFile('image')) {
@@ -200,21 +212,21 @@ class StudentController extends Controller
         }
         DB::beginTransaction();
         try {
-            $user = $this->userRepository->update($id,$data);
+            $user = $this->userRepository->update($id, $data);
             $data['user_id'] = $user->id;
             $student_id = $this->studentRepository->findStudentThroughUser($user->id);
-            if (empty($student_id[0]->id)){
+            if (empty($student_id[0]->id)) {
                 $student = $this->studentRepository->store($data);
-            }else{
-                $student = $this->studentRepository->update($student_id[0]->id,$data);
+            } else {
+                $student = $this->studentRepository->update($student_id[0]->id, $data);
             }
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             throw new Exception($exception->getMessage());
         }
-     return Response::json([
-         'user' => $user,
-        'student'=> $student]);
+        return Response::json([
+            'user' => $user,
+            'student' => $student]);
     }
 }

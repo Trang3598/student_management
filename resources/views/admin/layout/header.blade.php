@@ -21,7 +21,10 @@
                 @if(isset($user_login))
                     <li><i class="fa fa-user fa-fw" style="margin-left: 20px"></i>{{$user_login->username}}</a>
                     </li>
-                    <li><a href="{{route('student.setAccount',$user_login->id)}}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li>
+                        @can('student-account')
+                        <a href="{{route('student.setAccount',$user_login->id)}}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                            @endcan
                     </li>
                     <li class="divider"></li>
                     <li>
@@ -30,6 +33,7 @@
                         {!! Form::submit('Logout', ['style'=> 'margin-left: 20px, display: inline; border: none;background: none;']) !!}
                         {!! Form::close() !!}
                     </li>
+
                 @endif
             </ul>
             <!-- /.dropdown-user -->

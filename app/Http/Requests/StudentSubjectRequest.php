@@ -26,12 +26,6 @@ class StudentSubjectRequest extends FormRequest
         $array_validate['score.*'] = 'required|numeric|between:0,10';
         $array_validate['student_code.*'] = 'required';
         $array_validate['subject_code.*'] = 'required|';
-
-//        $array_validate = [
-//            'student_code' => 'required',
-//            'subject_code' => 'required',
-//            'score' => 'required|numeric|between:0,10',
-//        ];
         return $array_validate;
     }
 }

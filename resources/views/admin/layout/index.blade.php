@@ -36,6 +36,9 @@
         .container {
             padding: 0.5%;
         }
+        p {
+            margin: 9px 0 10px;
+        }
 
         /*.modal-backdrop.in {*/
         /*display: none;*/

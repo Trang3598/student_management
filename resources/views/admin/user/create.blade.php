@@ -41,12 +41,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('Level') !!}
-                            <label class="radio-inline">
-                                {!! Form::radio('level','1') !!}{{'Admin'}}
-                            </label>
-                            <label class="radio-inline">
-                                {!! Form::radio('level','0') !!}{{'Guest'}}
-                            </label>
+                            {!! Form::select('level',['' => 'Please enter a role...'] + $role,['class'=>'form-control']) !!}
                         </div>
                         {!! Form::submit('User Add',['class' => 'btn btn-default']) !!}
                         {!! Form::button('Reset',['class' => 'btn btn-default']) !!}

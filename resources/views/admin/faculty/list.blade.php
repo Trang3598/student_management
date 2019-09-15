@@ -6,8 +6,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Faculty
-                        <small>List</small>
+                    <h1 class="page-header">{{__('message.faculty')}}
+                        <small>{{__('message.list')}}</small>
                     </h1>
                     <div class="message_warning">
                         @if(session('message'))
@@ -25,29 +25,32 @@
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->
-                <table class="table table-striped table-bordered table-hover" >
+                <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr align="center">
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Show List Class</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{{__('message.id')}}</th>
+                        <th>{{__('message.name')}}</th>
+                        <th>{{__('message.show_list_class')}}</th>
+                        <th>{{__('message.edit')}}</th>
+                        <th>{{__('message.delete')}}</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($faculties as $faculty)
+                            @foreach($items as $faculty)
                         <tr class="odd gradeX" align="center">
-                            <td>{{$faculty->id}}</td>
-                            <td>{{$faculty->name}}</td>
+                            <td>{{$faculty['id']}}</td>
+                            <td>{{$faculty['name']}}</td>
                             <td class="center"><i class="glyphicon glyphicon-eye-open"></i> <a
-                                        href="{{route('faculty.show',$faculty->id)}}">Show</a></td>
-                            <td class="center"><button class="btn btn-success"><a
-                                            href="{{route('faculty.edit',$faculty->id)}}" style="color: white">Edit</a></button></td>
+                                        href="{{route('faculty.show',$faculty['id'])}}">{{__('message.show')}}</a></td>
+                            <td class="center">
+                                <button class="btn btn-success"><a
+                                            href="{{route('faculty.edit',$faculty['id'])}}"
+                                            style="color: white">{{__('message.edit')}}</a></button>
+                            </td>
                             <td>
-                                {!! Form::open(['method'=> 'DELETE','route' => ['faculty.destroy', $faculty->id]]) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
+                                {!! Form::open(['method'=> 'DELETE','route' => ['faculty.destroy', $faculty['id']]]) !!}
+                                {!! Form::submit(__('message.delete'),['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                                 {!! Form::close() !!}
                             </td>
                         </tr>
@@ -58,7 +61,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        {!! $faculties->links() !!}
+        {{--{!!  pagina($item, 2) !!}--}}
     </div>
     <!-- /#page-wrapper -->
     <script type="text/javascript">

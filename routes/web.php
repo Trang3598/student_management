@@ -20,8 +20,12 @@ Route::get('destroyMore/{id}', 'StudentSubjectController@destroyMore')->name('st
 Route::get('student', 'StudentController@search')->name('student.search');
 Route::get('sendMail/{id}', 'StudentController@sendMail')->name('student.sendMail');
 Route::get('sendAll', 'StudentController@sendMails')->name('student.sendAll');
+Route::group(['middleware' => 'locale'], function () {
+    Route::get('change-language/{language}', 'HomeController@changeLanguage')
+        ->name('user.change-language');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+});
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'locale']], function () {
     Route::resource('user', 'UserController');
     Route::resource('faculty', 'FacultyController');
     Route::resource('subject', 'SubjectController');
@@ -32,13 +36,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('student/account/{id}', 'StudentController@setAccount')->name('student.setAccount');
     Route::post('student/account/update/{id}', 'StudentController@updateAccount')->name('student.updateAccount');
     Route::get('register/subject/{id}', 'StudentSubjectController@registerSubject')->name('studentsubject.registerSubject');
-    Route::resource('products','ProductController');
-    Route::resource('roles','RoleController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionController');
     Auth::routes();
 });
+Route::get('setPermission/{id}', 'RoleController@setPermission')->name('roles.setPermission');
+Route::post('addPermission/{id}', 'RoleController@addPermission')->name('roles.addPermission');
 Route::get('callback/{provider}', 'Auth\LoginController@handleProviderCallback');
 Route::get('login/{provider}', 'Auth\LoginController@redirect');
 Route::post('student/subjects/update/{id}', 'StudentSubjectController@insertRegisteredSubjects')->name('studentsubject.insertRegisteredSubjects');
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');

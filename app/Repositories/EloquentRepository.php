@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\FacultyModel;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class EloquentRepository

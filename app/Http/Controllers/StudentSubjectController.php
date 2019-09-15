@@ -160,13 +160,17 @@ class StudentSubjectController extends Controller
 
     public function registerSubject($id)
     {
+
         $student = $this->studentRepository->findStudentThroughUser($id);
-        $subjects = $this->studentsubjectRepository->getListUnregisteredSubject($student[0]->id);
+        if (!empty($student[0])) {
+            $subjects = $this->studentsubjectRepository->getListUnregisteredSubject($student[0]->id);
+        }
         return view('admin.student_subject.register_subject', compact('subjects', 'id', 'student'));
     }
 
     public function insertRegisteredSubjects(StudentSubjectRequest $request, $id)
     {
+
         $data = [];
         $student = $this->studentRepository->findStudentThroughUser($id);
         if (isset($request->all()['subject_code'])) {

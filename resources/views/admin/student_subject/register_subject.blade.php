@@ -26,6 +26,7 @@
                 <!-- /.col-lg-12 -->
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
+                    @if(isset($student[0]->id))
                     <tr>
                         <td colspan="3"><h4>List of unregistered subjects</h4></td>
                     </tr>
@@ -37,6 +38,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     {!! Form::open(['route'=>['studentsubject.insertRegisteredSubjects',$id],'method' => 'POST']) !!}
                     <input type="hidden" name="student_code" value="{{$student[0]->id}}">
                     @isset($subjects)
@@ -59,6 +61,9 @@
                 </table>
                 <button type="submit" class="btn btn-success">Confirm</button>
                 {!! Form::close() !!}
+                @else
+                    <h2>No data available for this user</h2>
+                @endif
             </div>
             <!-- /.row -->
         </div>

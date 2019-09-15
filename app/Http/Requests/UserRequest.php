@@ -33,13 +33,10 @@ class UserRequest extends FormRequest
         $arr_validate = [
             'username' => 'required|min:3|max:50|unique:users',
             'email' => 'required|email|unique:users',
-//            'password' => 'required|min:5|max:10',
-            'level' => 'required'
         ];
         if($this->user){
             $arr_validate['username'] = 'required|min:3|max:50|unique:users,username,'.$this->user;
             $arr_validate['email'] = 'required|email|unique:users,email,'.$this->user;
-//            $arr_validate['password'] = 'required|min:5|max:10,'.$this->user;
         }
 
         return $arr_validate;

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\ClassModel;
-use App\FacultyModel;
 use App\Http\Requests\FacultyRequest;
 use App\Repositories\FacultyEloquentRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 
 class FacultyController extends Controller
 {
     protected $facultyRepository;
+
     /**
      * Display a listing of the resource.
      *
@@ -22,10 +21,16 @@ class FacultyController extends Controller
         $this->facultyRepository = $facultyRepository;
         parent::__construct();
     }
+
     public function index()
     {
-        $faculties = $this->facultyRepository->getAll();
-        return view('admin.Faculty.list',compact('faculties'));
+//        $faculties = $this->facultyRepository->getAll();
+        $request = Request::create('api/faculty', 'GET');
+        $faculities = Route::dispatch($request);
+//        dd($faculities);
+        $datas = json_decode($faculities->getContent(), true);
+        $items = $datas['data'];
+        return view('admin.Faculty.list', compact('items'));
     }
 
     /**
@@ -42,69 +47,70 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(FacultyRequest $request)
     {
         //... Validation here
-
-        $faculties = $this->facultyRepository->create($request->all());
-        return redirect(route('faculty.index'))->with('message','Add sucssesfully');
+//        $faculties = $this->facultyRepository->create($request->all());
+        $request = Request::create('api/faculty', 'POST');
+        $response = Route::dispatch($request);
+        return redirect(route('faculty.index'))->with('message', 'Add sucssesfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
         $classes = $this->facultyRepository->showClasses($id);
-        return view('admin.class.list',compact('classes'));
+        return view('admin.class.list', compact('classes'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $faculty = $this->facultyRepository->find($id);
-        return view('admin.Faculty.edit',compact('faculty'));
+        return view('admin.Faculty.edit', compact('faculty'));
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(FacultyRequest $request, $id)
     {
-            $this->facultyRepository->update($id,$request->all());
-            return redirect(route('faculty.index'))->with('message','Edit successfully');
+//        $this->facultyRepository->update($id, $request->all());
+        $request = Request::create('api/faculty/' . $id, 'PUT');
+        $response = Route::dispatch($request);
+        return redirect(route('faculty.index'))->with('message', 'Edit successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-//        Fal::where('in_black_list', true)->get()->delete();
-        if (Gate::allows('level')) {
-            $this->facultyRepository->delete($id);
-            return redirect(route('faculty.index'))->with('message', 'Delete successfully');
-        }
-        return redirect(route('faculty.index'))->with('error', 'You have no permission to perform this action !');
+        $request = Request::create('api/faculty/' . $id, 'DELETE');
+        $response = Route::dispatch($request);
+//        $this->facultyRepository->delete($id);
+        return redirect(route('faculty.index'))->with('message', 'Delete successfully');
     }
 }

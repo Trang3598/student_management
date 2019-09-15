@@ -71,10 +71,16 @@
                                                             <option value="{{$subject->id}}" {{$subject->id == $subject_code ? 'selected':''}}>{{$subject->name}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger">
+                                                        <strong id="subject_code-error"></strong>
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
                                                            value="{{old('score')[$key]}}" name="score[]">
+                                                    <span class="text-danger">
+                                                        <strong id="score-error"></strong>
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <button type="button" name="remove"
@@ -86,7 +92,7 @@
                                     @endif
                                     {{--end show list--}}
                                 </table>
-                                {!! Form::submit('Result Add',['class' => 'btn btn-info']) !!}
+                                {!! Form::submit('Result Add',['class' => 'btn btn-info','id'=> 'btnAdd']) !!}
                                 {!! Form::close() !!}
 
                                 <p id="number-subject" style="display: none">{{count($subjects)}}</p>
@@ -191,6 +197,8 @@
                 });
             });
         });
+    </script>
+    <script>
     </script>
 
 @endsection
