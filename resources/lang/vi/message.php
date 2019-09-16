@@ -12,6 +12,13 @@ return [
     'delete' => 'Xóa',
     'show' => 'Xem',
     'id' => 'Mã khoa',
+    //class list
+    'Classes' => 'Lớp',
+    'List_Classes' => 'Danh Sách Lớp Học',
+    'Add_Classes' => 'Thêm Mới Lớp',
+    'id_class' => 'Mã Lớp',
+    'faculty_name' => 'Tên Khoa',
+    'list_student' => 'Danh Sách Học Sinh',
     //student add
     'Add_Students' => 'Thêm mới học sinh',
     'student' => 'Học sinh',
@@ -29,6 +36,7 @@ return [
     'password' => 'Mật khẩu',
     'confirm' => 'Xác nhận mật khẩu',
     'student_add' => 'Thêm mới',
+    'placehoder' => 'Vui lòng điền vào trường này',
     'please_enter_class'=> 'Vui lòng nhập một lớp...',
     'please_enter_name' => 'Vui lòng nhập tên',
     'please_enter_phone'=> 'Vui lòng nhập số điện thoại',

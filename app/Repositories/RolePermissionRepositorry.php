@@ -19,4 +19,10 @@ class RolePermissionRepositorry  extends EloquentRepository
     {
         parent::__construct($role_permission);
     }
+    public function getListPermission($id)
+    {
+        //
+        $permission = $this->model->newQuery()->where('role_id', '=', $id);
+        return $permission->get();
+    }
 }

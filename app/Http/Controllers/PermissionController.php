@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     protected $permissionRepository;
+
     public function __construct(PermissionRepository $permissionRepository)
     {
         $this->permissionRepository = $permissionRepository;
@@ -19,6 +20,7 @@ class PermissionController extends Controller
         $this->middleware('permission:permission-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:permission-delete', ['only' => ['destroy']]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +30,7 @@ class PermissionController extends Controller
     {
         //
         $permissions = $this->permissionRepository->getAll();
-        return view('admin.permission.list',compact('permissions'));
+        return view('admin.permission.list', compact('permissions'));
     }
 
     /**
@@ -46,20 +48,20 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         //
         $this->permissionRepository->store($request->all());
-        return redirect(route('permissions.index'))->with('message','Add successfully');
+        return redirect(route('permissions.index'))->with('message', 'Add successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,7 +72,7 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -78,34 +80,34 @@ class PermissionController extends Controller
         //
         $permission = Permission::get();
         $permission = $this->permissionRepository->find($id);
-        return view('admin.permission.edit',compact('permission'));
+        return view('admin.permission.edit', compact('permission'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         //
-        $this->permissionRepository->update($id,$request->all());
-        return redirect(route('permissions.index'))->with('message','Edit successfully');
+        $this->permissionRepository->update($id, $request->all());
+        return redirect(route('permissions.index'))->with('message', 'Edit successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
-            $this->permissionRepository->delete($id);
-            return redirect(route('permissions.index'))->with('message', 'Delete successfully');
+        $this->permissionRepository->delete($id);
+        return redirect(route('permissions.index'))->with('message', 'Delete successfully');
 
     }
 }

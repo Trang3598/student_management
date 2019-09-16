@@ -11,4 +11,6 @@ class Permission extends Model
     public $timestamps = false;
     protected $fillable = ['name', 'guard_name'];
 
+
+
 }

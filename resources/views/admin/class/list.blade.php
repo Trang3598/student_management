@@ -6,8 +6,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Class
-                        <small>List</small>
+                    <h1 class="page-header">{{__('message.Classes')}}
+                        <small>{{__('message.list')}}</small>
                     </h1>
                     <div class="message_warning">
                         @if(session('message'))
@@ -28,12 +28,12 @@
                 <table class="table table-striped table-bordered table-hover" >
                     <thead>
                     <tr align="center">
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Name Of Faculty</th>
-                        <th>List Students</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{{__('message.id_class')}}</th>
+                        <th>{{__('message.name')}}</th>
+                        <th>{{__('message.faculty_name')}}</th>
+                        <th>{{__('message.list_student')}}</th>
+                        <th>{{__('message.edit')}}</th>
+                        <th>{{__('message.delete')}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,11 +45,11 @@
                             <td>
                                    {{(isset($class->faculty->name)) ?$class->faculty->name:''}}
                             </td>
-                            <td class="center"><i class="glyphicon glyphicon-eye-open "></i> <a href="{{route('class.show',$class->id)}}">Show</a></td>
-                            <td class="center"><button class=" btn btn-success"><a href="{{route('class.edit',$class->id)}}"  style="color: white">Edit</a></button> </td>
+                            <td class="center"><i class="glyphicon glyphicon-eye-open "></i> <a href="{{route('class.show',$class->id)}}">{{__('message.show')}}</a></td>
+                            <td class="center"><button class=" btn btn-success"><a href="{{route('class.edit',$class->id)}}"  style="color: white">{{__('message.edit')}}</a></button> </td>
                             <td>
                                 {!! Form::open(['method'=> 'DELETE','route' => ['class.destroy', $class->id]]) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-danger']) !!}
+                                {!! Form::submit(__('message.delete'),['class'=>'btn btn-danger']) !!}
                                 {!! Form::close() !!}
                             </td>
                         </tr>

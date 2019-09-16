@@ -124,12 +124,18 @@ class RoleController extends Controller
     {
         $role = $this->roleRepository->find($id);
         $permissions = Permission::all();
-        return view('admin.role.role_permission', compact('permissions', 'role'));
+        $has_permission = $this->rolePermissionRepositorry->getListPermission($id);
+        $data = [];
+        foreach ($has_permission as $item => $value) {
+            array_push($data, [
+                $value->permission_id
+            ]);
+        }
+        return view('admin.role.role_permission', compact('permissions', 'role', 'data'));
     }
 
     public function addPermission(Request $request, $id)
     {
-
         $role = $this->roleRepository->find($id);
         $data = [];
         foreach ($request->permission_id as $item => $value) {
@@ -137,8 +143,7 @@ class RoleController extends Controller
                 'permission_id' => $request->permission_id[$item],
                 'role_id' => $role->id,
             ]);
-            $roles = $this->rolePermissionRepositorry->store($data[$item]);
-//            $roles->assignRole($request->input('roles'));
+            $value = $role->permissions()->sync($data);
         }
         return redirect()->back()->with('message', 'Addsuccessfully');
     }

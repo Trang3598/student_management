@@ -17,6 +17,10 @@ class Role extends Model
     public function userRole(){
         return $this->hasOne(User::class,'level','id');
     }
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class,'role_has_permissions','role_id','permission_id')->withPivot('permission_id');
+    }
     public function permission()
     {
         return $this->hasManyThrough(Permission::class,'App\RoleHasPermission','id','id','id');

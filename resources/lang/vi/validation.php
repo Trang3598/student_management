@@ -146,8 +146,14 @@ return [
     */
 
     'attributes' => [
-        'name' => 'Tên',
-        'class_code' => 'Lớp'
+        'name' => 'tên',
+        'class_code' => 'lớp',
+        'birthday' => 'ngày sinh',
+        'phone' => 'số điện thoại',
+        'address' => 'địa chỉ',
+        'username' => 'tên người dùng',
+        'password' => 'mật khẩu',
+        'confirm' => 'xác nhận',
     ],
 
 ];

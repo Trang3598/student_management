@@ -23,9 +23,7 @@
                         @endif
                     </div>
                 </div>
-                <!-- /.col-lg-12 -->
                 {!! Form::open(['route'=>['roles.addPermission',$role->id],'method' => 'POST']) !!}
-                {{--<td> {!! Form::text('name',null, array('placeholder' => 'Name','class' => 'form-control')) !!}</td>--}}
                 <br>
                 <table class="table table-striped table-bordered table-hover" style="text-align: center">
                     <thead>
@@ -37,13 +35,16 @@
                     @foreach($permissions as $key => $permission)
                         <input type="hidden" value="{{$role->id}}" name="role_id[]">
                         <tr>
+
+
                             <td>{{$permission->id}}</td>
                             <td>{{ $permission->name }}</td>
                             <td>
-                                <input type="checkbox" name="permission_id[]" value="{{ $permission->id}}"
-                                           {{--@if (count($case->services->where('id', $permission->id)))--}}
-                                       {{--checked--}}
-                                        {{--@endif>--}}
+                                <input type="checkbox" value="{{$permission->id}}" name="permission_id[]"
+                                       @foreach($data as $key => $value)
+                                       @if ($permission->id == $data[$key][0]) checked="checked" @endif
+                                        @endforeach>
+
                             </td>
                         </tr>
                     @endforeach

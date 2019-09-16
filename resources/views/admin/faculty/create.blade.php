@@ -6,8 +6,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Faculty
-                        <small>Add</small>
+                    <h1 class="page-header">{{__('message.Faculties')}}
+                        <small>{{__('message.add')}}</small>
                     </h1>
                 </div>
                 <div class="col-lg-7" style="padding-bottom:120px">
@@ -28,10 +28,10 @@
 
                     {!! Form::open(['method'=>'POST','route'=>'faculty.store']) !!}
                     <div class="form-group">
-                        {!! Form::label('name','Name') !!}
-                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>'Add faculty name']) !!}
+                        {!! Form::label('name',__('message.name')) !!}
+                        {!! Form::text('name',old('name'),['class' =>'form-control', 'placeholder' =>__('message.placehoder')]) !!}
                     </div>
-                        {!! Form::submit('Faculty Add',['class'=>'btn btn-default']) !!}
+                        {!! Form::submit(__('message.add'),['class'=>'btn btn-default']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

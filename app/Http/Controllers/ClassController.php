@@ -65,6 +65,10 @@ class ClassController extends Controller
     {
         //
         $students = $this->classRepository->showStudents($id);
+        foreach ($students as $student) {
+            $student->class_code = $student->ClassM->name;
+        }
+
         return view('admin.student.list',compact('students'));
     }
 

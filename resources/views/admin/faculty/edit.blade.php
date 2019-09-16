@@ -4,8 +4,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Faculty
-                        <small>Edit</small>
+                    <h1 class="page-header">{{__('message.Faculties')}}
+                        <small>{{__('message.edit')}}</small>
                     </h1>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -26,10 +26,10 @@
                     @endif
                     {!! Form::open(['method' => 'PUT', 'route' => ['faculty.update', $faculty->id]]) !!}
                     <div class="form-group">
-                        {!!  Form::label('name', 'faculty') !!}
+                        {!!  Form::label('name', __('message.name')) !!}
                         {!!  Form::text('name', $faculty->name, ['class' => 'form-control']) !!}
                     </div>
-                    {!! Form::submit('Faculty Edit', ['class' => 'btn btn-default']) !!}
+                    {!! Form::submit(__('message.edit'), ['class' => 'btn btn-default']) !!}
                     {!! Form::close() !!}
 
 
