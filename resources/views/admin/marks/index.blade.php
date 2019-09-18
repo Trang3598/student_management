@@ -22,7 +22,7 @@
                     <tr class="odd gradeX" align="center">
                         <td>{{$student->id}}</td>
                         <td>{{$student->name}}</td>
-                        <td class="center"><i class="fa fa-search fa-fw"></i><a href="{{route('marks.show',['Student'=>$student])}}">Show</a></td>
+                        <td class="center"><a class="btn btn-primary" href="{{route('marks.show',['Student'=>$student])}}">Show</a></td>
                     </tr>
                     @endforeach
                     </tbody>

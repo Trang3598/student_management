@@ -30,14 +30,14 @@
                     <td>{{$mark->students->name}}</td>
                     <td>{{$mark->subjects->name}}</td>
                     <td>{{$mark->score}}</td>
+                    <td class="center"><a class="btn btn-primary" href="{{route('marks.edit',['Mark'=>$mark])}}">Edit</a></td>
                     <td class="center">
                         <form action="{{route('marks.destroy',$mark->id)}}" method="POST" >
                             <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" onclick="return confirm('Are you sure to delete?')"><i class="fa fa-trash-o  fa-fw"></i></button>
+                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete?')">Xóa</button>
                             @csrf
                         </form>
                     </td>
-                    <td class="center"><a href="{{route('marks.edit',['Mark'=>$mark])}}"><i class="fa fa-edit fa-fw"></i></a></td>
                 </tr>
             @endforeach
             </tbody>

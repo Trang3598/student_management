@@ -29,19 +29,4 @@ class UserController extends Controller
 
         return redirect()->back()->with(['success' => 'Update success']);
     }
-
-    public function change($id)
-    {
-        $user = $this->userRepository->getListById($id);
-        return view('admin.users.change', compact('user'));
-    }
-
-    public function changed($id, PasswordRequest $request)
-    {
-        /*        $user = $this->userRepository->getListById($id);
-                $oldpassword = $user['password'];
-                $data = $request->all();
-                dd($data['password_old']);*/
-        return view('admin.users.change', compact('user'));
-    }
 }

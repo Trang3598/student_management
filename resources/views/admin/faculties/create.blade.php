@@ -4,8 +4,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Faculty
-                        <small>Create</small>
+                    <h1 class="page-header">{{trans('faculty.faculty')}}
+                        <small>{{trans('layout.create')}}</small>
                     </h1>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -14,11 +14,11 @@
                     {!! Form::open(['method' => 'POST', 'route' => ['faculties.store']]) !!}
                         @csrf
                     <div class="form-group">
-                        <label>Faculty Name</label>
-                        {!! Form::text('name', old('name'), ['class' =>"form-control", 'placeholder' => "Please Enter Faculty Name"]) !!}
+                        <label>{{trans('faculty.faculty')}}</label>
+                        {!! Form::text('name', old('name'), ['class' =>"form-control", 'placeholder' => trans('student.placeholder').trans('faculty.faculty')]) !!}
                     </div>
-                    {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
-                    {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}
+                    {!! Form::submit(trans('student.create'), ['class' => 'btn btn-primary']) !!}
+                    {!! Form::button(trans('student.reset'),['class' => 'btn btn-warning']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

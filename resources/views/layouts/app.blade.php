@@ -41,7 +41,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                NewWave
+                                <a href="{{route('students.create')}}">{{ trans('layout.create') }} {{ trans('layout.student') }}</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">

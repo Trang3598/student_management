@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
 use App\Http\Requests\FacultyRequestEdit;
+use App\Models\Faculty;
 use Illuminate\Http\Requests;
 use App\Repositories\Faculty\FacultyRepository;
 
@@ -17,7 +18,12 @@ class FacultyController extends Controller
     public function __construct(FacultyRepository $facultyRepository)
     {
         $this->facultyRepository = $facultyRepository;
+        $this->middleware('permission:faculty-list',['only' => 'index']);
+        $this->middleware('permission:faculty-create', ['only' => ['create','store']]);
+        $this->middleware('permission:faculty-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:faculty-delete', ['only' => ['destroy']]);
     }
+
 
     /**
      * Show all post
@@ -61,15 +67,14 @@ class FacultyController extends Controller
 
     public function store(FacultyRequest $request)
     {
-        $this->facultyRepository->store($request->all());
-
+        $data = $request->all();
+        $this->facultyRepository->store($data);
         return redirect(route('faculties.index'))->with(['success' => 'create success']);
     }
 
     public function edit($id)
     {
-        $faculties = $this->facultyRepository->getListById($id);
-
+        $faculties = Faculty::findBySlug($id);
         return view('admin.faculties.edit', compact('faculties'));
     }
 
@@ -82,15 +87,16 @@ class FacultyController extends Controller
      */
     public function update($id, FacultyRequestEdit $request)
     {
+        $data = $request->all();
         $name_edit = $request->all()['name'];
         $faculties = $this->facultyRepository->getListById($id);
         $name_update = $faculties->name;
         if ($name_edit == $name_update) {
             $this->facultyRepository->update($id, $request->all());
-
             return redirect(route('faculties.index'))->with(['success' => 'Nothing Update']);
         } else {
-            $this->facultyRepository->update($id, $request->all());
+
+            $this->facultyRepository->update($id, $data);
 
             return redirect(route('faculties.index'))->with(['success' => 'Update']);
         }
@@ -105,7 +111,6 @@ class FacultyController extends Controller
     public function destroy($id)
     {
         $this->facultyRepository->destroy($id);
-
         return redirect(route('faculties.index'))->with('success', 'Delete-success!');
     }
 }

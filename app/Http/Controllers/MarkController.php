@@ -22,6 +22,7 @@ class MarkController extends Controller
         $this->markRepository = $markRepository;
         $this->studentRepository = $studentRepository;
         $this->subjectRepository = $subjectRepository;
+
     }
 
     /**

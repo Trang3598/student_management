@@ -13,4 +13,8 @@ class RoleRepository extends BaseRepository
     {
         parent::__construct($role);
     }
+    public function getRoles()
+    {
+        return $this->model::all()->pluck('name', 'id');
+    }
 }

@@ -3,8 +3,8 @@
 @section('content')
     <!-- Page Content -->
     <div class="col-lg-12">
-        <h1 class="page-header">Student
-            <small>List</small>
+        <h1 class="page-header">{{ trans('student.student') }}
+            <small>{{ trans('student.list') }}</small>
         </h1>
         <div class="alert alert-success" id="showmess" style="display: none">
         </div>
@@ -15,34 +15,34 @@
                 {!! Form::open(['method' => 'get', 'url' => route('students.index'), 'enctype' => "multipart/form-data"]) !!}
                 <div class="col-lg-6">
                     <Small>
-                        AGE
+                        {{ trans('student.age') }}
                     </Small>
-                    {!! Form::number('min_age', \Request::get('min_age'),['class'=>'form-control','min'=>10,'max'=>70,'placeholder'=>'Min Age']) !!}
+                    {!! Form::number('min_age', \Request::get('min_age'),['class'=>'form-control','min'=>10,'max'=>70,'placeholder'=> trans('student.placeholderMin').trans('student.age')]) !!}
                     <Small>
-                        MARK
+                        {{ trans('student.mark') }}
                     </Small>
-                    {!! Form::number('min_mark',\Request::get('min_mark'),['class'=>'form-control','min'=>0,'max'=>10,'placeholder'=>'Min Mark']) !!}
+                    {!! Form::number('min_mark',\Request::get('min_mark'),['class'=>'form-control','min'=>0,'max'=>10,'placeholder'=>trans('student.placeholderMin').trans('student.mark')]) !!}
                     <Small>
-                        MARK-COUNT
+                        {{ trans('student.markCount') }}
                     </Small>
-                    {!! Form::select('mark_count', ['0' => 'Mark-Count', '1' => 'Enough mark-count','2' => 'Not enough Mark-Count'],\Request::get('mark_count'),['class'=>'form-control']) !!}
+                    {!! Form::select('mark_count', ['0' => trans('student.all'), '1' => trans('student.complete'),'2' => trans('student.notComplete')],\Request::get('mark_count'),['class'=>'form-control']) !!}
                     <br>
 
                 </div>
                 <div class="col-lg-6">
                     <small>
-                        TO
+                        {{ trans('student.to') }}
                     </small>
-                    {!! Form::number('max_age',\Request::get('max_age'),['class'=>'form-control','min'=>10,'max'=>70,'placeholder'=>'Max Age']) !!}
+                    {!! Form::number('max_age',\Request::get('max_age'),['class'=>'form-control','min'=>10,'max'=>70,'placeholder'=> trans('student.placeholderMax').trans('student.age')]) !!}
                     <small>
-                        TO
+                        {{ trans('student.to') }}
                     </small>
-                    {!! Form::number('max_mark',\Request::get('max_mark'),['class'=>'form-control','min'=>0,'max'=>10,'placeholder'=>'Max Mark']) !!}
+                    {!! Form::number('max_mark',\Request::get('max_mark'),['class'=>'form-control','min'=>0,'max'=>10,'placeholder'=>trans('student.placeholderMax').trans('student.mark')]) !!}
                 </div>
             </div>
             <div>
                 <Small>
-                    TELECOMS
+                    {{ trans('student.telecoms') }}
                 </Small>
                 <label class="radio-inline">
                     {{ Form::checkbox(sprintf('phones[%s]', \App\Models\Student::VINA),\App\Models\Student::VINA, isset(\Request::get('phones')[0]) && \Request::get('phones')[\App\Models\Student::VINA] == \App\Models\Student::VINA) }}
@@ -58,7 +58,7 @@
                 </label>
             </div>
 
-            {!! Form::submit('Search', ['class' => 'btn btn-primary']) !!}<br>
+            <button type="submit" class="btn btn-primary">{{ trans('student.search') }}</button><br>
             <div class="row" style="padding-top: 10px">
                 <div class="col-lg-2">
                     {!! Form::select('pagination', ['10' => '10', '20' => '20','50' => '50'], \Request::get('pagination'),['class'=>'form-control','id'=>'pagination']) !!}
@@ -70,16 +70,16 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">Display</th>
+                    <th scope="col">{{ trans('student.status') }}</th>
+                    <th scope="col">{{ trans('student.display') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <th scope="row">Warning</th>
+                    <th scope="row">{{ trans('student.warning') }}</th>
                     <td>
                         {!! Form::open(['method' => 'GET','route' =>'students.email']) !!}
-                        {!! Form::submit('SHOW',['class'=>"btn btn-warning",]) !!}
+                        <button type="submit" class="btn btn-warning">{{ trans('student.show') }}</button>
                         {!! Form::close() !!}
                     </td>
                 </tr>
@@ -93,19 +93,26 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr align="center">
-            <th>ID</th>
-            <th>Class-Name</th>
-            <th>Student</th>
-            <th>Gender</th>
-            <th>Birthday</th>
-            <th>Image</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Account</th>
-            <th>Delete</th>
-            <th>Edit</th>
-            <th>Point</th>
-            <th>Add more result</th>
+            <th>{{ trans('student.id') }}</th>
+            <th>{{ trans('student.className') }}</th>
+            <th>{{ trans('student.student') }}</th>
+            <th>{{ trans('student.gender') }}</th>
+            <th>{{ trans('student.birthday') }}</th>
+            <th>{{ trans('student.image') }}</th>
+            <th>{{ trans('student.address') }}</th>
+            <th>{{ trans('student.phone') }}</th>
+            @can('role-edit')
+            <th>{{ trans('student.edit') }}</th>
+            @endcan
+            @can('role-delete')
+            <th>{{ trans('student.delete') }}</th>
+            @endcan
+            @can('role-list')
+            <th>{{ trans('student.point') }}</th>
+            @endcan
+            @can('role-create')
+            <th>{{ trans('student.addMoreResult') }}</th>
+            @endcan
         </tr>
         </thead>
         <tbody>
@@ -114,31 +121,34 @@
                 <td>{{$student->id}}</td>
                 <td class="class-name">{{$student->students->name}}</td>
                 <td class="student-name">{{$student->name}}</td>
-                <td class="student-gender">@if($student->gender == 1) Male @else Female @endif</td>
+                <td class="student-gender">@if($student->gender == 1) {{ trans('student.male') }} @else {{ trans('student.female') }} @endif</td>
                 <td class="student-birthday">{{$student->birthday}}</td>
                 <td class="student-image"><img src="{{ asset('img/' . $student->image) }}" style="width: 50px;height: 50px"></td>
                 <td class="student-address">{{$student->address}}</td>
                 <td class="student-phone">{{$student->phone}}</td>
-                <td><a href="{{route('students.account',['Student'=>$student])}}"><i class="fa fa-lock fa-fw"></i></a>
+                @can('role-edit')
+                <td class="center">
+                    <a href="javascript:void(0)" id="edit-user" data-id="{{$student->id}}" class="btn btn-info">{{ trans('student.edit') }}</a>
                 </td>
+                @endcan
+                @can('role-delete')
                 <td class="center">
                     {!! Form::open(['method'=>"Post",'route'=>['students.destroy',$student->id]]) !!}
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" onclick="return confirm('Are you sure to delete?')"><i
-                            class="fa fa-trash-o  fa-fw"></i></button>
+                    <input type="hidden" name="_method" value="{{ trans('student.delete') }}">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('{{ trans('student.checkDelete') }}')">{{ trans('student.delete') }}</button>
                     {!! Form::close() !!}
                 </td>
-                <td class="center">
-                    <a href="javascript:void(0)" id="edit-user" data-id="{{$student->id}}" class="btn btn-info">Edit</a>
-                </td>
-                <td class="center"><a href="{{route('students.show',['Student'=>$student])}}"><i
-                            class="fa fa-search fa-fw"></i></a></td>
+                @endcan
+                @can('role-list')
+                <td class="center"><a class="btn btn-primary" href="{{route('students.show',['Student'=>$student])}}">{{ trans('student.show') }}</a></td>
+                @endcan
+                @can('role-create')
                 <td>
-                    {!! Form::open(['method' => 'GET','route' => ['students.more',$student->id]]) !!}
-                    {!! Form::submit('Add',['class'=>"btn btn-success",]) !!}
+                    {!! Form::open(['method' => 'GET','route' => ['students.more',$student->slug]]) !!}
+                    <button type="submit" class="btn btn-success">{{ trans('student.add') }}</button>
                     {!! Form::close() !!}
                 </td>
-
+                @endcan
             </tr>
         @endforeach
         </tbody>
@@ -225,7 +235,7 @@
             </div>
         </div>
     </div>
-    {{ $students->appends(compact('pagination','data'))->links() }}
+    {{ $students->appends(\Request::all())->links() }}
     <?php
         $cloneClass = json_encode($classes);
     ?>

@@ -83,6 +83,10 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     {
         return $this->model->where('class_code', $id)->get();
     }
+    public function getStudentBySlug($slug)
+    {
+        return $this->model->where('slug', $slug)->first();
+    }
 
     public function failStudents()
     {

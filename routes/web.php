@@ -22,9 +22,11 @@ Auth::routes();
 Route::get('dashboard', function () {
     return view('admin.layouts.index');
 });
+Route::get('students/create','StudentController@create')->name('students.create');
+Route::post('students','StudentController@store')->name('students.store');
 
 Route::group(['middleware' => 'checkLogin'], function () {
-    Route::resource('students', 'StudentController');
+    Route::resource('students', 'StudentController')->except(['create','store']);
     Route::get('student/profile', 'StudentController@profile')->name('student.profile');
     Route::put('students/newUpdate/{student}', 'StudentController@newUpdate')->name('student.newUpdate');
     Route::put('students/newUpdate1/{student}', 'StudentController@newUpdate1')->name('student.newUpdate1');
@@ -50,6 +52,7 @@ Route::group(['middleware' => 'checkLogin'], function () {
     Route::resource('roles', 'RolesController');
     Route::get('roles/{role}/more', 'RolesController@more')->name('roles.more');
     Route::put('roles/add/{role}', 'RolesController@add')->name('roles.add');
+    Route::get('lang/{lang}','LangController@lang')->name('lang');
 });
 
 Route::get('/redirect/{social}', 'SocialAuthController@redirect');

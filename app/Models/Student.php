@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use App\User;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class Student extends Model
 {
@@ -18,7 +22,7 @@ class Student extends Model
         self::VIETTEL => ['097', '098','035','086','096','032','033','034','037','036','038','039'],
     ];
 
-    protected $fillable = ['name','class_code','gender','birthday','image','phone','address','user_id','role_id'];
+    protected $fillable = ['name','class_code','gender','birthday','image','phone','address','user_id','trans_id','slug'];
 
     public function subjects(){
         return $this->belongsToMany(Subject::class,'students_subjects','student_code','subject_code')->withPivot('score');
@@ -39,8 +43,27 @@ class Student extends Model
     {
         return $this->belongsTo(ClassModel::class,'id','class_code');
     }
-    public function role()
+    use Sluggable;
+    use SluggableScopeHelpers;
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
     {
-        return $this->hasOne(Role::class);
+        return [
+            'slug' => [
+                'source' => ['name']
+            ]
+        ];
     }
+
+    public function getRouteKeyName()
+    {
+        return $this->getSlugKeyName();
+    }
+    use HasRoles;
+    use HasPermissions;
 }

@@ -16,6 +16,10 @@ class SubjectController extends Controller
     public function __construct(SubjectRepository $subjectRepository)
     {
         $this->subjectRepository = $subjectRepository;
+        $this->middleware('permission:subject-list',['only' => 'index']);
+        $this->middleware('permission:subject-create', ['only' => ['create','store']]);
+        $this->middleware('permission:subject-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:subject-delete', ['only' => ['destroy']]);
     }
 
     /**

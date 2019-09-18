@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
@@ -9,9 +10,9 @@ class Role extends Model
     protected $table = "roles";
     protected $fillable = ['name','guard_name'];
     public $timestamps = false;
-    public function students()
+    public function user()
     {
-        return $this->belongsTo(Role::class,'id','role_id');
+        return $this->belongsTo(User::class,'id','role_id');
     }
     public function permissions()
     {

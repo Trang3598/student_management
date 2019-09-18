@@ -52,6 +52,7 @@
             @if(count($errors))
                 @if(count($errors) > 0)
                     <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">X</button>
                         @foreach($errors->all() as $err)
                             {{$err}}<br>
                         @endforeach
@@ -60,17 +61,20 @@
             @endif
             @if(session('success'))
                 <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">X</button>
                     {{ session('success') }}
                 </div>
             @endif
 
             @if(session('delete'))
                 <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">X</button>
                     {{session('delete')}}
                 </div>
             @endif
             @if(session('mes'))
                 <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">X</button>
                     {{session('mes')}}
                 </div>
             @endif

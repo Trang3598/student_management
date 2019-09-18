@@ -37,19 +37,7 @@ class StudentRequestEdit extends FormRequest
     public function messages()
     {
         return [
-            'name.required'=>'NoName',
-            'name.min'=>'Min 3',
-            'name.max'=>'Max 100',
-            'class_code.required'=>'No Class',
-            'gender.required'=>'No Gender',
-            'birthday.required'=>'No birthday',
-            'birthday.date'=>'Error date',
-            'birthday.date_format'=>'Error format dd/mm/yy',
-            'birthday.after'=>'Error after 1-1-1990',
-            'birthday.before'=>'Error before 31-12-2001',
-            'phone.unique' => 'Error Same Phone',
-            'phone.numeric'=> 'It is number',
-            'image.max' => 'File quá lớn'
+
         ];
     }
 }

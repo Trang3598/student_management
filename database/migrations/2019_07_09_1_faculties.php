@@ -17,6 +17,7 @@ class Faculties extends Migration
         Schema::create('faculties', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name',50);
+            $table->string('slug',100);
             $table->timestamps();
         });
     }
@@ -28,7 +29,6 @@ class Faculties extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('faculties');
     }
 }

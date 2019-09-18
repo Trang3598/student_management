@@ -1,25 +1,36 @@
 @extends('admin.layouts.index')
 
 @section('content')
-    <!-- Page Content -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Role
-                <small>{{$role->name}}</small>
-            </h1>
-        </div>
-        <!-- /.col-lg-12 -->
-        <div class="col-lg-7" style="padding-bottom:120px">
-            {!! Form::open(['method' => 'PUT', 'route' => ['roles.update',$role->id]]) !!}
-            <div class="form-group">
-                {!! Form::label('name', 'Role:') !!}
-                {!! Form::text('name', $role->name,['class'=>'form-control', 'placeholder'=>'New Name']) !!}
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2>Edit Role</h2>
             </div>
-            {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
-            {!! Form::button('Reset',['class' => 'btn btn-warning']) !!}
-            {!! Form::close() !!}
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
+            </div>
         </div>
     </div>
-    <!-- /.row -->
+
+    {!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id]]) !!}
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+            <div class="form-group">
+                <strong>Name:</strong>
+                {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+            </div>
+
+            <div class="form-group">
+                <strong>Permission:</strong>
+                <br/>
+                @foreach($permission as $value)
+                    <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                        {{ $value->name }}</label>
+                    <br/>
+                @endforeach
+            </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 
 @endsection

@@ -10,10 +10,10 @@ use App\Http\Requests\StudentRequestEdit;
 use App\Jobs\SendEmail;
 use App\Mail\FailStudents;
 use App\Models\ClassModel;
-use App\Models\Role;
 use App\Models\Student;
+use App\Repositories\Permission\PermissionRepository;
 use App\Repositories\Role\RoleRepository;
-use App\Users;
+use App\Repositories\RoleHasPermission\RhpRepository;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\ClassRepository\ClassRepository;
 use App\Repositories\Mark\MarkRepository;
@@ -37,7 +37,7 @@ class StudentController extends Controller
     protected $subjectRepository;
     protected $userRepository;
 
-    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository, SubjectRepository $subjectRepository, UserRepository $userRepository,RoleRepository $roleRepository)
+    public function __construct(ClassRepository $classRepository, StudentRepository $studentRepository, MarkRepository $markRepository, SubjectRepository $subjectRepository, UserRepository $userRepository,RoleRepository $roleRepository,PermissionRepository $permissionRepository,RhpRepository $rhpRepository)
     {
         $this->classRepository = $classRepository;
         $this->studentRepository = $studentRepository;
@@ -45,6 +45,12 @@ class StudentController extends Controller
         $this->subjectRepository = $subjectRepository;
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
+        $this->permissionRepository = $permissionRepository;
+        $this->rhpRepository = $rhpRepository;
+        $this->middleware('permission:student-list',['only' => 'index']);
+        $this->middleware('permission:student-create', ['only' => ['add','more']]);
+        $this->middleware('permission:student-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:student-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -61,16 +67,13 @@ class StudentController extends Controller
             $data = request()->data;
             $data['page'] = $request->page;
         }
-
         if (empty($request->pagination)){
             $pagination = 10;
         }else{
             $pagination = $request->pagination;
         }
         $students = $this->studentRepository->searchStudent($data)->paginate($pagination);
-
         $classes = ClassModel::all();
-
         return view('admin.students.index', compact('students', 'classes','pagination','data'));
     }
 
@@ -81,10 +84,15 @@ class StudentController extends Controller
      */
     public function create()
     {
-//        $this->authorize('create', Student::class);
-        $classes = $this->classRepository->getClasses();
-        $roles = Role::all();
-        return view('admin.students.create', compact('classes','roles'));
+        if(Auth::user()){
+            $classes = $this->classRepository->getClasses();
+            $roles = $this->roleRepository->getRoles();
+            return view('admin.students.create', compact('classes','roles'));
+        }else{
+            $classes = $this->classRepository->getClasses();
+            $roles = $this->roleRepository->getRoles();
+            return view('layouts.create', compact('classes','roles'));
+        }
     }
 
     /**
@@ -95,14 +103,9 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::findOrFail($id);
-
-        $this->authorize('view', $student);
-
-        $students = $this->studentRepository->getStudents($id);
-
-        $marks = $this->markRepository->getMarks($id)->get();
-
+        $student_id = Student::findBySlug($id)['id'];
+        $students = $this->studentRepository->getStudents($student_id);
+        $marks = $this->markRepository->getMarks($student_id)->get();
         return view('admin.marks.show', compact('marks'), compact('students'));
     }
 
@@ -128,6 +131,8 @@ class StudentController extends Controller
             $user = $this->userRepository->store($data);
             $data['user_id'] = $user->id;
             $this->studentRepository->store($data);
+            $user->assignRole($request->input('role_id'));
+//            $user->givePermissionTo('edit articles');
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -139,11 +144,8 @@ class StudentController extends Controller
 
     public function edit($id)
     {
-        $student = Student::findOrFail($id);
-        $this->authorize('view', $student);
         $where = array('id' => $id);
         $student = Student::where($where)->first();
-
         return Response::json($student);
     }
 
@@ -156,7 +158,6 @@ class StudentController extends Controller
      */
     public function update(StudentRequestEdit $request)
     {
-
         $student_id = $request->student_id;
         $data = $request->all();
         if ($request->hasFile('image')) {
@@ -165,11 +166,8 @@ class StudentController extends Controller
             $file->move('img', $image);
             $data['image'] = $image;
         }
-
         $this->studentRepository->update($student_id, $data);
-
         $student = $this->studentRepository->getListById($student_id);
-
         if ($request->ajax()) {
             if (!empty($student->image)) {
                 $student->image = asset('img/' . $student->image);
@@ -186,19 +184,14 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', Student::class);
         $this->studentRepository->destroy($id);
         return back()->with('success', 'Delete-success !');
     }
 
-    public function more($id)
+    public function more($slug)
     {
-        $student = Student::findOrFail($id);
-        $this->authorize('view', $student);
-        $student = $this->studentRepository->getListById($id);
-
-        $marks = $this->markRepository->getMarks($id)->get();
-
+        $student = $this->studentRepository->getStudentBySlug($slug);
+        $marks = $this->markRepository->getMarks($student->id)->get();
         $subjects = $this->subjectRepository->getSubject();
 
         return View('admin.marks.more')
@@ -256,6 +249,7 @@ class StudentController extends Controller
 
     public function profile()
     {
+
         $student = Auth::user()->students;
         $classes = ClassModel::all()->pluck('name', 'id');
         $marks = $this->markRepository->getMarks(Auth::user()->students->id)->get();
@@ -265,6 +259,15 @@ class StudentController extends Controller
                $subject_code,[$marks[$key]->subject_code]
            );
         }
+        $id = Auth::user()->id;
+        $role_id = Auth::user()->role_id;
+        $rolehaspermissions_id = $this->rhpRepository->getPermission($role_id)->get();
+        $permissions_id =[];
+        foreach($rolehaspermissions_id as $key => $rolehaspermission_id){
+            array_push(
+                $permissions_id,$rolehaspermission_id['permission_id']
+            );
+        };
         $subjects = $this->subjectRepository->getSubjectNotScore($subject_code);
         return view('admin.students.edit', compact('student', 'classes','marks','subjects'));
     }

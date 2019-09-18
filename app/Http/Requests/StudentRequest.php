@@ -33,6 +33,7 @@ class StudentRequest extends FormRequest
             'username' => 'required|unique:users,username',
             'email'=> 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'address' => 'required',
         ];
     }
     /**

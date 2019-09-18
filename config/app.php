@@ -177,6 +177,9 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Dimsav\Translatable\TranslatableServiceProvider::class,
+
     ],
 
     /*

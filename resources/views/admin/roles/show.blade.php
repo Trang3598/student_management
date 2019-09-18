@@ -1,38 +1,36 @@
 @extends('admin.layouts.index')
 
 @section('content')
-    <!-- Page Content -->
     <div class="row">
-        <div class="col-lg-12">
-            <div class="col-lg-12">
-
-                <h1 class="page-header">
-                    <small>Chức năng của</small>
-                    {{$role->name}}
-                </h1>
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2> Show Role</h2>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
             </div>
         </div>
-        <div class="col-lg-6">
-            <table class="table table-striped table-bordered table-hover " >
-                <thead>
-                <tr align="center">
-                    <th>Permission</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                @foreach($permissions as $permission)
-                    <tr class="odd gradeX" align="center">
-                        <td>{{$permission->permissions->name}}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- /.col-lg-12 -->
-
     </div>
-    <!-- /.row -->
+
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Name:</strong>
+                {{ $role->name }}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Permissions:</strong>
+                @if(!empty($rolePermissions))
+                    @foreach($rolePermissions as $rolePermission)
+                        <label class="label label-success">{{ $rolePermission->name }},</label>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
 
 @endsection
 

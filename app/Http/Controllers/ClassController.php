@@ -19,6 +19,10 @@ class ClassController extends Controller
     {
         $this->classRepository = $classRepository;
         $this->facultyRepository = $facultyRepository;
+        $this->middleware('permission:class-list',['only' => 'index']);
+        $this->middleware('permission:class-create', ['only' => ['create','store']]);
+        $this->middleware('permission:class-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:class-delete', ['only' => ['destroy']]);
     }
 
     /**
