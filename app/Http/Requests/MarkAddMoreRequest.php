@@ -41,13 +41,13 @@ class MarkAddMoreRequest extends FormRequest
     {
         $messages = [];
         foreach ($this->request->get('score') as $key => $val) {
-            $messages['score.' . $key . '.max'] = sprintf('Loi tai dong so %d ,diem khong the lon hon 10 ',$key+1);
-            $messages['score.' . $key . '.required'] = sprintf('Loi tai dong so %d ,chua nhap diem ',$key+1);
-            $messages['score.' . $key . '.min'] = sprintf('Loi tai dong so %d, diem phai lon hon 0 ',$key+1);
-            $messages['score.' . $key . '.numeric'] = sprintf('Loi tai dong so %d,diem phai la so ',$key+1);
+            $messages['score.' . $key . '.max'] = sprintf(__('messages.failRow').' %d '.__('messages.lessThan').' 10',$key+1);
+            $messages['score.' . $key . '.required'] = sprintf(__('messages.failRow').' %d '.__('messages.notEnter'),$key+1);
+            $messages['score.' . $key . '.min'] = sprintf(__('messages.failRow').' %d '.__('messages.betterThan').' 0',$key+1);
+            $messages['score.' . $key . '.numeric'] = sprintf(__('messages.failRow').' %d '.__('messages.isNumber'),$key+1);
         }
         foreach ($this->request->get('subject_code') as $key1 => $val1) {
-            $messages['subject_code.' . $key1 . '.required'] = sprintf('Loi tai dong so %d, chua chon mon hoc ',$key1+1);
+            $messages['subject_code.' . $key1 . '.required'] = sprintf(__('messages.failRow').' %d '.__('messages.noChooseSubject'),$key1+1);
         }
         return $messages;
     }

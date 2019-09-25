@@ -130,7 +130,9 @@ return [
 
     'custom' => [
         'attribute-name' => [
-            'rule-name' => 'custom-message',
+            'create-success' => 'create-success',
+            'delete-success' => 'delete-success',
+            'update-success' => 'update-success',
         ],
     ],
 
@@ -146,5 +148,6 @@ return [
     */
 
     'attributes' => [],
+
 
 ];

@@ -78,7 +78,6 @@
                     {{session('mes')}}
                 </div>
             @endif
-
             @yield('content')
         </div>
     </div>

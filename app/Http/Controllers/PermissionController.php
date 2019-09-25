@@ -102,4 +102,10 @@ class PermissionController extends Controller
 
         return redirect(route('permissions.index'))->with('success', 'Delete-success!');
     }
+//    public function permissions($student_id)
+//    {
+//        $messenger = Redis
+//        $permission = $this->permissionRepository->getListById($id);
+//        return view('admin.permissions.edit', compact('permission'));
+//    }
 }

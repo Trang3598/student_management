@@ -93,7 +93,7 @@
                     </tr>
                 </table>
                 <div>
-                    {!! Form::submit('Add Mark',['class' => 'btn btn-success','id' =>'btn-submit']) !!}
+                    {!! Form::submit(trans('student.add'),['class' => 'btn btn-success','id' =>'btn-submit']) !!}
                 </div>
                 {!! Form::close() !!}
                 <p id="number-subject" style="display: none">{{count($subjects)}}</p>

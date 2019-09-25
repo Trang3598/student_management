@@ -28,14 +28,14 @@
                     <td>{{ ++$i }}</td>
                     <td>{{ $role->name }}</td>
                     <td>
-                        <a class="btn btn-info" href="{{ route('roles.show',$role->id) }}">Show</a>
+                        <a class="btn btn-info"  href="{{ route('roles.show',$role->id) }}">Show</a>
                     </td>
                     <td>
                         <a class="btn btn-primary" href="{{ route('roles.edit',$role->id) }}">Edit</a>
                     </td>
                     <td>
                         {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit('Delete', ['class' => 'btn btn-danger' ]) !!}
                         {!! Form::close() !!}
                     </td>
                 </tr>

@@ -101,16 +101,17 @@
             <th>{{ trans('student.image') }}</th>
             <th>{{ trans('student.address') }}</th>
             <th>{{ trans('student.phone') }}</th>
-            @can('role-edit')
+            @can('student-edit')
+            <th>{{ trans('student.role') }}</th>
             <th>{{ trans('student.edit') }}</th>
             @endcan
-            @can('role-delete')
+            @can('student-delete')
             <th>{{ trans('student.delete') }}</th>
             @endcan
-            @can('role-list')
+            @can('student-list')
             <th>{{ trans('student.point') }}</th>
             @endcan
-            @can('role-create')
+            @can('student-create')
             <th>{{ trans('student.addMoreResult') }}</th>
             @endcan
         </tr>
@@ -126,23 +127,26 @@
                 <td class="student-image"><img src="{{ asset('img/' . $student->image) }}" style="width: 50px;height: 50px"></td>
                 <td class="student-address">{{$student->address}}</td>
                 <td class="student-phone">{{$student->phone}}</td>
-                @can('role-edit')
+                @can('student-edit')
+                <td class="center">
+                    <a class="btn btn-primary" href="{{ route('students.roles',$student->id) }}">{{ trans('student.edit') }}</a>
+                </td>
                 <td class="center">
                     <a href="javascript:void(0)" id="edit-user" data-id="{{$student->id}}" class="btn btn-info">{{ trans('student.edit') }}</a>
                 </td>
                 @endcan
-                @can('role-delete')
+                @can('student-delete')
                 <td class="center">
                     {!! Form::open(['method'=>"Post",'route'=>['students.destroy',$student->id]]) !!}
-                    <input type="hidden" name="_method" value="{{ trans('student.delete') }}">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('{{ trans('student.checkDelete') }}')">{{ trans('student.delete') }}</button>
                     {!! Form::close() !!}
                 </td>
                 @endcan
-                @can('role-list')
+                @can('student-list')
                 <td class="center"><a class="btn btn-primary" href="{{route('students.show',['Student'=>$student])}}">{{ trans('student.show') }}</a></td>
                 @endcan
-                @can('role-create')
+                @can('student-create')
                 <td>
                     {!! Form::open(['method' => 'GET','route' => ['students.more',$student->slug]]) !!}
                     <button type="submit" class="btn btn-success">{{ trans('student.add') }}</button>
@@ -162,14 +166,13 @@
                     <h4 class="modal-title" id="userCrudModal"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="studentForm" name="studentForm"
-                          class="form-horizontal" method="POST" enctype="multipart/form-data">
+                    {!! Form::open(['class'=>"form-horizontal",'enctype'=>"multipart/form-data",'method' => 'POST', 'route' => ['students.store'] ,'enctype' => "multipart/form-data",'id' =>"studentForm",'name' =>"studentForm"]) !!}
                         <input type="hidden" name="student_id" id="student_id">
                         <input type="hidden" name="_method" value="PUT">
                         @csrf
                         <div class="form-group">
-                            <label class="col-sm-12">Class</label>
                             <div class="col-sm-12">
+                                {{ Form::label('class_code', trans('student.class'))}}
                                 <select class="form-control" name="class_code" id="class_code">
                                     <option value="">Please enter a class ...</option>
                                     @foreach($classes as $class)
@@ -180,53 +183,57 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Name</label>
                             <div class="col-sm-12">
+                                {{ Form::label('name', trans('student.name'))}}
                                 <input type="text" class="form-control" id="name"  name="name" placeholder="Enter Name"
                                        maxlength="50" required="">
                                 <span class="text-danger" id="name-error"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Birthday</label>
                             <div class="col-sm-12">
+                                {{ Form::label('birthday', trans('student.birthday'))}}
                                 <input type="date" name="birthday" class="form-control" id="birthday">
                                 <span class="text-danger" id="birthday-error"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Phone</label>
                             <div class="col-sm-12">
+                                {{ Form::label('phone', trans('student.phone'))}}
                                 <input type="text" class="form-control" id="phone" name="phone"
                                        placeholder="Enter Phone" required="">
                                 <span class="text-danger" id="phone-error"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Image</label>
                             <div class="col-sm-12">
+                                {{ Form::label('image', trans('student.image'))}}
                                 <input type="file" class="form-control" id="image" name="image">
                                 {{--<img src="images/{{$student->image}}" style="width: 50px; height: 50px">--}}
                                 <span class="text-danger" id="image-error"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Address</label>
                             <div class="col-sm-12">
+                                {{ Form::label('address', trans('student.address'))}}
                                 <input type="text" class="form-control" id="address" name="address"
                                        placeholder="Enter Address" required="">
                                 <span class="text-danger" id="address-error"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12">Gender</label>
                             <div class="col-sm-12">
-                                <input id="gender" name="gender" value="1" type="radio">Male
-                                <input id="gender" name="gender" value="2" type="radio">Female
+                                {{ Form::label('gender', trans('student.gender'))}}
+                                <label class="radio-inline">
+                                    {!! Form::radio('gender', '1') !!} {{trans('student.male')}}
+                                </label>
+                                <label class="radio-inline">
+                                    {!! Form::radio('gender', '2') !!} {{trans('student.female')}}
+                                </label>
                             </div>
                             <span class="text-danger" id="gender-error"></span>
                         </div>
-                    </form>
+                    {{Form::close()}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btn-save" value="create">Save changes

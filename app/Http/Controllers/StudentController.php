@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditRoleRequest;
 use App\Http\Requests\MarkAddMoreRequest;
 use App\Http\Requests\Profile1Request;
 use App\Http\Requests\ProfileRequest;
@@ -10,6 +11,7 @@ use App\Http\Requests\StudentRequestEdit;
 use App\Jobs\SendEmail;
 use App\Mail\FailStudents;
 use App\Models\ClassModel;
+use App\Models\Role;
 use App\Models\Student;
 use App\Repositories\Permission\PermissionRepository;
 use App\Repositories\Role\RoleRepository;
@@ -23,6 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 
@@ -132,14 +135,13 @@ class StudentController extends Controller
             $data['user_id'] = $user->id;
             $this->studentRepository->store($data);
             $user->assignRole($request->input('role_id'));
-//            $user->givePermissionTo('edit articles');
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception($e->getMessage());
         }
 
-        return redirect(route('students.index'))->with(['success' => 'create success']);
+        return redirect(route('students.index'))->with(['success' => __('messages.addSuccess')]);
     }
 
     public function edit($id)
@@ -185,7 +187,7 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $this->studentRepository->destroy($id);
-        return back()->with('success', 'Delete-success !');
+        return back()->with(['success' => __('messages.deleteSuccess')]);
     }
 
     public function more($slug)
@@ -209,7 +211,7 @@ class StudentController extends Controller
             $result[$value] = ['score' => $data['score'][$key]];
         }
         $student->subjects()->sync($result);
-        return redirect()->back()->with(['success' => 'add success']);
+        return redirect()->back()->with(['success' => __('messages.addSuccess')]);
     }
 
     public function account($id)
@@ -235,7 +237,7 @@ class StudentController extends Controller
             $email = $user['email'];
         }
         Mail::to($email)->send(new FailStudents($user));
-        return redirect()->back()->with(['success' => 'send success']);
+        return redirect()->back()->with(['success' => __('messages.sendSuccess')]);
     }
 
     public function sendAll()
@@ -244,12 +246,11 @@ class StudentController extends Controller
         foreach ($students as $student) {
             dispatch(new SendEmail($student->user));
         }
-        return redirect()->back()->with(['success' => 'send all success']);
+        return redirect()->back()->with(['success' => __('messages.sendAllSuccess')]);
     }
 
     public function profile()
     {
-
         $student = Auth::user()->students;
         $classes = ClassModel::all()->pluck('name', 'id');
         $marks = $this->markRepository->getMarks(Auth::user()->students->id)->get();
@@ -259,7 +260,6 @@ class StudentController extends Controller
                $subject_code,[$marks[$key]->subject_code]
            );
         }
-        $id = Auth::user()->id;
         $role_id = Auth::user()->role_id;
         $rolehaspermissions_id = $this->rhpRepository->getPermission($role_id)->get();
         $permissions_id =[];
@@ -292,15 +292,31 @@ class StudentController extends Controller
             $data['subject_code'] = $data['checkbox'];
         }
         if (empty($data['subject_code'])){
-            return redirect()->back()->with(['success' => 'Chưa chọn môn học']);
+            return redirect()->back()->with(['success' => __('messages.fRegisterSuccess')]);
         }else{
             $result = [];
             foreach ($data['subject_code'] as $key => $value) {
                 $result[$value] = ['score' => $data['score'][$key]];
             }
             $student->subjects()->attach($result);
-            return redirect()->back()->with(['success' => 'Đã cập nhập điểm 0 vào mỗi môn']);
+            return redirect()->back()->with(['success' => __('messages.registerSuccess')]);
         }
+    }
+    public function roles($id){
+        $roles = Role::all();
+        $user_id = $this->studentRepository->getListById($id)['user_id'];
+        $student = $this->studentRepository->getListById($id);
+        $role_id = $this->userRepository->getListById($user_id)['role_id'];
+        return view('admin.students.role',compact('roles','role_id','student'));
+    }
+    public function updaterole($id, EditRoleRequest $request){
+        $user_id = $this->studentRepository->getListById($id)['user_id'];
+        $data = $request->all();
+        $data['username'] = $this->userRepository->getListById($user_id)['username'];
+        $data['password'] = $this->userRepository->getListById($user_id)['password'];
+        $user = $this->userRepository->update($user_id,$data);
+        DB::table('model_has_roles')->where('model_id', $user_id)->update(['role_id'=>$request->role_id]);
+        return redirect()->back()->with(['success' => __('messages.editSuccess')]);
     }
 }
 

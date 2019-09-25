@@ -173,6 +173,8 @@ return [
         'size'                  => 'kích thước',
         'birthday'              => 'ngày sinh',
         'image'                 => 'ảnh',
-        'email'                 => 'hộp thư'
+        'email'                 => 'hộp thư',
+        'role_id'               => 'vai trò',
+
     ],
 ];

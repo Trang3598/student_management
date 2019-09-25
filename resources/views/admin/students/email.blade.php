@@ -2,22 +2,22 @@
 
 @section('content')
     {!! Form::open(['method' => 'get','route'=>['student.sendAll']]) !!}
-    {!! Form::submit('SEND ALL',['class'=>"btn btn-danger",]) !!}
+    {!! Form::submit(trans('student.sendAll'),['class'=>"btn btn-danger",]) !!}
     {!! Form::close() !!}
     <br>
-    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+    <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr align="center">
-            <th>ID</th>
-            <th>Class-Code</th>
-            <th>Student</th>
-            <th>Gender</th>
-            <th>Birthday</th>
-            <th>Image</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Show</th>
-            <th>Send Mail</th>
+            <th>{{trans('student.id')}}</th>
+            <th>{{trans('student.class')}}</th>
+            <th>{{trans('student.student')}}</th>
+            <th>{{trans('student.gender')}}</th>
+            <th>{{trans('student.birthday')}}</th>
+            <th>{{trans('student.image')}}</th>
+            <th>{{trans('student.address')}}</th>
+            <th>{{trans('student.phone')}}</th>
+            <th>{{trans('student.show')}}</th>
+            <th>{{trans('student.send')}}</th>
         </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@
                             class="fa fa-search fa-fw"></i></a></td>
                 <td>
                     {!! Form::open(['method' => 'put','route' => ['students.send',$student->id]]) !!}
-                    {!! Form::submit('Send Mail',['class'=>"btn btn-success",]) !!}
+                    {!! Form::submit(trans('student.send'),['class'=>"btn btn-success",]) !!}
                     {!! Form::close() !!}
                 </td>
             </tr>

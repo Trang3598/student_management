@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'checkLogin' => LoginMiddleware::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'lang' => \App\Http\Middleware\LangMiddleware::class
     ];
 
     /**

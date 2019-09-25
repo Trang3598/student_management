@@ -13,30 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::name('api.')->group(function () {
+
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('faculties', 'Api\FacultyController@index')->name('faculties.index');
+
+    Route::put('faculties/{faculty}', 'Api\FacultyController@store')->name('faculties.store');
+
+    Route::put('faculties/{faculty}', 'Api\FacultyController@show')->name('faculties.show');
+
+    Route::patch('faculties/{faculty}', 'Api\FacultyController@update')->name('faculties.update');
+
+    Route::delete('faculties/{faculty}', 'Api\FacultyController@destroy')->name('faculties.destroy');
 });
-Auth::routes();
-
-Route::get('dashboard', function () {
-    return view('admin.layouts.index');
-});
-
-Route::group(['middleware' => 'checkLogin'], function () {
-    Route::apiResource('students', 'Api\StudentController');
-    Route::get('student/profile', 'Api\StudentController@profile')->name('student.profile');
-    Route::put('students/newUpdate/{student}', 'Api\StudentController@newUpdate')->name('student.newUpdate');
-    Route::put('students/newUpdate1/{student}', 'Api\StudentController@newUpdate1')->name('student.newUpdate1');
-    Route::get('search', 'StudentController@search');
-    Route::get('students/{student}/account', 'Api\StudentController@account')->name('students.account');
-    Route::get('students/{student}/more', 'Api\StudentController@more')->name('students.more');
-    Route::put('students/add/{student}', 'Api\StudentController@add')->name('students.addMore');
-    Route::put('students/editpopup', 'Api\StudentController@editpopup')->name('students.editpopup');
-    Route::get('student/email', 'Api\StudentController@mail')->name('students.email');
-    Route::put('student/{student}', 'Api\StudentController@send')->name('students.send');
-    Route::get('student/sendAll', 'Api\StudentController@sendAll')->name('student.sendAll');
-
-});
-
-Route::get('/redirect/{social}', 'SocialAuthController@redirect');
-Route::get('/callback/{social}', 'SocialAuthController@callback');

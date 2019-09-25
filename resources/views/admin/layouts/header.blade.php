@@ -18,16 +18,18 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> @if(isset(Auth::user()->students->name)){{{Auth::user()->students->name}}}@else{{Auth::user()->username}} @endif </a>
+                <li><a href="{{route('student.profile')}}"><i class="fa fa-user fa-fw"></i> @if(isset(Auth::user()->students->name)){{{Auth::user()->students->name}}}@else{{Auth::user()->username}} @endif </a>
                 </li>
-                <li><a href="{{ route('lang',['lang' => 'vi']) }}"> Tiếng Việt </a></li>
-                <li><a href="{{ route('lang',['lang' => 'en']) }}">English </a></li>
+                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'vi']) }}"> Tiếng Việt </a></li>
+                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'en']) }}"> English </a></li>
                 <li class="divider"></li>
-                <li>
+
                     {!! Form::open(['method'=>'POST', 'route'=>'logout']) !!}
-                    {!! Form::submit('Logout', ['style'=> 'text:center ;display: inline; border: none;background: none;']) !!}
-                    {!! Form::close() !!}
+                <li class="fa fa-backward">
+                    {!! Form::submit('Logout', ['style'=> 'text:center ;display: inline; border: none;background: none;','class' => 'fa fa-university']) !!}
                 </li>
+                {!! Form::close() !!}
+
             </ul>
             <!-- /.dropdown-user -->
         </li>

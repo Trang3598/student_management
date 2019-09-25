@@ -87,12 +87,8 @@
                 <span style="color: #6eff5f" class="error-message">{{ $errors->first('password') }}</span>
             </div>
             <div class="form-group">
-                {{Form::label('Role', trans('student.role'))}}
-                <select class="form-control" name="role_id">
-                    @foreach($roles as $id => $role)
-                        <option value="{{ $id }}">{{ $role }}</option>
-                    @endforeach
-                </select>
+                    {{Form::label('Role', trans('student.role'))}}
+                <select class="form-control" name="role_id"></select>
             </div>
         </div>
         {!! Form::close() !!}

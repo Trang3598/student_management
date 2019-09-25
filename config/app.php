@@ -179,7 +179,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Dimsav\Translatable\TranslatableServiceProvider::class,
-
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*
