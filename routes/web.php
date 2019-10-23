@@ -30,8 +30,10 @@ Route::group(['middleware' => ['checkLogin','lang']], function () {
     Route::get('student/profile', 'StudentController@profile')->name('student.profile');
     Route::put('students/newUpdate/{student}', 'StudentController@newUpdate')->name('student.newUpdate');
     Route::put('students/newUpdate1/{student}', 'StudentController@newUpdate1')->name('student.newUpdate1');
-    Route::get('students/edit/{role}', 'StudentController@roles')->name('students.roles');
-    Route::put('students/update/{role}', 'StudentController@updaterole')->name('students.updateRole');
+    Route::get('students/editRole/{role}', 'StudentController@roles')->name('students.roles');
+    Route::put('students/updateRole/{role}', 'StudentController@updateRole')->name('students.updateRole');
+    Route::get('students/editPermission/{permission}', 'StudentController@permissions')->name('students.permissions');
+    Route::put('students/updatePermission/{permission}', 'StudentController@updatePermission')->name('students.updatePermission');
     Route::get('students/{student}/account', 'StudentController@account')->name('students.account');
     Route::get('students/{student}/more', 'StudentController@more')->name('students.more');
     Route::put('students/add/{student}', 'StudentController@add')->name('students.addMore');
@@ -58,6 +60,9 @@ Route::group(['middleware' => ['checkLogin','lang']], function () {
     Route::put('roles/add/{role}', 'RolesController@add')->name('roles.add');
 
     Route::get('lang/{lang}','LangController@lang')->name('lang');
+    Route::get('chats', 'ChatController@index')->name('chats');
+    Route::get('message/{id}','ChatController@getMessage')->name('message');
+    Route::post('chat','ChatController@chat');
 });
 
 Route::get('/redirect/{social}', 'SocialAuthController@redirect');

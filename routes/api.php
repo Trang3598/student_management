@@ -18,14 +18,6 @@ Route::name('api.')->group(function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
-
-    Route::get('faculties', 'Api\FacultyController@index')->name('faculties.index');
-
-    Route::put('faculties/{faculty}', 'Api\FacultyController@store')->name('faculties.store');
-
-    Route::put('faculties/{faculty}', 'Api\FacultyController@show')->name('faculties.show');
-
-    Route::patch('faculties/{faculty}', 'Api\FacultyController@update')->name('faculties.update');
-
-    Route::delete('faculties/{faculty}', 'Api\FacultyController@destroy')->name('faculties.destroy');
+    Route::Apiresource('faculties', 'Api\FacultyController');
+//    Route::Apiresource('students', 'Api\StudentController');
 });

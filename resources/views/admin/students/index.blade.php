@@ -102,10 +102,9 @@
             <th>{{ trans('student.address') }}</th>
             <th>{{ trans('student.phone') }}</th>
             @can('student-edit')
-            <th>{{ trans('student.role') }}</th>
             <th>{{ trans('student.edit') }}</th>
             @endcan
-            @can('student-delete')
+            @can('role-delete')
             <th>{{ trans('student.delete') }}</th>
             @endcan
             @can('student-list')
@@ -128,14 +127,24 @@
                 <td class="student-address">{{$student->address}}</td>
                 <td class="student-phone">{{$student->phone}}</td>
                 @can('student-edit')
-                <td class="center">
-                    <a class="btn btn-primary" href="{{ route('students.roles',$student->id) }}">{{ trans('student.edit') }}</a>
-                </td>
-                <td class="center">
-                    <a href="javascript:void(0)" id="edit-user" data-id="{{$student->id}}" class="btn btn-info">{{ trans('student.edit') }}</a>
+                <td>
+                    <div class="dropdown show student-url">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            {{ trans('student.edit') }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin: 2px">
+                            @can('role-edit')
+                            <a style="margin: 2px" class="btn btn-primary dropdown-item" href="{{ route('students.roles',$student->id) }}">{{ trans('student.role') }}</a>
+                            @endcan
+                            <a style="margin: 2px" href="javascript:void(0)" id="edit-user" data-id="{{$student->id}}" class="btn btn-info dropdown-item">{{ trans('student.profile') }}</a>
+                            @can('permission-edit')
+                            <a style="margin: 2px" class="btn btn-primary dropdown-item" href="{{ route('students.permissions',$student->id) }}">{{ trans('student.permission') }}</a>
+                            @endcan
+                        </div>
+                    </div>
                 </td>
                 @endcan
-                @can('student-delete')
+                @can('role-delete')
                 <td class="center">
                     {!! Form::open(['method'=>"Post",'route'=>['students.destroy',$student->id]]) !!}
                     <input type="hidden" name="_method" value="DELETE">
@@ -144,7 +153,7 @@
                 </td>
                 @endcan
                 @can('student-list')
-                <td class="center"><a class="btn btn-primary" href="{{route('students.show',['Student'=>$student])}}">{{ trans('student.show') }}</a></td>
+                <td class="center"><a class="btn btn-primary student-urlshow" href="{{route('students.show',['Student'=>$student])}}">{{ trans('student.show') }}</a></td>
                 @endcan
                 @can('student-create')
                 <td>
@@ -303,8 +312,6 @@
                     success: function (data) {
                         $('#ajax-crud-modal').modal('hide');
                         $("#student_id_" + data.id).html(data.id);
-
-
                         $("tr#" + data.id).children("td.class-name").html(class_list[data.class_code-1].name);
                         $("tr#" + data.id).children("td.student-name").html(data.name);
                         if (data.gender == 1) {
@@ -316,6 +323,8 @@
                         if (data.image) {
                             $("tr#" + data.id).find("td.student-image img").attr('src', data.image);
                         }
+
+                        $("tr#" + data.id + " .student-urlshow").attr('href','/student_management/public/students/' +  data.slug);
                         $("tr#" + data.id).children("td.student-address").html(data.address);
                         $("tr#" + data.id).children("td.student-phone").html(data.phone);
                         $("#class_code_" + data.id).html(data.class_code);
@@ -326,6 +335,7 @@
                         $("#address_" + data.id).html(data.address);
                         $("#phone_" + data.id).html(data.phone);
                         $("#email_" + data.id).html(data.email);
+
                         $('.show-error').html('');
                         $('#studentForm').trigger("reset");
                         $('#btn-save').html('Save Changes');

@@ -20,8 +20,8 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="{{route('student.profile')}}"><i class="fa fa-user fa-fw"></i> @if(isset(Auth::user()->students->name)){{{Auth::user()->students->name}}}@else{{Auth::user()->username}} @endif </a>
                 </li>
-                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'vi']) }}"> Tiếng Việt </a></li>
-                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'en']) }}"> English </a></li>
+                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'vi']) }}"> {{trans('layout.vietnamese')}} </a></li>
+                <li><a class="fa fa-university" href="{{ route('lang',['lang' => 'en']) }}"> {{trans('layout.english')}} </a></li>
                 <li class="divider"></li>
 
                     {!! Form::open(['method'=>'POST', 'route'=>'logout']) !!}

@@ -11,4 +11,7 @@ return [
     'permission' => 'Chức năng',
     'show' => 'Hiển thị',
     'create' => 'Thêm mới',
+    'english' => 'Tiếng Anh',
+    'vietnamese' => 'Tiếng Việt',
+    'chat' => 'Tin Nhắn',
 ];

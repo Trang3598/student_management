@@ -58,9 +58,7 @@ class MarkController extends Controller
     public function show($id)
     {
         $students = $this->studentRepository->getStudents($id);
-
         $marks = $this->markRepository->getMarks($id)->get();
-
         return view('admin.marks.show', compact('marks'), compact('students'));
     }
 

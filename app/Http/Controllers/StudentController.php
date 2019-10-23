@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditPermissionRequest;
 use App\Http\Requests\EditRoleRequest;
 use App\Http\Requests\MarkAddMoreRequest;
 use App\Http\Requests\Profile1Request;
@@ -25,9 +26,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
+use Spatie\Permission\Models\Permission;
 
 class StudentController extends Controller
 {
@@ -54,6 +55,9 @@ class StudentController extends Controller
         $this->middleware('permission:student-create', ['only' => ['add','more']]);
         $this->middleware('permission:student-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:student-delete', ['only' => ['destroy']]);
+
+        $this->middleware('permission:role-edit', ['only' => ['roles','updateRoles']]);
+        $this->middleware('permission:permission-edit', ['only' => ['permission','updatePermission']]);
     }
 
     /**
@@ -108,6 +112,9 @@ class StudentController extends Controller
     {
         $student_id = Student::findBySlug($id)['id'];
         $students = $this->studentRepository->getStudents($student_id);
+        if ($student_id == null){
+            return view('errors.404');
+        }
         $marks = $this->markRepository->getMarks($student_id)->get();
         return view('admin.marks.show', compact('marks'), compact('students'));
     }
@@ -309,13 +316,48 @@ class StudentController extends Controller
         $role_id = $this->userRepository->getListById($user_id)['role_id'];
         return view('admin.students.role',compact('roles','role_id','student'));
     }
-    public function updaterole($id, EditRoleRequest $request){
+    public function updateRole($id, EditRoleRequest $request){
         $user_id = $this->studentRepository->getListById($id)['user_id'];
         $data = $request->all();
         $data['username'] = $this->userRepository->getListById($user_id)['username'];
         $data['password'] = $this->userRepository->getListById($user_id)['password'];
         $user = $this->userRepository->update($user_id,$data);
         DB::table('model_has_roles')->where('model_id', $user_id)->update(['role_id'=>$request->role_id]);
+        return redirect()->back()->with(['success' => __('messages.editSuccess')]);
+    }
+    public function permissions($id) {
+        $user_id = $this->studentRepository->getListById($id)['user_id'];
+        $model_id = DB::table("model_has_permissions")->where('model_id',$user_id)->value('model_id');
+        $student = $this->studentRepository->getListById($id);
+        $role_id = $this->userRepository->getListById($user_id)['role_id'];
+        $role = \Spatie\Permission\Models\Role::find($role_id);
+        $permission = Permission::get();
+        if ($model_id == null) {
+            $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$role_id)
+                ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+                ->all();
+            $rolePermission1 = $rolePermissions;
+            return view('admin.students.permission',compact('role','permission','rolePermissions','student','rolePermission1'));
+        }else{
+            $rolePermission2 = DB::table("model_has_permissions")->where('model_id',$user_id)->pluck('permission_id','permission_id')->all();
+            $rolePermission1 = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$role_id)
+                ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+                ->all();
+            $rolePermissions = array_merge($rolePermission1,$rolePermission2);
+            return view('admin.students.permission',compact('role','permission','rolePermissions','student','rolePermission1'));
+        }
+    }
+    public function updatePermission($id, EditPermissionRequest $request){
+        $user_id = $this->studentRepository->getListById($id)['user_id'];
+        $user = $this->userRepository->getListById($user_id);
+        $rolePermissions = Permission::get();
+        foreach ($rolePermissions as $rolePermission => $value){
+            $user->revokePermissionTo($value['id']);
+        }
+        $permissions = $request->all()['permission'];
+        foreach ($permissions as $permission => $value){
+            $user->givePermissionTo($value);
+        }
         return redirect()->back()->with(['success' => __('messages.editSuccess')]);
     }
 }

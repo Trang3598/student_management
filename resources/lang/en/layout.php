@@ -11,4 +11,7 @@ return [
     'permission' => 'Permission',
     'show' => 'Show',
     'create' => 'Create',
+    'english' => 'English',
+    'vietnamese' => 'Vietnamese',
+    'chat' => 'Chat',
 ];

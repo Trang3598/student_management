@@ -6,7 +6,7 @@
             </li>
 
             <li>
-
+                @if(Auth::user()->can('faculty-list') || Auth::user()->can('faculty-create'))
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('layout.faculty') }}<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('faculty-list')
@@ -20,10 +20,11 @@
                     </li>
                     @endcan
                 </ul>
+                    @endif
 
             </li>
             <li>
-
+                @if(Auth::user()->can('class-list') || Auth::user()->can('class-create'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.class') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('class-list')
@@ -37,11 +38,11 @@
                     </li>
                     @endcan
                 </ul>
-
+                @endif
             </li>
 
             <li>
-
+                @if(Auth::user()->can('student-list') || Auth::user()->can('student-create'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.student') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('student-list')
@@ -55,8 +56,10 @@
                     </li>
                     @endcan
                 </ul>
+                @endif
             </li>
             <li>
+                @if(Auth::user()->can('subject-list') || Auth::user()->can('subject-list'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.subject') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('subject-list')
@@ -70,8 +73,10 @@
                     </li>
                     @endcan
                 </ul>
+                @endif
             </li>
             <li>
+                @if(Auth::user()->can('mark-list') || Auth::user()->can('mark-create'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.mark') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     @can('mark-list')
@@ -85,13 +90,13 @@
                     </li>
                     @endcan
                 </ul>
-                <!-- /.nav-second-level -->
+                @endif
             </li>
-
             <li>
-                @can('role-list')
+                @if(Auth::user()->can('role-list') || Auth::user()->can('role-create'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.permission') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    @can('role-list')
                     <li>
                         <a href="{{route('permissions.index')}}">{{ trans('layout.show') }} {{ trans('layout.permission') }}</a>
                     </li>
@@ -100,23 +105,29 @@
                     <li>
                         <a href="{{route('permissions.create')}}">{{ trans('layout.create') }} {{ trans('layout.permission') }}</a>
                     </li>
+                    @endcan
                 </ul>
-                @endcan
+                @endif
             </li>
             <li>
-                @can('role-list')
+                @if(Auth::user()->can('role-list') || Auth::user()->can('role-create'))
                 <a href="#"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.role') }} <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    @can('role-list')
                     <li>
                         <a href="{{route('roles.index')}}">{{ trans('layout.show') }} {{ trans('layout.role') }}</a>
                     </li>
-                @endcan
-                @can('role-create')
+                    @endcan
+                    @can('role-create')
                     <li>
                         <a href="{{route('roles.create')}}">{{ trans('layout.create') }} {{ trans('layout.role') }}</a>
                     </li>
+                    @endcan
                 </ul>
-                @endcan
+                @endif
+            </li>
+            <li>
+                <a href="{{route('chats')}}"><i class="fa fa-cube fa-fw"></i> {{ trans('layout.chat') }} <span class="fa arrow"></span></a>
             </li>
         </ul>
     </div>

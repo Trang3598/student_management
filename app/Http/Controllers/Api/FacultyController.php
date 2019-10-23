@@ -1,12 +1,10 @@
 <?php
-namespace App\Http\Controllers\API;
-use App\Models\ClassModel;
+namespace App\Http\Controllers\Api;
 use App\Models\Faculty;
 use App\Http\Requests\FacultyRequest;
 use App\Http\Resources\Faculty as FacultyResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 class FacultyController extends Controller
 {
     /**
@@ -16,7 +14,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $faculities = Faculty::paginate(5);
+        $faculities = Faculty::all();
         return FacultyResource::collection($faculities);
     }
     /**
@@ -27,6 +25,7 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $faculties = Faculty::create($request->all());
         return new FacultyResource($faculties);
     }
@@ -36,12 +35,11 @@ class FacultyController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $classes = ClassModel::where('faculty_id', $id)->get();
-        return $classes;
-    }
-
+//    public function show($id)
+//    {
+//        $classes = ClassModel::where('faculty_id', $id)->get();
+//        return $classes;
+//    }
     /**
      * Update the specified resource in storage.
      *
@@ -63,6 +61,7 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
+        //
         $faculty = Faculty::findOrFail($id);
         $faculty->delete();
     }
