@@ -26,7 +26,8 @@
                 </li>
             @endif
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> {{__('message.Faculties')}}<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> {{__('message.Faculties')}}<span
+                            class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('faculty.index')}}">{{__('message.List_Faculties')}}</a>
@@ -99,7 +100,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-users fa-fw"></i> Roles<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-adjust"></i> Roles<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('roles.index')}}">List Of Roles</a>
@@ -114,16 +115,25 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-users fa-fw"></i> Permission<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-bank fa-fw"></i> Permission<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('permissions.index')}}">List Of Permissions</a>
                     </li>
                     @can('permission-create')
-                        <li>
+                    <li>
                             <a href="{{route('permissions.create')}}">Add Permissions</a>
                         </li>
                     @endcan
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-phone fa-fw"></i> Chat<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{route('chat')}}">Group Chat</a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>

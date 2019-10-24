@@ -19,7 +19,7 @@ abstract class EloquentRepository
 
     public function getAll()
     {
-        return $this->model->paginate(5);
+        return $this->model->paginate(8);
     }
 
     public function find($id)

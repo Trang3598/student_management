@@ -39,9 +39,10 @@
     35 => 'Cviebrock\\EloquentSluggable\\ServiceProvider',
     36 => 'App\\Providers\\AppServiceProvider',
     37 => 'App\\Providers\\AuthServiceProvider',
-    38 => 'App\\Providers\\EventServiceProvider',
-    39 => 'App\\Providers\\RouteServiceProvider',
-    40 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    38 => 'App\\Providers\\BroadcastServiceProvider',
+    39 => 'App\\Providers\\EventServiceProvider',
+    40 => 'App\\Providers\\RouteServiceProvider',
+    41 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -65,9 +66,10 @@
     17 => 'Cviebrock\\EloquentSluggable\\ServiceProvider',
     18 => 'App\\Providers\\AppServiceProvider',
     19 => 'App\\Providers\\AuthServiceProvider',
-    20 => 'App\\Providers\\EventServiceProvider',
-    21 => 'App\\Providers\\RouteServiceProvider',
-    22 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    20 => 'App\\Providers\\BroadcastServiceProvider',
+    21 => 'App\\Providers\\EventServiceProvider',
+    22 => 'App\\Providers\\RouteServiceProvider',
+    23 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'deferred' => 
   array (

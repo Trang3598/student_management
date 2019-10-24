@@ -33,7 +33,7 @@ class RoleController extends Controller
         $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-//        $this->middleware('permission:role-addPermission', ['only' => ['setPermission', 'addPermission']]);
+        $this->middleware('permission:role-addPermission', ['only' => ['setPermission', 'addPermission']]);
     }
 
     public function index()
@@ -123,7 +123,7 @@ class RoleController extends Controller
     public function setPermission($id)
     {
         $role = $this->roleRepository->find($id);
-        $permissions = Permission::all();
+        $permissions = Permission::get();
         $has_permission = $this->rolePermissionRepositorry->getListPermission($id);
         $data = [];
         foreach ($has_permission as $item => $value) {
@@ -141,10 +141,14 @@ class RoleController extends Controller
         foreach ($request->permission_id as $item => $value) {
             array_push($data, [
                 'permission_id' => $request->permission_id[$item],
-                'role_id' => $role->id,
+                'role_id' => $request->role_id[$item],
             ]);
-            $value = $role->permissions()->sync($data);
         }
-        return redirect()->back()->with('message', 'Addsuccessfully');
+        $result = [];
+        foreach ($data as $key => $value) {
+            $result[$value['permission_id']] = ['role_id' => $value['role_id']];
+        }
+        $value = $role->permissions()->sync($result);
+        return redirect()->back()->with('message', 'Add successfully');
     }
 }

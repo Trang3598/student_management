@@ -10,6 +10,7 @@
     <title>Admin - Trang xinh đẹp</title>
     <base href="{{asset('')}}">
     <!-- Bootstrap Core CSS -->
+
     <script src="{{asset('admin_asset/bower_components/jquery/dist/jquery.min.js')}}"></script>
     <link href="{{asset('admin_asset/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -36,13 +37,20 @@
         .container {
             padding: 0.5%;
         }
+
         p {
             margin: 9px 0 10px;
         }
 
-        /*.modal-backdrop.in {*/
-        /*display: none;*/
-        /*}*/
+        .box {
+            float: left;
+        . . .
+        }
+
+        .list-group {
+            overflow-y: scroll;
+            height: 300px;
+        }
     </style>
 </head>
 
@@ -78,11 +86,11 @@
         });
     });
 </script>
+
 @yield('script')
 </body>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-
 </html>
 @yield('form-add')
 @yield('show-image')

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
@@ -27,7 +26,6 @@ class FacultyController extends Controller
 //        $faculties = $this->facultyRepository->getAll();
         $request = Request::create('api/faculty', 'GET');
         $faculities = Route::dispatch($request);
-//        dd($faculities);
         $datas = json_decode($faculities->getContent(), true);
         $items = $datas['data'];
         return view('admin.Faculty.list', compact('items'));

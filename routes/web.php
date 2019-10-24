@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +9,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -25,7 +23,7 @@ Route::group(['middleware' => 'locale'], function () {
         ->name('user.change-language');
 
 });
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'locale']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','locale']], function () {
     Route::resource('user', 'UserController');
     Route::resource('faculty', 'FacultyController');
     Route::resource('subject', 'SubjectController');
@@ -38,7 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'locale']], function
     Route::get('register/subject/{id}', 'StudentSubjectController@registerSubject')->name('studentsubject.registerSubject');
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
-    Auth::routes();
+
 });
 Route::get('setPermission/{id}', 'RoleController@setPermission')->name('roles.setPermission');
 Route::post('addPermission/{id}', 'RoleController@addPermission')->name('roles.addPermission');
@@ -46,4 +44,17 @@ Route::get('callback/{provider}', 'Auth\LoginController@handleProviderCallback')
 Route::get('login/{provider}', 'Auth\LoginController@redirect');
 Route::post('student/subjects/update/{id}', 'StudentSubjectController@insertRegisteredSubjects')->name('studentsubject.insertRegisteredSubjects');
 
+Route::get('chat','ChatController@chat')->name('chat');
+Route::post('send', 'ChatController@send')->name('chat.send');
+
+Route::get('check', function() {
+    return session('chat');
+});
+Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/getOldMessage', 'ChatController@getOldMessage')->name('chat.getOldMessage');
+Route::post('/deleteSession', 'ChatController@deleteSession')->name('chat.deleteSession');
+Route::post('/saveToSession', 'ChatController@saveToSession')->name('chat.saveToSession');
 Auth::routes();
+//Broadcast::routes();
+
+

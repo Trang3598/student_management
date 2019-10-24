@@ -34,31 +34,30 @@ class StudentModelTest extends TestCase
     {
         $this->assertBelongsTo(User::class, 'user_id', 'id', new StudentModel, 'user');
     }
+
     public function test_it_has_many_mark()
     {
-        $this->assertHasMany(StudentSubjectModel::class,'student_code',new StudentModel,'studentSubjects' );
+        $this->assertHasMany(StudentSubjectModel::class, 'student_code', new StudentModel, 'studentSubjects');
     }
-    public function assertBelongsToMany($related,$model,$relationName)
+
+    public function assertBelongsToMany($related, $model, $relationName)
     {
         $relation = $model->$relationName();
         $this->assertInstanceOf(BelongsToMany::class, $relation, 'Relation is wrong');
         $this->assertInstanceOf($related, $relation->getRelated(), 'Related model is wrong');
     }
 
-    public function assertHasMany($related, $foreignKey, $model, $relationName)
+    public function assertHasMany($related, $model, $relationName)
     {
         $relation = $model->$relationName();
         $this->assertInstanceOf(HasMany::class, $relation, 'Relation is wrong');
         $this->assertInstanceOf($related, $relation->getRelated(), 'Related model is wrong');
-//        $this->assertEquals($foreignKey, $relation->getForeignKey(), 'Foreign key is wrong');
     }
 
-    protected function assertBelongsTo($related, $foreignKey, $ownerKey, $model, $relationName)
+    protected function assertBelongsTo($related, $model, $relationName)
     {
         $relation = $model->$relationName();
         $this->assertInstanceOf(BelongsTo::class, $relation, 'Relation is wrong');
         $this->assertInstanceOf($related, $relation->getRelated(), 'Related model is wrong');
-//        $this->assertEquals($ownerKey, $relation->getOwnerKey(), 'Owner key is wrong');
-//        $this->assertEquals($foreignKey, $relation->getForeignKey(), 'Foreign key is wrong');
     }
 }

@@ -60,13 +60,12 @@
                                 </td>
                             @endcan
                             @can('role-delete')
-                            <td>
+                                <td>
                                     {!! Form::open(['method'=> 'DELETE','route' => ['roles.destroy', $role->id]]) !!}
                                     {!! Form::submit('Delete',['class'=>'btn btn-danger','onclick' => "return confirm('Do you want to delete this field?')"]) !!}
                                     {!! Form::close() !!}
-                                @endcan
-                            </td>
-
+                                    @endcan
+                                </td>
                         </tr>
                     @endforeach
                     </tbody>

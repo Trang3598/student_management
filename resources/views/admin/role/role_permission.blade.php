@@ -44,7 +44,6 @@
                                        @foreach($data as $key => $value)
                                        @if ($permission->id == $data[$key][0]) checked="checked" @endif
                                         @endforeach>
-
                             </td>
                         </tr>
                     @endforeach
