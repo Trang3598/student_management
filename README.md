@@ -1,2 +1,2 @@
 # student_management
-Firt Laravel Project
+First Laravel Project
